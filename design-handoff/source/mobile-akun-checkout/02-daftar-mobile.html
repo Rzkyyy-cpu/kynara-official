@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Daftar — Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none;width:100%}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.btn:disabled{background:#EFE1E2;color:#7A7074;cursor:not-allowed}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600}
+.hint{font-size:12px;color:#5E5A62}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #DCCBCD;border-radius:12px;background:#FFFFFF;color:#2B2B2B;font:400 15px 'Plus Jakarta Sans',sans-serif}
+.input:focus{outline:2px solid #708BAA;outline-offset:1px}
+.g{width:22px;height:22px;border-radius:999px;border:1.5px solid #2B2B2B;display:inline-flex;align-items:center;justify-content:center;font:700 12px 'Plus Jakarta Sans',sans-serif}
+.or{display:flex;align-items:center;gap:12px;font-size:13px;color:#5E5A62}.or::before,.or::after{content:"";flex:1;height:1px;background:#EFE1E2}
+</style>
+</helmet>
+<div style="width: 390px; height: 980px; display: flex; flex-direction: column; background: #FFF6F5">
+<header style="height: 56px; padding: 0 8px; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center">
+<a href="MMasuk.dc.html" aria-label="Kembali" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></a>
+<span style="text-align: center; font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 500">kynara</span><span></span>
+</header>
+<main style="padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 8px"><h1 class="serif" style="font-size: 32px; line-height: 40px">Buat akun</h1><p class="muted" style="font-size: 15px; line-height: 23px">Checkout lebih cepat dan pantau pesananmu.</p></div>
+<button type="button" class="btn btn-outline"><span class="g" aria-hidden="true">G</span>Daftar dengan Google</button>
+<div class="or">atau isi data</div>
+<div class="field"><label class="label" for="nm">Nama lengkap</label><input id="nm" class="input" autocomplete="name" placeholder="Nama sesuai penerima paket"></div>
+<div class="field"><label class="label" for="em">Email</label><input id="em" class="input" type="email" autocomplete="email" placeholder="nama@email.com"></div>
+<div class="field"><label class="label" for="wa">Nomor WhatsApp</label><input id="wa" class="input" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xx xxxx xxxx"><span class="hint">Untuk info pengiriman dan konfirmasi pesanan.</span></div>
+<div class="field"><label class="label" for="pw">Password</label><input id="pw" class="input" type="password" autocomplete="new-password" placeholder="Minimal 8 karakter" value="{{pw}}" sc-camel-on-change="{{setPw}}">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px" aria-hidden="true"><span style="height: 4px; border-radius: 2px; background: {{s1}}"></span><span style="height: 4px; border-radius: 2px; background: {{s2}}"></span><span style="height: 4px; border-radius: 2px; background: {{s3}}"></span></div>
+<span class="hint" aria-live="polite">{{strength}}</span></div>
+<label style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 21px; cursor: pointer"><input type="checkbox" checked="{{agree}}" sc-camel-on-change="{{toggleAgree}}" style="width: 20px; height: 20px; margin: 1px 0 0; accent-color: #3F5A7D; flex-shrink: 0"><span>Saya setuju dengan <a href="MDaftar.dc.html" style="text-decoration: underline">Syarat &amp; Ketentuan</a> dan <a href="MDaftar.dc.html" style="text-decoration: underline">Kebijakan Privasi</a>.</span></label>
+<button type="button" class="btn btn-primary" disabled="{{notAgree}}">Buat Akun</button>
+<p style="text-align: center; font-size: 14px">Sudah punya akun? <a href="MMasuk.dc.html" style="font-weight: 700">Masuk</a></p>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:980}}">
+class Component extends DCLogic {
+  renderVals() {
+    const pw = this.state.pw ?? '';
+    const agree = this.state.agree ?? false;
+    let lvl = 0;
+    if (pw.length >= 8) lvl = 1;
+    if (pw.length >= 8 && /[0-9]/.test(pw)) lvl = 2;
+    if (pw.length >= 10 && /[0-9]/.test(pw) && /[A-Z]/.test(pw)) lvl = 3;
+    const col = (n) => (lvl >= n ? (lvl === 1 ? '#E8A3AC' : '#3F5A7D') : '#EFE1E2');
+    const words = ['Gunakan minimal 8 karakter, campur huruf dan angka.', 'Cukup. Tambahkan angka supaya lebih aman.', 'Bagus. Tambahkan huruf besar untuk lebih kuat.', 'Password kuat.'];
+    return {
+      pw: pw,
+      setPw: (e) => this.setState({ pw: e.target.value }),
+      s1: col(1), s2: col(2), s3: col(3),
+      strength: words[lvl],
+      agree: agree,
+      notAgree: !agree,
+      toggleAgree: () => this.setState({ agree: !agree })
+    };
+  }
+}
+</script>
+
+
+</body></html>

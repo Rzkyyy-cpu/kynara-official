@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>State Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#F5EAEA;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none;width:100%}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.chip{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:999px;border:1px solid #DCCBCD;background:#FFFFFF;color:#2B2B2B;font:500 13px 'Plus Jakarta Sans',sans-serif;text-decoration:none}
+.lbl{height:40px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.tag{height:24px;padding:0 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;letter-spacing:.06em;text-transform:uppercase}
+.ph{width:390px;height:844px;border-radius:16px;overflow:hidden;background:#FFF6F5;border:1px solid #DCCBCD;display:flex;flex-direction:column;position:relative}
+.skel{background:#F1E3E4;border-radius:8px;animation:sk 1.6s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
+.ico{width:88px;height:88px;border-radius:999px;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 1720px; height: 920px; padding: 16px 20px; display: grid; grid-template-columns: repeat(4, 390px); gap: 40px; background: #F5EAEA">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #F0E8EA; color: #4A4650">Kosong</span>Hasil pencarian tidak ditemukan</div>
+<div class="ph">
+<dc-import name="NavMobile" hint-size="390px,64px"></dc-import>
+<div style="padding: 16px 20px"><label style="height: 48px; border: 1px solid #DCCBCD; border-radius: 999px; background: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 0 16px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#5E5A62" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input aria-label="Cari produk" value="pashmina tosca" style="border: 0; outline: 0; background: transparent; font: 500 15px 'Plus Jakarta Sans', sans-serif; width: 100%; color: #2B2B2B"></label></div>
+<div style="padding: 40px 28px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+<span class="ico" style="background: #E4F0F4; color: #3F5A7D"><svg width="36" height="36" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5M8.5 11h5"></path></svg></span>
+<h2 class="serif" style="font-size: 24px; line-height: 32px">Belum ada yang cocok</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px">Kami belum punya "pashmina tosca". Coba kata lain atau lihat yang mirip:</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center"><a class="chip" href="MKoleksi.dc.html">Pashmina</a><a class="chip" href="MKoleksi.dc.html">Biru kabut</a><a class="chip" href="MKoleksi.dc.html">Airflow</a></div>
+<a class="btn btn-primary" href="MKoleksi.dc.html" style="margin-top: 12px">Lihat Semua Koleksi</a>
+</div>
+<div style="margin-top: auto"><dc-import name="BottomNav" active="koleksi" hint-size="390px,64px"></dc-import></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #ECE8F5; color: #4A3F72">Loading</span>Memuat katalog</div>
+<div class="ph" aria-busy="true">
+<dc-import name="NavMobile" hint-size="390px,64px"></dc-import>
+<div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 12px"><span class="skel" style="width: 60px; height: 10px"></span><span class="skel" style="width: 160px; height: 28px"></span></div>
+<div style="padding: 0 20px; display: flex; gap: 8px"><span class="skel" style="width: 70px; height: 36px; border-radius: 999px"></span><span class="skel" style="width: 90px; height: 36px; border-radius: 999px"></span><span class="skel" style="width: 80px; height: 36px; border-radius: 999px"></span><span class="skel" style="width: 70px; height: 36px; border-radius: 999px"></span></div>
+<div style="padding: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 50px; height: 16px; border-radius: 999px"></span><span class="skel" style="width: 90%; height: 12px"></span><span class="skel" style="width: 60%; height: 12px"></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 50px; height: 16px; border-radius: 999px"></span><span class="skel" style="width: 80%; height: 12px"></span><span class="skel" style="width: 55%; height: 12px"></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 50px; height: 16px; border-radius: 999px"></span><span class="skel" style="width: 85%; height: 12px"></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 50px; height: 16px; border-radius: 999px"></span><span class="skel" style="width: 75%; height: 12px"></span></div>
+</div>
+<div style="margin-top: auto"><dc-import name="BottomNav" active="koleksi" hint-size="390px,64px"></dc-import></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #FBE3E8; color: #8C2F48">Error</span>Gagal memuat halaman</div>
+<div class="ph">
+<dc-import name="NavMobile" hint-size="390px,64px"></dc-import>
+<div role="alert" style="padding: 96px 28px 0; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+<span class="ico" style="background: #FBE3E8; color: #8C2F48"><svg width="36" height="36" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"></path><path d="M12 19h.01"></path><path d="M3 3l18 18"></path></svg></span>
+<h2 class="serif" style="font-size: 24px; line-height: 32px">Koneksi terputus</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px">Produk belum bisa dimuat. Periksa internetmu, lalu coba lagi. Isi keranjangmu tetap aman.</p>
+<button type="button" class="btn btn-primary" style="margin-top: 12px">Coba Lagi</button>
+<a href="https://wa.me/" style="min-height: 44px; display: flex; align-items: center; font-size: 14px; font-weight: 600">Atau pesan lewat WhatsApp</a>
+</div>
+<div style="margin-top: auto"><dc-import name="BottomNav" active="beranda" hint-size="390px,64px"></dc-import></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #E4F0F4; color: #2B3E5B">Sukses</span>Pembayaran berhasil</div>
+<div class="ph">
+<header style="height: 56px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #EFE1E2; background: #FFFFFF"><span style="font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 500">kynara</span></header>
+<div role="status" style="padding: 48px 24px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<span class="ico" style="background: #3F5A7D; color: #FFFFFF"><svg width="40" height="40" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>
+<h2 class="serif" style="font-size: 28px; line-height: 36px">Pembayaran berhasil</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px">Terima kasih, Nadia. Pesananmu sedang kami siapkan. Info resi dikirim lewat WhatsApp.</p>
+</div>
+<div style="margin: 0 20px; padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #EFE1E2; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><span class="muted">No. pesanan</span><strong>KYN-260928-0142</strong></div>
+<div style="display: flex; justify-content: space-between"><span class="muted">Dibayar</span><span>Rp238.000 · BCA VA</span></div>
+<div style="display: flex; justify-content: space-between"><span class="muted">Pengiriman</span><span>JNE Reguler · 2–3 hari</span></div>
+</div>
+<div style="padding: 24px 20px; display: flex; flex-direction: column; gap: 10px">
+<a class="btn btn-primary" href="MStatus.dc.html">Lihat Status Pesanan</a>
+<a class="btn btn-outline" href="MBeranda.dc.html">Lanjut Belanja</a>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1720,&quot;height&quot;:920}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+
+
+</body></html>

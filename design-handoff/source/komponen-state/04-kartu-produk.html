@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Kartu Produk</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; position: relative; display: flex; flex-direction: column; gap: 10px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #2B2B2B">
+<a href="{{href}}" style="display: flex; flex-direction: column; gap: 10px; color: #2B2B2B; text-decoration: none">
+<div style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; border-radius: 10px; background: {{item.tone}}">
+<svg sc-camel-view-box="0 0 80 100" sc-camel-preserve-aspect-ratio="xMidYMax meet" style="position: absolute; left: 18%; bottom: 0; width: 64%; height: 80%" aria-hidden="true"><path d="M40 12c-11 0-19 9-19 21 0 5 1.5 9.5 3.5 13C15 52 8 64 6 100h68c-2-36-9-48-18.5-54 2-3.5 3.5-8 3.5-13 0-12-8-21-19-21z" fill="#FFFFFF" fill-opacity="0.4"></path></svg>
+<sc-if value="{{item.tag}}" hint-placeholder-val="{{true}}">
+<span style="position: absolute; left: 8px; top: 8px; height: 24px; padding: 0 10px; display: inline-flex; align-items: center; border-radius: 999px; background: #FFFFFF; color: #2B2B2B; font-size: 11px; font-weight: 600; letter-spacing: 0.02em">{{item.tag}}</span>
+</sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; background: #E4F0F4; color: #33496A; font-size: 11px; font-weight: 600; letter-spacing: 0.02em">{{item.material}}</span>
+<span style="font-size: {{fs}}; line-height: {{lh}}; min-height: {{nameH}}; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{item.name}}</span>
+<span style="font-size: 15px; font-weight: 700; color: #2B2B2B">{{item.price}}</span>
+</div>
+</a>
+<div style="display: flex; gap: 6px; align-items: center">
+<sc-for list="{{item.colors}}" as="c" hint-placeholder-count="3">
+<span title="Warna tersedia" style="width: 14px; height: 14px; border-radius: 999px; background: {{c}}; border: 1px solid rgba(43,43,43,0.2)"></span>
+</sc-for>
+</div>
+<button type="button" aria-label="Simpan ke wishlist" style="position: absolute; top: 4px; right: 4px; width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #2B2B2B; padding: 0">
+<span style="width: 34px; height: 34px; border-radius: 999px; background: rgba(255,253,249,0.92); display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>
+</span>
+</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;item&quot;:{&quot;editor&quot;:null,&quot;default&quot;:{&quot;name&quot;:&quot;Pashmina Airflow Sekar&quot;,&quot;price&quot;:&quot;Rp79.000&quot;,&quot;material&quot;:&quot;Airflow&quot;,&quot;tone&quot;:&quot;#B9C4B2&quot;,&quot;colors&quot;:[&quot;#B9C4B2&quot;,&quot;#D9C7B0&quot;,&quot;#8E735E&quot;,&quot;#5B5752&quot;],&quot;tag&quot;:&quot;Baru&quot;}},&quot;href&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;DProduk.dc.html&quot;},&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false},&quot;$preview&quot;:{&quot;width&quot;:300,&quot;height&quot;:520}}">
+class Component extends DCLogic {
+  renderVals() {
+    const item = this.props.item ?? { name: 'Pashmina Airflow Sekar', price: 'Rp79.000', material: 'Airflow', tone: '#B9C4B2', colors: ['#B9C4B2', '#D9C7B0', '#8E735E', '#5B5752'], tag: 'Baru' };
+    const compact = this.props.compact ?? false;
+    return {
+      item: item,
+      href: this.props.href ?? 'DProduk.dc.html',
+      fs: compact ? '14px' : '15px',
+      lh: compact ? '20px' : '22px',
+      nameH: compact ? '40px' : '44px'
+    };
+  }
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Admin Edit Produk</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FAF1F1;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:14px}
+.h{font-size:16px;font-weight:700}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600;display:flex;justify-content:space-between}
+.hint{font-size:12px;color:#5E5A62}
+.input{height:44px;padding:0 12px;border:1px solid #DCCBCD;border-radius:10px;background:#FFFFFF;font:400 14px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B;width:100%}
+textarea.input{height:96px;padding:10px 12px;resize:vertical;line-height:21px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:999px;border:1px solid #DCCBCD;background:#FFFFFF;font:500 13px 'Plus Jakarta Sans',sans-serif}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{height:40px;padding:0 10px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5E5A62;background:#FBEFEF}
+.tbl td{height:56px;padding:0 10px;border-bottom:1px solid #F4E9EA}
+.slot{position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden}
+.sw{width:40px;height:24px;border-radius:999px;border:0;position:relative;cursor:pointer;padding:0}
+.sw span{position:absolute;top:3px;width:18px;height:18px;border-radius:999px;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1880px; display: grid; grid-template-columns: 248px minmax(0, 1fr); background: #FAF1F1">
+<div style="position: sticky; top: 0; height: 1024px; align-self: start"><dc-import name="AdminSidebar" active="produk" hint-size="248px,1024px"></dc-import></div>
+<main style="padding: 32px 40px; display: flex; flex-direction: column; gap: 20px">
+<header style="display: flex; justify-content: space-between; align-items: flex-end">
+<div style="display: flex; flex-direction: column; gap: 6px"><nav aria-label="Breadcrumb" style="font-size: 13px; display: flex; gap: 6px"><a href="AProduk.dc.html">Produk</a><span class="muted">/</span><span class="muted">Edit</span></nav><h1 class="serif" style="font-size: 32px; line-height: 40px">Edit produk</h1></div>
+<div style="display: flex; gap: 10px"><a class="btn btn-outline" href="AProduk.dc.html">Batal</a><button type="button" class="btn btn-primary">Simpan Perubahan</button></div>
+</header>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 20px">
+
+<section class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 class="h">Informasi produk</h2>
+<div class="field"><label class="label" for="nm"><span>Nama produk</span><span style="font-weight: 500; color: {{nameColor}}">{{nameLen}}/40</span></label><input id="nm" class="input" value="{{name}}" sc-camel-on-change="{{setName}}" maxlength="60" style="border-color: {{nameBd}}"><span class="hint" style="color: {{hintColor}}">{{nameHint}}</span></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div class="field"><label class="label" for="ct">Kategori</label><sc-raw-select id="ct" class="input"><option>Pashmina</option><option>Hijab Segi Empat</option><option>Instan / Bergo</option><option>Outer</option><option>Bawahan</option><option>Dress</option><option>Aksesoris</option></sc-raw-select></div>
+<div class="field"><label class="label" for="bh">Bahan (badge)</label><sc-raw-select id="bh" class="input"><option>Airflow</option><option>Voal</option><option>Satin</option><option>Ceruty</option><option>Jersey</option><option>Katun</option><option>Linen</option></sc-raw-select></div>
+<div class="field"><label class="label" for="br">Berat (gram)</label><input id="br" class="input" inputmode="numeric" value="150"></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div class="field"><label class="label" for="hg">Harga dasar</label><input id="hg" class="input" value="Rp79.000"></div>
+<div class="field"><label class="label" for="hc">Harga coret <span class="muted" style="font-weight: 400">(opsional)</span></label><input id="hc" class="input" placeholder="Kosongkan jika tidak diskon"></div>
+</div>
+<div class="field"><label class="label" for="ds"><span>Deskripsi singkat</span><span class="muted" style="font-weight: 500">86/300</span></label><textarea id="ds" class="input">Pashmina ringan bertekstur kerut halus. Adem dipakai seharian dan tidak perlu disetrika.</textarea></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div class="field"><label class="label" for="uk">Ukuran &amp; detail</label><input id="uk" class="input" value="Standar 175 × 75 cm · Jumbo 200 × 75 cm"></div>
+<div class="field"><label class="label" for="pr">Perawatan</label><input id="pr" class="input" value="Cuci tangan, jangan diperas"></div>
+</div>
+</section>
+
+<section class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><h2 class="h">Foto produk</h2><span class="hint">Rasio 4:5 · min. 1080 × 1350 px · JPG/PNG/WebP · maks. 2 MB</span></div>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+<div class="slot" style="background: #9DAE9B"><span style="position: absolute; left: 6px; top: 6px; height: 20px; padding: 0 8px; border-radius: 999px; background: #FFFFFF; font-size: 10px; font-weight: 700; display: flex; align-items: center">Sampul</span></div>
+<div class="slot" style="background: #D9C7B0"></div>
+<div class="slot" style="background: #E3D6C3"></div>
+<div class="slot" style="background: #F0E8EA; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px" aria-busy="true"><span style="font-size: 12px; font-weight: 600">Mengunggah…</span><span style="width: 100%; height: 6px; border-radius: 3px; background: #DCCBCD; overflow: hidden"><span style="display: block; width: 64%; height: 100%; background: #3F5A7D"></span></span><span class="muted" style="font-size: 11px">64%</span></div>
+<div class="slot" role="alert" style="background: #FFF5F7; border: 1.5px solid #D9A48C; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; text-align: center"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#8C2F48" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 8v5M12 16h.01"></path></svg><span style="font-size: 11px; font-weight: 600; color: #8C2F48">File 3,4 MB, maks. 2 MB</span><button type="button" style="height: 28px; padding: 0 10px; border-radius: 999px; border: 1px solid #D9A48C; background: #FFFFFF; font: 600 11px 'Plus Jakarta Sans', sans-serif; cursor: pointer">Ganti file</button></div>
+<button type="button" class="slot" style="border: 1.5px dashed #C9B7BA; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font: 600 12px 'Plus Jakarta Sans', sans-serif; color: #3F5A7D"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5M7 10l5-5 5 5"></path><path d="M5 19h14"></path></svg>Unggah foto</button>
+</div>
+<span class="hint">Seret untuk mengubah urutan. Foto pertama jadi sampul di kartu produk.</span>
+</section>
+
+<section class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 class="h">Varian &amp; stok</h2>
+<div style="display: grid; grid-template-columns: 90px 1fr; gap: 12px; align-items: center">
+<span class="label">Warna</span><div style="display: flex; gap: 8px; flex-wrap: wrap"><span class="chip"><span style="width: 14px; height: 14px; border-radius: 999px; background: #9DAE9B"></span>Sage</span><span class="chip"><span style="width: 14px; height: 14px; border-radius: 999px; background: #D9C7B0"></span>Pasir</span><span class="chip"><span style="width: 14px; height: 14px; border-radius: 999px; background: #8E735E"></span>Mocha</span><span class="chip"><span style="width: 14px; height: 14px; border-radius: 999px; background: #5B5752"></span>Arang</span><span class="chip"><span style="width: 14px; height: 14px; border-radius: 999px; background: #B8A9BF"></span>Lilac</span><button type="button" class="chip" style="border-style: dashed; cursor: pointer; color: #3F5A7D; font-weight: 600">+ Warna</button></div>
+<span class="label">Ukuran</span><div style="display: flex; gap: 8px"><span class="chip">Standar</span><span class="chip">Jumbo</span><button type="button" class="chip" style="border-style: dashed; cursor: pointer; color: #3F5A7D; font-weight: 600">+ Ukuran</button></div>
+</div>
+<div style="border: 1px solid #EFE1E2; border-radius: 12px; overflow: hidden">
+<sc-raw-table class="tbl">
+<sc-raw-thead><sc-raw-tr><sc-raw-th>Warna</sc-raw-th><sc-raw-th>Ukuran</sc-raw-th><sc-raw-th>SKU</sc-raw-th><sc-raw-th style="width: 130px">Stok</sc-raw-th><sc-raw-th style="width: 150px">Harga</sc-raw-th><sc-raw-th style="width: 70px">Aktif</sc-raw-th></sc-raw-tr></sc-raw-thead>
+<sc-raw-tbody>
+<sc-for list="{{vars}}" as="v" hint-placeholder-count="10">
+<sc-raw-tr style="background: {{v.rowBg}}">
+<sc-raw-td><span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; border-radius: 999px; background: {{v.hex}}; border: 1px solid rgba(43,43,43,0.15)"></span>{{v.color}}</span></sc-raw-td>
+<sc-raw-td>{{v.size}}</sc-raw-td>
+<sc-raw-td class="muted">{{v.sku}}</sc-raw-td>
+<sc-raw-td><span style="display: flex; align-items: center; gap: 6px"><input class="input" inputmode="numeric" aria-label="Stok {{v.color}} {{v.size}}" value="{{v.stock}}" sc-camel-on-change="{{v.set}}" style="height: 36px; width: 64px; border-color: {{v.bd}}"><span style="font-size: 11px; font-weight: 700; color: {{v.tagFg}}">{{v.tag}}</span></span></sc-raw-td>
+<sc-raw-td><input class="input" aria-label="Harga {{v.color}} {{v.size}}" value="{{v.price}}" style="height: 36px"></sc-raw-td>
+<sc-raw-td><button type="button" class="sw" role="switch" aria-checked="true" aria-label="Varian aktif" style="background: #3F5A7D"><span style="left: 19px"></span></button></sc-raw-td>
+</sc-raw-tr>
+</sc-for>
+</sc-raw-tbody>
+</sc-raw-table>
+</div>
+<span class="hint">Total stok: {{total}} pcs · Varian dengan stok 0 tetap tampil sebagai "Habis" di halaman produk.</span>
+</section>
+</div>
+
+<aside style="display: flex; flex-direction: column; gap: 20px; position: sticky; top: 24px">
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 class="h">Status</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px"><span>Tampil di toko</span><button type="button" class="sw" role="switch" aria-checked="{{liveStr}}" aria-label="Tampil di toko" sc-camel-on-click="{{toggleLive}}" style="background: {{liveBg}}"><span style="left: {{liveKnob}}"></span></button></div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px"><span>Masuk "Produk terbaru"</span><button type="button" class="sw" role="switch" aria-checked="true" aria-label="Masuk produk terbaru" style="background: #3F5A7D"><span style="left: 19px"></span></button></div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px"><span>Label di foto</span><sc-raw-select class="input" style="width: 150px; height: 36px"><option>Baru</option><option>Stok terbatas</option><option>Tanpa label</option></sc-raw-select></div>
+</section>
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><h2 class="h">Pratinjau kartu</h2><span class="hint">Seperti di toko</span></div>
+<div style="width: 220px; align-self: center"><dc-import name="ProductCard" item="{{preview}}" href="DProduk.dc.html" compact="{{true}}" hint-size="220px,410px"></dc-import></div>
+</section>
+<button type="button" class="btn" style="height: 44px; border-color: #F2CBD4; color: #8C2F48; background: #FFFFFF"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13"></path></svg>Hapus produk</button>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1880}}">
+class Component extends DCLogic {
+  renderVals() {
+    const name = this.state.name ?? 'Pashmina Airflow Sekar';
+    const live = this.state.live ?? true;
+    const stocks = this.state.stocks ?? {};
+    const colors = [['Sage', '#9DAE9B', 12, 4], ['Pasir', '#D9C7B0', 8, 0], ['Mocha', '#8E735E', 0, 0], ['Arang', '#5B5752', 15, 6], ['Lilac', '#B8A9BF', 3, 2]];
+    const vars = [];
+    let total = 0;
+    colors.forEach((c) => {
+      [['Standar', 2, 'STD', 'Rp79.000'], ['Jumbo', 3, 'JMB', 'Rp89.000']].forEach((s) => {
+        const key = c[0] + s[0];
+        const raw = stocks[key] !== undefined ? stocks[key] : String(c[s[1]]);
+        const n = parseInt(raw, 10) || 0;
+        total += n;
+        const tag = n === 0 ? 'Habis' : (n <= 5 ? 'Menipis' : '');
+        vars.push({
+          color: c[0], hex: c[1], size: s[0], sku: 'PSH-AF-SKR-' + c[0].slice(0, 3).toUpperCase() + '-' + s[2],
+          stock: raw, price: s[3], tag: tag,
+          tagFg: n === 0 ? '#4A4650' : '#8A3A52',
+          bd: n === 0 ? '#D6C9CB' : (n <= 5 ? '#D9A48C' : '#DCCBCD'),
+          rowBg: n === 0 ? '#FCF6F6' : 'transparent',
+          set: (e) => { const nx = Object.assign({}, stocks); nx[key] = e.target.value; this.setState({ stocks: nx }); }
+        });
+      });
+    });
+    const len = name.length;
+    const over = len > 40;
+    return {
+      name: name,
+      setName: (e) => this.setState({ name: e.target.value }),
+      nameLen: len,
+      nameColor: over ? '#A33A55' : '#5E5A62',
+      nameBd: over ? '#A33A55' : '#DCCBCD',
+      hintColor: over ? '#A33A55' : '#5E5A62',
+      nameHint: over ? 'Terlalu panjang. Nama akan terpotong di kartu produk.' : 'Maks. 40 karakter supaya muat 2 baris di kartu produk. Pola: Jenis + Bahan + Nama seri.',
+      vars: vars,
+      total: total,
+      liveStr: live ? 'true' : 'false',
+      liveBg: live ? '#3F5A7D' : '#D6C9CB',
+      liveKnob: live ? '19px' : '3px',
+      toggleLive: () => this.setState({ live: !live }),
+      preview: { name: name, price: 'Rp79.000', material: 'Airflow', tone: '#9DAE9B', colors: ['#9DAE9B', '#D9C7B0', '#8E735E', '#5B5752', '#B8A9BF'], tag: 'Baru' }
+    };
+  }
+}
+</script>
+
+
+</body></html>

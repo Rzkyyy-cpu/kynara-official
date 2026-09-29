@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Bottom Nav Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<nav aria-label="Navigasi bawah" style="width: 390px; height: 64px; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #EFE1E2; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+<a href="MBeranda.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; text-decoration: none; color: {{c.beranda}}; font-weight: {{w.beranda}}"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"></path></svg>Beranda</a>
+<a href="MKoleksi.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; text-decoration: none; color: {{c.koleksi}}; font-weight: {{w.koleksi}}"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>Koleksi</a>
+<a href="MKeranjang.dc.html" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; text-decoration: none; color: {{c.keranjang}}; font-weight: {{w.keranjang}}"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>Keranjang<span style="position: absolute; top: 8px; left: 54%; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: #4A6588; color: #FFFFFF; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center">3</span></a>
+<a href="MAkun.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; text-decoration: none; color: {{c.akun}}; font-weight: {{w.akun}}"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>Akun</a>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;beranda&quot;,&quot;koleksi&quot;,&quot;keranjang&quot;,&quot;akun&quot;],&quot;default&quot;:&quot;beranda&quot;},&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:64}}">
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'beranda';
+    const c = {};
+    const w = {};
+    ['beranda', 'koleksi', 'keranjang', 'akun'].forEach((k) => {
+      c[k] = k === active ? '#3F5A7D' : '#5E5A62';
+      w[k] = k === active ? '700' : '500';
+    });
+    return { c: c, w: w };
+  }
+}
+</script>
+
+
+</body></html>

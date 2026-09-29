@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Admin Pesanan</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FAF1F1;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:14px}
+.input{height:40px;padding:0 12px;border:1px solid #DCCBCD;border-radius:10px;background:#FFFFFF;font:500 13px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B;width:100%}
+.select{height:40px;padding:0 10px;border:1px solid #DCCBCD;border-radius:10px;background:#FFFFFF;font:600 13px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #EFE1E2}
+.tab{height:44px;padding:0 14px;border:0;background:transparent;font:600 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px}
+.cnt{min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:#F0E8EA;font-size:11px;display:flex;align-items:center;justify-content:center}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{height:44px;padding:0 10px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5E5A62;background:#FBEFEF;border-bottom:1px solid #EFE1E2}
+.tbl td{height:64px;padding:0 10px;border-bottom:1px solid #F4E9EA;vertical-align:middle}
+.pill{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:700}
+.ib{width:36px;height:36px;border:0;border-radius:8px;background:transparent;display:inline-flex;align-items:center;justify-content:center;color:#2B2B2B;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1120px; display: grid; grid-template-columns: 248px minmax(0, 1fr); background: #FAF1F1">
+<div style="position: sticky; top: 0; height: 1024px; align-self: start"><dc-import name="AdminSidebar" active="pesanan" hint-size="248px,1024px"></dc-import></div>
+<main style="position: relative; padding: 32px 40px; display: flex; flex-direction: column; gap: 20px">
+<header style="display: flex; justify-content: space-between; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 4px"><h1 class="serif" style="font-size: 32px; line-height: 40px">Pesanan</h1><span class="muted" style="font-size: 14px">Ubah status langsung dari tabel. Status "Dikirim" wajib diisi nomor resi.</span></div>
+<button type="button" class="btn btn-outline"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v11M7 11l5 5 5-5M5 20h14"></path></svg>Unduh CSV</button>
+</header>
+<div class="tabs" role="tablist" aria-label="Filter status">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="5"><button type="button" role="tab" class="tab" aria-selected="{{t.sel}}" sc-camel-on-click="{{t.pick}}" style="color: {{t.fg}}; box-shadow: {{t.u}}">{{t.label}}<span class="cnt">{{t.n}}</span></button></sc-for>
+</div>
+<div style="display: flex; gap: 12px; align-items: center">
+<label style="position: relative; width: 320px"><span style="position: absolute; left: 12px; top: 11px; color: #5E5A62" aria-hidden="true"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span><input class="input" aria-label="Cari pesanan" placeholder="Cari no. pesanan atau nama pembeli" style="padding-left: 38px"></label>
+<sc-raw-select class="select" aria-label="Rentang tanggal"><option>7 hari terakhir</option><option>30 hari terakhir</option></sc-raw-select>
+<sc-raw-select class="select" aria-label="Kurir"><option>Semua kurir</option><option>JNE</option><option>J&amp;T</option><option>SiCepat</option></sc-raw-select>
+<span class="muted" style="margin-left: auto; font-size: 13px">{{count}} pesanan</span>
+</div>
+<div class="card" style="overflow: hidden">
+<sc-raw-table class="tbl">
+<sc-raw-thead><sc-raw-tr><sc-raw-th style="width: 36px"><input type="checkbox" aria-label="Pilih semua" style="width: 16px; height: 16px; accent-color: #3F5A7D"></sc-raw-th><sc-raw-th>No. pesanan</sc-raw-th><sc-raw-th>Tanggal</sc-raw-th><sc-raw-th>Pembeli</sc-raw-th><sc-raw-th>Total</sc-raw-th><sc-raw-th>Bayar</sc-raw-th><sc-raw-th style="width: 190px">Status</sc-raw-th><sc-raw-th style="width: 200px">Nomor resi</sc-raw-th><sc-raw-th style="width: 60px"></sc-raw-th></sc-raw-tr></sc-raw-thead>
+<sc-raw-tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<sc-raw-tr style="background: {{r.rowBg}}">
+<sc-raw-td><input type="checkbox" aria-label="Pilih {{r.id}}" style="width: 16px; height: 16px; accent-color: #3F5A7D"></sc-raw-td>
+<sc-raw-td><a href="DStatus.dc.html" style="font-weight: 700; color: #2B2B2B">{{r.id}}</a><div class="muted" style="font-size: 12px">{{r.items}}</div></sc-raw-td>
+<sc-raw-td>{{r.date}}</sc-raw-td>
+<sc-raw-td><div style="font-weight: 600">{{r.who}}</div><div class="muted" style="font-size: 12px">{{r.city}}</div></sc-raw-td>
+<sc-raw-td style="font-weight: 600">{{r.total}}</sc-raw-td>
+<sc-raw-td><span class="pill" style="background: {{r.payBg}}; color: {{r.payFg}}">{{r.pay}}</span></sc-raw-td>
+<sc-raw-td><sc-raw-select class="select" aria-label="Status {{r.id}}" value="{{r.s}}" sc-camel-on-change="{{r.setS}}" style="width: 100%; background: {{r.sBg}}; color: {{r.sFg}}; border-color: {{r.sBg}}"><option value="bayar">Menunggu Pembayaran</option><option value="proses">Diproses</option><option value="kirim">Dikirim</option><option value="selesai">Selesai</option><option value="batal">Dibatalkan</option></sc-raw-select></sc-raw-td>
+<sc-raw-td><input class="input" aria-label="Nomor resi {{r.id}}" placeholder="{{r.ph}}" value="{{r.resi}}" sc-camel-on-change="{{r.setR}}" style="border-color: {{r.rBd}}"><sc-if value="{{r.need}}" hint-placeholder-val="{{false}}"><div style="font-size: 11px; color: #A33A55; font-weight: 600; margin-top: 2px">Wajib untuk status Dikirim</div></sc-if></sc-raw-td>
+<sc-raw-td><a class="ib" href="DStatus.dc.html" aria-label="Detail {{r.id}}"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></a></sc-raw-td>
+</sc-raw-tr>
+</sc-for>
+</sc-raw-tbody>
+</sc-raw-table>
+<div style="height: 56px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; font-size: 13px"><span class="muted">Menampilkan 1–8 dari 126</span><div style="display: flex; gap: 6px"><button type="button" class="btn btn-outline" style="height: 36px">Sebelumnya</button><button type="button" class="btn btn-outline" style="height: 36px">Berikutnya</button></div></div>
+</div>
+<sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+<div role="status" style="position: absolute; right: 40px; bottom: 32px; width: 380px; padding: 14px 16px; border-radius: 12px; background: #2B2B2B; color: #FFF6F5; display: flex; gap: 12px; align-items: flex-start; box-shadow: 0 12px 32px rgba(43,43,43,0.25)"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#B9C4B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="m5 12 5 5 9-10"></path></svg><div style="display: flex; flex-direction: column; gap: 4px; font-size: 14px"><strong>{{toastTitle}}</strong><span style="color: #D8D2C8; font-size: 13px">Kirim notifikasi ke pembeli lewat WhatsApp?</span><a href="https://wa.me/" style="color: #FFF6F5; font-weight: 700; font-size: 13px; text-decoration: underline">Kirim pesan</a></div></div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1120}}">
+class Component extends DCLogic {
+  renderVals() {
+    const SC = { bayar: ['#F6EBD3', '#6B4A0E'], proses: ['#ECE8F5', '#4A3F72'], kirim: ['#E4F0F4', '#2B3E5B'], selesai: ['#F0E8EA', '#4A4650'], batal: ['#FBE3E8', '#8C2F48'] };
+    const SL = { bayar: 'Menunggu Pembayaran', proses: 'Diproses', kirim: 'Dikirim', selesai: 'Selesai', batal: 'Dibatalkan' };
+    const base = [
+      { id: 'KYN-260928-0142', items: '3 produk', date: '28 Sep, 14.20', who: 'Nadia A.', city: 'Kota Contoh', total: 'Rp238.000', paid: false, s: 'bayar', resi: '' },
+      { id: 'KYN-260928-0141', items: '2 produk', date: '28 Sep, 10.02', who: 'Salsa P.', city: 'Tasikmalaya', total: 'Rp164.000', paid: true, s: 'proses', resi: '' },
+      { id: 'KYN-260927-0137', items: '1 produk', date: '27 Sep, 09.05', who: 'Rina M.', city: 'Surabaya', total: 'Rp241.000', paid: true, s: 'proses', resi: '' },
+      { id: 'KYN-260927-0136', items: '4 produk', date: '27 Sep, 07.44', who: 'Aulia R.', city: 'Bandung', total: 'Rp352.000', paid: true, s: 'proses', resi: '' },
+      { id: 'KYN-260926-0133', items: '1 produk', date: '26 Sep, 20.11', who: 'Dewi K.', city: 'Jakarta', total: 'Rp98.000', paid: true, s: 'kirim', resi: 'JNE0123456781' },
+      { id: 'KYN-260926-0132', items: '2 produk', date: '26 Sep, 16.30', who: 'Maya S.', city: 'Garut', total: 'Rp187.000', paid: true, s: 'kirim', resi: 'JP1234567890' },
+      { id: 'KYN-260925-0131', items: '1 produk', date: '25 Sep, 19.48', who: 'Fitri H.', city: 'Bekasi', total: 'Rp101.000', paid: true, s: 'selesai', resi: 'JNE0123456779' },
+      { id: 'KYN-260925-0129', items: '2 produk', date: '25 Sep, 08.03', who: 'Laras W.', city: 'Depok', total: 'Rp176.000', paid: false, s: 'batal', resi: '' }
+    ];
+    const edits = this.state.edits ?? {};
+    const tab = this.state.tab ?? 'semua';
+    const rows = base.map((b) => Object.assign({}, b, edits[b.id] || {}));
+    const setRow = (id, patch, msg) => {
+      const next = Object.assign({}, edits);
+      next[id] = Object.assign({}, next[id] || {}, patch);
+      const st = { edits: next };
+      if (msg) st.toastTitle = msg;
+      this.setState(st);
+    };
+    const counts = { semua: rows.length };
+    rows.forEach((r) => { counts[r.s] = (counts[r.s] || 0) + 1; });
+    const shown = rows.filter((r) => tab === 'semua' || r.s === tab);
+    const tabs = [['semua', 'Semua'], ['bayar', 'Menunggu Pembayaran'], ['proses', 'Diproses'], ['kirim', 'Dikirim'], ['selesai', 'Selesai']];
+    return {
+      tabs: tabs.map((t) => { const on = t[0] === tab; return { label: t[1], n: counts[t[0]] || 0, sel: on ? 'true' : 'false', fg: on ? '#2B2B2B' : '#5E5A62', u: on ? 'inset 0 -2px 0 #3F5A7D' : 'none', pick: () => this.setState({ tab: t[0] }) }; }),
+      count: shown.length,
+      toast: !!this.state.toastTitle,
+      toastTitle: this.state.toastTitle ?? '',
+      rows: shown.map((r) => {
+        const need = r.s === 'kirim' && !r.resi;
+        return {
+          id: r.id, items: r.items, date: r.date, who: r.who, city: r.city, total: r.total,
+          pay: r.paid ? 'Lunas' : 'Belum', payBg: r.paid ? '#E4F0F4' : '#F6EBD3', payFg: r.paid ? '#2B3E5B' : '#6B4A0E',
+          s: r.s, sBg: SC[r.s][0], sFg: SC[r.s][1],
+          resi: r.resi, ph: r.s === 'proses' || r.s === 'kirim' ? 'Isi nomor resi' : '—',
+          need: need, rBd: need ? '#A33A55' : '#DCCBCD', rowBg: need ? '#FFF5F7' : 'transparent',
+          setS: (e) => setRow(r.id, { s: e.target.value }, r.id + ' diubah ke ' + SL[e.target.value]),
+          setR: (e) => setRow(r.id, { resi: e.target.value })
+        };
+      })
+    };
+  }
+}
+</script>
+
+
+</body></html>

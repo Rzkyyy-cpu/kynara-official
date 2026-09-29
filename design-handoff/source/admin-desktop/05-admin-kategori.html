@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Admin Kategori</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FAF1F1;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:14px}
+.h{font-size:16px;font-weight:700}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600}
+.hint{font-size:12px;color:#5E5A62}
+.input{height:44px;padding:0 12px;border:1px solid #DCCBCD;border-radius:10px;background:#FFFFFF;font:400 14px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B;width:100%}
+textarea.input{height:80px;padding:10px 12px;resize:none}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{height:44px;padding:0 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5E5A62;background:#FBEFEF;border-bottom:1px solid #EFE1E2}
+.tbl td{height:72px;padding:0 12px;border-bottom:1px solid #F4E9EA}
+.sw{width:40px;height:24px;border-radius:999px;border:0;position:relative;cursor:pointer;padding:0}
+.sw span{position:absolute;top:3px;width:18px;height:18px;border-radius:999px;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.ib{width:36px;height:36px;border:0;border-radius:8px;background:transparent;display:inline-flex;align-items:center;justify-content:center;color:#2B2B2B;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1120px; display: grid; grid-template-columns: 248px minmax(0, 1fr); background: #FAF1F1">
+<div style="position: sticky; top: 0; height: 1024px; align-self: start"><dc-import name="AdminSidebar" active="kategori" hint-size="248px,1024px"></dc-import></div>
+<main style="padding: 32px 40px; display: flex; flex-direction: column; gap: 20px">
+<header style="display: flex; justify-content: space-between; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 4px"><h1 class="serif" style="font-size: 32px; line-height: 40px">Kategori</h1><span class="muted" style="font-size: 14px">Urutan di sini sama dengan urutan di menu Koleksi dan beranda.</span></div>
+<button type="button" class="btn btn-primary"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Tambah Kategori</button>
+</header>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 20px; align-items: start">
+<div class="card" style="overflow: hidden">
+<div style="padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EFE1E2"><span style="font-size: 14px; font-weight: 600">7 kategori</span><span style="font-size: 13px; font-weight: 600; color: {{capColor}}">Tampil di beranda: {{onHome}}/6</span></div>
+<sc-raw-table class="tbl">
+<sc-raw-thead><sc-raw-tr><sc-raw-th style="width: 40px"></sc-raw-th><sc-raw-th style="width: 70px">Foto</sc-raw-th><sc-raw-th>Nama</sc-raw-th><sc-raw-th>Slug</sc-raw-th><sc-raw-th>Produk</sc-raw-th><sc-raw-th>Beranda</sc-raw-th><sc-raw-th style="width: 90px"></sc-raw-th></sc-raw-tr></sc-raw-thead>
+<sc-raw-tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<sc-raw-tr style="background: {{r.rowBg}}">
+<sc-raw-td><button type="button" class="ib" aria-label="Geser urutan {{r.name}}" style="cursor: grab; color: #8C8285"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.5"></circle><circle cx="15" cy="6" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="9" cy="18" r="1.5"></circle><circle cx="15" cy="18" r="1.5"></circle></svg></button></sc-raw-td>
+<sc-raw-td><span style="display: block; width: 40px; aspect-ratio: 4 / 5; border-radius: 6px; background: {{r.tone}}"></span></sc-raw-td>
+<sc-raw-td style="font-weight: 700">{{r.name}}</sc-raw-td>
+<sc-raw-td class="muted">/{{r.slug}}</sc-raw-td>
+<sc-raw-td>{{r.count}}</sc-raw-td>
+<sc-raw-td><button type="button" class="sw" role="switch" aria-checked="{{r.onStr}}" aria-label="Tampilkan {{r.name}} di beranda" sc-camel-on-click="{{r.toggle}}" style="background: {{r.swBg}}"><span style="left: {{r.knob}}"></span></button></sc-raw-td>
+<sc-raw-td><div style="display: flex; gap: 2px"><button type="button" class="ib" aria-label="Edit {{r.name}}" sc-camel-on-click="{{r.edit}}"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button><button type="button" class="ib" aria-label="Hapus {{r.name}}" style="color: #8C2F48"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13"></path></svg></button></div></sc-raw-td>
+</sc-raw-tr>
+</sc-for>
+</sc-raw-tbody>
+</sc-raw-table>
+<sc-if value="{{capErr}}" hint-placeholder-val="{{false}}"><div role="alert" style="margin: 12px 16px 16px; padding: 12px 14px; border-radius: 10px; background: #FFF5F7; color: #8C2F48; font-size: 13px; font-weight: 600">Beranda hanya menampilkan 6 kategori. Matikan salah satu dulu sebelum menambah yang lain.</div></sc-if>
+</div>
+<section class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 class="h">Edit kategori</h2>
+<div class="field"><label class="label" for="kn">Nama kategori</label><input id="kn" class="input" value="{{sel.name}}"></div>
+<div class="field"><label class="label" for="ks">Slug (URL)</label><input id="ks" class="input" value="{{sel.slug}}"><span class="hint">[domain]/koleksi/{{sel.slug}}</span></div>
+<div class="field"><label class="label" for="kd">Deskripsi singkat</label><textarea id="kd" class="input">{{sel.desc}}</textarea></div>
+<div class="field"><span class="label">Foto kategori (4:5)</span>
+<div style="display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center"><span style="width: 96px; aspect-ratio: 4 / 5; border-radius: 10px; background: {{sel.tone}}"></span><div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start"><button type="button" class="btn btn-outline" style="height: 36px; font-size: 13px">Ganti foto</button><span class="hint">Min. 800 × 1000 px, maks. 2 MB</span></div></div></div>
+<div style="display: flex; gap: 10px; margin-top: 8px"><button type="button" class="btn btn-primary" style="flex-grow: 1">Simpan</button><button type="button" class="btn btn-outline">Batal</button></div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1120}}">
+class Component extends DCLogic {
+  renderVals() {
+    const base = [
+      { name: 'Hijab Segi Empat', slug: 'segi-empat', count: 12, tone: '#D9C7B0', home: true, desc: 'Voal, katun, dan satin untuk gaya harian.' },
+      { name: 'Pashmina', slug: 'pashmina', count: 14, tone: '#B9C4B2', home: true, desc: 'Airflow, ceruty, voal, dan satin untuk gaya harian sampai acara.' },
+      { name: 'Instan / Bergo', slug: 'instan-bergo', count: 6, tone: '#8E735E', home: true, desc: 'Siap pakai, tanpa peniti.' },
+      { name: 'Outer', slug: 'outer', count: 5, tone: '#D9A48C', home: true, desc: 'Cardigan, kimono, dan blazer ringan.' },
+      { name: 'Bawahan', slug: 'bawahan', count: 4, tone: '#6B6660', home: true, desc: 'Rok plisket, kulot, dan celana.' },
+      { name: 'Dress', slug: 'dress', count: 3, tone: '#9AA9B5', home: true, desc: 'Gamis dan dress harian.' },
+      { name: 'Aksesoris', slug: 'aksesoris', count: 4, tone: '#E3D6C3', home: false, desc: 'Ciput, inner, bros, dan peniti.' }
+    ];
+    const flips = this.state.flips ?? {};
+    const selI = this.state.sel ?? 1;
+    const rows = base.map((b) => Object.assign({}, b, { home: flips[b.slug] === undefined ? b.home : flips[b.slug] }));
+    const onHome = rows.filter((r) => r.home).length;
+    return {
+      onHome: onHome,
+      capColor: onHome >= 6 ? '#8A3A52' : '#33496A',
+      capErr: this.state.capErr ?? false,
+      sel: rows[selI],
+      rows: rows.map((r, i) => ({
+        name: r.name, slug: r.slug, count: r.count + ' produk', tone: r.tone,
+        onStr: r.home ? 'true' : 'false', swBg: r.home ? '#3F5A7D' : '#D6C9CB', knob: r.home ? '19px' : '3px',
+        rowBg: i === selI ? '#F2F7F9' : 'transparent',
+        edit: () => this.setState({ sel: i }),
+        toggle: () => {
+          if (!r.home && onHome >= 6) { this.setState({ capErr: true }); return; }
+          const n = Object.assign({}, flips); n[r.slug] = !r.home; this.setState({ flips: n, capErr: false });
+        }
+      }))
+    };
+  }
+}
+</script>
+
+
+</body></html>

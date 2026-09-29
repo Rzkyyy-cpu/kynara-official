@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Navbar Desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<header style="width: 1440px; height: 80px; position: relative; z-index: 30; background: #FFF6F5; border-bottom: 1px solid #EFE1E2; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #2B2B2B">
+<div style="height: 80px; padding: 0 80px; display: flex; align-items: center; gap: 56px">
+<a href="Main.dc.html" style="font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 500; letter-spacing: 0.01em; color: #2B2B2B; text-decoration: none">kynara</a>
+<nav aria-label="Menu utama" style="display: flex; align-items: center; gap: 4px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 14px; font-size: 15px; font-weight: 500; text-decoration: none; color: {{c.beranda}}; box-shadow: {{u.beranda}}">Beranda</a>
+<button type="button" aria-expanded="{{openStr}}" aria-haspopup="true" onClick="{{toggle}}" style="display: inline-flex; align-items: center; gap: 4px; height: 44px; padding: 0 14px; border: 0; background: transparent; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; color: {{c.koleksi}}; box-shadow: {{u.koleksi}}">Koleksi <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 14px; font-size: 15px; font-weight: 500; text-decoration: none; color: {{c.panduan}}; box-shadow: {{u.panduan}}">Panduan</a>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 14px; font-size: 15px; font-weight: 500; text-decoration: none; color: {{c.tentang}}; box-shadow: {{u.tentang}}">Tentang Kami</a>
+</nav>
+<div style="margin-left: auto; display: flex; align-items: center; gap: 4px">
+<button type="button" aria-label="Cari produk" style="width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; display: flex; align-items: center; justify-content: center; color: #2B2B2B; cursor: pointer; padding: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></button>
+<a href="DAkun.dc.html" aria-label="Akun saya" style="width: 44px; height: 44px; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></a>
+<a href="DKeranjang.dc.html" aria-label="Keranjang, {{cart}} produk" style="position: relative; width: 44px; height: 44px; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><sc-if value="{{hasCart}}" hint-placeholder-val="{{true}}"><span style="position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #4A6588; color: #FFFFFF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{cart}}</span></sc-if></a>
+</div>
+</div>
+<sc-if value="{{open}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; top: 80px; left: 0; width: 1440px; background: #FFFFFF; border-bottom: 1px solid #EFE1E2; box-shadow: 0 24px 48px rgba(43,43,43,0.08); padding: 36px 80px 40px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+<div style="grid-column: span 2; display: flex; flex-direction: column; gap: 20px">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #3F5A7D">Koleksi</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="7">
+<a href="DKoleksi.dc.html" style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 12px; color: #2B2B2B; text-decoration: none"><span style="font-size: 16px; font-weight: 600">{{c.name}}</span><span style="font-size: 13px; color: #5E5A62">{{c.desc}}</span></a>
+</sc-for>
+<a href="DKoleksi.dc.html" style="display: flex; align-items: center; gap: 8px; padding: 12px 14px; color: #3F5A7D; font-size: 15px; font-weight: 600; text-decoration: none">Lihat semua koleksi <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+<a href="DKoleksi.dc.html" style="display: flex; flex-direction: column; gap: 12px; color: #2B2B2B; text-decoration: none">
+<div style="position: relative; overflow: hidden; height: 240px; border-radius: 12px; background: #B9C4B2"><svg viewBox="0 0 80 100" preserveAspectRatio="xMidYMax meet" style="position: absolute; left: 30%; bottom: 0; width: 40%; height: 88%" aria-hidden="true"><path d="M40 12c-11 0-19 9-19 21 0 5 1.5 9.5 3.5 13C15 52 8 64 6 100h68c-2-36-9-48-18.5-54 2-3.5 3.5-8 3.5-13 0-12-8-21-19-21z" fill="#FFFFFF" fill-opacity="0.4"></path></svg></div>
+<span style="font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 500">Koleksi terbaru</span>
+<span style="font-size: 14px; color: #3F5A7D; font-weight: 600">Belanja sekarang</span>
+</a>
+</div>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["beranda","koleksi","panduan","tentang"],"default":"beranda"},"open":{"editor":"boolean","default":false},"cart":{"editor":"int","default":3,"min":0,"max":99},"$preview":{"width":1440,"height":80}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'beranda';
+    const open = this.state.open ?? (this.props.open ?? false);
+    const cart = this.props.cart ?? 3;
+    const c = {};
+    const u = {};
+    ['beranda', 'koleksi', 'panduan', 'tentang'].forEach((k) => {
+      const on = k === active || (k === 'koleksi' && open);
+      c[k] = on ? '#2B2B2B' : '#4A4650';
+      u[k] = on ? 'inset 0 -2px 0 #708BAA' : 'none';
+    });
+    return {
+      c: c,
+      u: u,
+      open: open,
+      openStr: open ? 'true' : 'false',
+      toggle: () => this.setState({ open: !open }),
+      cart: cart,
+      hasCart: cart > 0,
+      cats: [
+        { name: 'Hijab Segi Empat', desc: 'Voal, katun, satin' },
+        { name: 'Pashmina', desc: 'Airflow, ceruty, satin' },
+        { name: 'Instan / Bergo', desc: 'Siap pakai, tanpa peniti' },
+        { name: 'Outer', desc: 'Cardigan, kimono, blazer' },
+        { name: 'Bawahan', desc: 'Rok plisket, kulot, celana' },
+        { name: 'Dress', desc: 'Gamis dan dress harian' },
+        { name: 'Aksesoris', desc: 'Ciput, inner, bros, peniti' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

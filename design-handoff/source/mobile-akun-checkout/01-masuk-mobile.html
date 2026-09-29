@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Masuk — Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none;width:100%}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-primary[aria-busy="true"]{background:#8EA2BD;cursor:progress}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #DCCBCD;border-radius:12px;background:#FFFFFF;color:#2B2B2B;font:400 15px 'Plus Jakarta Sans',sans-serif}
+.input:focus{outline:2px solid #708BAA;outline-offset:1px}
+.g{width:22px;height:22px;border-radius:999px;border:1.5px solid #2B2B2B;display:inline-flex;align-items:center;justify-content:center;font:700 12px 'Plus Jakarta Sans',sans-serif}
+.spin{width:18px;height:18px;border-radius:999px;border:2px solid rgba(255,255,255,.45);border-top-color:#FFFFFF;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.or{display:flex;align-items:center;gap:12px;font-size:13px;color:#5E5A62}.or::before,.or::after{content:"";flex:1;height:1px;background:#EFE1E2}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; background: #FFF6F5">
+<header style="height: 56px; padding: 0 8px; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center">
+<a href="MBeranda.dc.html" aria-label="Kembali" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></a>
+<span style="text-align: center; font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 500">kynara</span><span></span>
+</header>
+<main style="padding: 24px 20px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px"><h1 class="serif" style="font-size: 32px; line-height: 40px">Masuk</h1><p class="muted" style="font-size: 15px; line-height: 23px">Masuk untuk melacak pesanan dan menyimpan wishlist.</p></div>
+<sc-if value="{{isError}}" hint-placeholder-val="{{false}}">
+<div role="alert" style="padding: 12px 14px; border-radius: 12px; background: #FBE3E8; color: #8C2F48; display: flex; gap: 10px; font-size: 14px; line-height: 21px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 8v5M12 16h.01"></path></svg><span>Email atau password belum cocok. Coba lagi, atau <a href="MLupa.dc.html" style="color: #8C2F48; font-weight: 600; text-decoration: underline">reset password</a>.</span></div>
+</sc-if>
+<sc-if value="{{isSuccess}}" hint-placeholder-val="{{false}}">
+<div role="status" style="padding: 12px 14px; border-radius: 12px; background: #E4F0F4; color: #2B3E5B; display: flex; gap: 10px; font-size: 14px; line-height: 21px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="m5 12 5 5 9-10"></path></svg><span>Berhasil masuk. Mengarahkan ke akunmu…</span></div>
+</sc-if>
+<button type="button" class="btn btn-outline"><span class="g" aria-hidden="true">G</span>Masuk dengan Google</button>
+<div class="or">atau dengan email</div>
+<div class="field"><label class="label" for="em">Email</label><input id="em" class="input" type="email" autocomplete="email" placeholder="nama@email.com" value="{{email}}" sc-camel-on-change="{{setEmail}}" style="border-color: {{emailBorder}}"><sc-if value="{{emailErr}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #A33A55; font-weight: 500">Isi email dulu, ya.</span></sc-if></div>
+<div class="field"><div style="display: flex; justify-content: space-between; align-items: center"><label class="label" for="pw">Password</label><a href="MLupa.dc.html" style="font-size: 13px; font-weight: 600; min-height: 32px; display: flex; align-items: center">Lupa password?</a></div>
+<div style="position: relative"><input id="pw" class="input" type="{{pwType}}" autocomplete="current-password" placeholder="Minimal 8 karakter" style="padding-right: 52px; border-color: {{pwBorder}}"><button type="button" aria-label="{{pwLabel}}" sc-camel-on-click="{{togglePw}}" style="position: absolute; right: 2px; top: 2px; width: 44px; height: 44px; border: 0; background: transparent; color: #5E5A62; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
+<button type="button" class="btn btn-primary" aria-busy="{{busy}}" sc-camel-on-click="{{submit}}"><sc-if value="{{isLoading}}" hint-placeholder-val="{{false}}"><span class="spin" aria-hidden="true"></span></sc-if>{{submitLabel}}</button>
+<p style="text-align: center; font-size: 14px">Belum punya akun? <a href="MDaftar.dc.html" style="font-weight: 700">Daftar</a></p>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;status&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;loading&quot;,&quot;error&quot;,&quot;sukses&quot;],&quot;default&quot;:&quot;normal&quot;},&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+class Component extends DCLogic {
+  renderVals() {
+    const status = this.state.status ?? (this.props.status ?? 'normal');
+    const email = this.state.email ?? '';
+    const tried = this.state.tried ?? false;
+    const emailErr = tried && email === '';
+    const showPw = this.state.showPw ?? false;
+    const bad = status === 'error';
+    return {
+      email: email,
+      setEmail: (e) => this.setState({ email: e.target.value }),
+      emailErr: emailErr,
+      emailBorder: emailErr || bad ? '#A33A55' : '#DCCBCD',
+      pwBorder: bad ? '#A33A55' : '#DCCBCD',
+      pwType: showPw ? 'text' : 'password',
+      pwLabel: showPw ? 'Sembunyikan password' : 'Tampilkan password',
+      togglePw: () => this.setState({ showPw: !showPw }),
+      isError: bad,
+      isSuccess: status === 'sukses',
+      isLoading: status === 'loading',
+      busy: status === 'loading' ? 'true' : 'false',
+      submitLabel: status === 'loading' ? 'Memproses…' : 'Masuk',
+      submit: () => {
+        if (email === '') { this.setState({ tried: true }); return; }
+        this.setState({ status: 'loading' });
+        setTimeout(() => this.setState({ status: 'sukses' }), 1200);
+      }
+    };
+  }
+}
+</script>
+
+
+</body></html>

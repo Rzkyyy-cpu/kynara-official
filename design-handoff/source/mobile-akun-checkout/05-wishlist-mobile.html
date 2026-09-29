@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Wishlist — Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 14px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; display: flex; flex-direction: column; background: #FFF6F5">
+<div style="position: sticky; top: 0; z-index: 30"><dc-import name="NavMobile" hint-size="390px,64px"></dc-import></div>
+<header style="padding: 12px 20px 0 8px; display: flex; align-items: center; gap: 4px">
+<a href="MAkun.dc.html" aria-label="Kembali ke Akun" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></a>
+<h1 class="serif" style="font-size: 28px; line-height: 36px">Wishlist</h1><span class="muted" style="font-size: 14px; margin-left: 6px">{{count}} produk</span>
+</header>
+<sc-if value="{{has}}" hint-placeholder-val="{{true}}">
+<section style="padding: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 12px">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<dc-import name="ProductCard" item="{{p}}" href="MProduk.dc.html" compact="{{true}}" hint-size="100%,341px"></dc-import>
+<a class="btn btn-outline" href="MKeranjang.dc.html" style="width: 100%"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Keranjang</a>
+</div>
+</sc-for>
+</section>
+</sc-if>
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<section style="padding: 80px 32px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+<span style="width: 80px; height: 80px; border-radius: 999px; background: #E4F0F4; color: #3F5A7D; display: flex; align-items: center; justify-content: center"><svg width="34" height="34" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></span>
+<h2 class="serif" style="font-size: 24px; line-height: 32px">Wishlist masih kosong</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px">Ketuk ikon hati di produk untuk menyimpannya di sini.</p>
+<a class="btn btn-primary" href="MKoleksi.dc.html" style="width: 100%; height: 52px">Lihat Koleksi</a>
+</section>
+</sc-if>
+<div style="position: sticky; bottom: 0; z-index: 30; margin-top: auto"><dc-import name="BottomNav" active="akun" hint-size="390px,64px"></dc-import></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;kosong&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false},&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:1100}}">
+class Component extends DCLogic {
+  renderVals() {
+    const kosong = this.props.kosong ?? false;
+    const items = kosong ? [] : [
+      { name: 'Pashmina Satin Lembayung', price: 'Rp99.000', material: 'Satin', tone: '#B8A9BF', colors: ['#B8A9BF', '#9AA9B5', '#EDE3D3'], tag: 'Stok terbatas' },
+      { name: 'Outer Linen Senja', price: 'Rp229.000', material: 'Linen', tone: '#D9A48C', colors: ['#D9A48C', '#EDE3D3', '#708BAA'], tag: '' },
+      { name: 'Dress Katun Rinjani', price: 'Rp289.000', material: 'Katun', tone: '#9AA9B5', colors: ['#9AA9B5', '#708BAA', '#D9C7B0'], tag: 'Baru' },
+      { name: 'Segi Empat Voal Aruna', price: 'Rp89.000', material: 'Voal', tone: '#D9C7B0', colors: ['#D9C7B0', '#708BAA', '#5B5752'], tag: '' }
+    ];
+    return { items: items, count: items.length, has: items.length > 0, empty: items.length === 0 };
+  }
+}
+</script>
+
+
+</body></html>

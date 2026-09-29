@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Checkout Langkah 1 Alamat — Desktop</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+.dot{width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #DCCBCD;border-radius:12px;background:#FFFFFF;color:#2B2B2B;font:400 15px 'Plus Jakarta Sans',sans-serif}
+textarea.input{height:84px;padding:12px 14px;resize:none}
+.opt{display:grid;grid-template-columns:24px 1fr;gap:12px;padding:20px;border-radius:16px;background:#FFFFFF;cursor:pointer}
+.opt input{width:20px;height:20px;margin:2px 0 0;accent-color:#3F5A7D}
+.ln{display:flex;justify-content:space-between;font-size:14px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1180px; display: flex; flex-direction: column; background: #FFF6F5">
+<header style="height: 80px; padding: 0 80px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #EFE1E2; background: #FFF6F5">
+<a href="Main.dc.html" style="font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 500; color: #2B2B2B">kynara</a>
+<ol aria-label="Langkah checkout" style="margin: 0; padding: 0; list-style: none; display: flex; align-items: center; gap: 16px; font-size: 14px">
+<li aria-current="step" style="display: flex; align-items: center; gap: 10px; font-weight: 700"><span class="dot" style="background: #2B2B2B; color: #FFF6F5">1</span>Alamat</li>
+<li aria-hidden="true" style="width: 56px; height: 2px; background: #DCCBCD"></li>
+<li style="display: flex; align-items: center; gap: 10px; color: #5E5A62"><span class="dot" style="border: 1.5px solid #C9B7BA">2</span>Pengiriman</li>
+<li aria-hidden="true" style="width: 56px; height: 2px; background: #DCCBCD"></li>
+<li style="display: flex; align-items: center; gap: 10px; color: #5E5A62"><span class="dot" style="border: 1.5px solid #C9B7BA">3</span>Pembayaran</li>
+</ol>
+<span style="display: flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; color: #33496A"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Checkout aman</span>
+</header>
+<section style="padding: 48px 80px; display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<h1 class="serif" style="font-size: 36px; line-height: 44px">Kirim ke mana?</h1>
+<fieldset style="border: 0; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<legend class="muted" style="font-size: 14px; margin-bottom: 14px; padding: 0">Pilih alamat tersimpan</legend>
+<sc-for list="{{addrs}}" as="a" hint-placeholder-count="2">
+<label class="opt" style="border: 1.5px solid {{a.bd}}"><input type="radio" name="alamat" checked="{{a.on}}" sc-camel-on-change="{{a.pick}}"><span style="display: flex; flex-direction: column; gap: 4px"><span style="display: flex; gap: 8px; align-items: center; font-size: 15px; font-weight: 700">{{a.label}}<sc-if value="{{a.main}}" hint-placeholder-val="{{false}}"><span style="height: 20px; padding: 0 8px; border-radius: 999px; background: #E4F0F4; color: #2B3E5B; font-size: 11px; display: flex; align-items: center">Utama</span></sc-if></span><span style="font-size: 14px; font-weight: 600">{{a.who}}</span><span class="muted" style="font-size: 14px; line-height: 21px">{{a.addr}}</span></span></label>
+</sc-for>
+</fieldset>
+<button type="button" sc-camel-on-click="{{toggle}}" aria-expanded="{{openStr}}" style="height: 52px; border: 1.5px dashed #C9B7BA; border-radius: 14px; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; font: 600 15px 'Plus Jakarta Sans', sans-serif; color: #2B2B2B; cursor: pointer"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Pakai alamat baru</button>
+<sc-if value="{{open}}" hint-placeholder-val="{{true}}">
+<form class="card" style="padding: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px">
+<div class="field"><label class="label" for="c1">Nama penerima</label><input id="c1" class="input" autocomplete="name"></div>
+<div class="field"><label class="label" for="c2">Nomor HP</label><input id="c2" class="input" type="tel" placeholder="08xx xxxx xxxx"></div>
+<div class="field"><label class="label" for="c3">Provinsi</label><sc-raw-select id="c3" class="input"><option>Pilih provinsi</option></sc-raw-select></div>
+<div class="field"><label class="label" for="c4">Kota/Kabupaten</label><sc-raw-select id="c4" class="input"><option>Pilih kota/kabupaten</option></sc-raw-select></div>
+<div class="field"><label class="label" for="c5">Kecamatan</label><sc-raw-select id="c5" class="input"><option>Pilih kecamatan</option></sc-raw-select></div>
+<div class="field"><label class="label" for="c6">Kode pos</label><input id="c6" class="input" inputmode="numeric" maxlength="5"></div>
+<div class="field" style="grid-column: span 2"><label class="label" for="c7">Alamat lengkap</label><textarea id="c7" class="input" placeholder="Nama jalan, nomor rumah, RT/RW, patokan"></textarea></div>
+<label style="grid-column: span 2; display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 36px"><input type="checkbox" style="width: 18px; height: 18px; margin: 0; accent-color: #3F5A7D">Simpan ke buku alamat</label>
+</form>
+</sc-if>
+</div>
+<aside class="card" style="position: sticky; top: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="font-size: 18px; font-weight: 700">Ringkasan pesanan</h2>
+<div style="display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center"><span style="aspect-ratio: 4 / 5; border-radius: 8px; background: #9DAE9B"></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Pashmina Airflow Sekar</span><span class="muted" style="font-size: 12px">Sage · Standar · ×1</span></span><span style="font-size: 14px">Rp79.000</span></div>
+<div style="display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center"><span style="aspect-ratio: 4 / 5; border-radius: 8px; background: #D9C7B0"></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Segi Empat Voal Aruna</span><span class="muted" style="font-size: 12px">Pasir · ×1</span></span><span style="font-size: 14px">Rp89.000</span></div>
+<div style="display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center"><span style="aspect-ratio: 4 / 5; border-radius: 8px; background: #6B6660"></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Ciput Rajut Dasar</span><span class="muted" style="font-size: 12px">Arang · ×2</span></span><span style="font-size: 14px">Rp58.000</span></div>
+<div style="height: 1px; background: #EFE1E2"></div>
+<div class="ln"><span class="muted">Subtotal</span><span>Rp226.000</span></div>
+<div class="ln"><span class="muted">Ongkos kirim</span><span class="muted">Dipilih di langkah 2</span></div>
+<div style="height: 1px; background: #EFE1E2"></div>
+<div class="ln" style="font-size: 18px; font-weight: 700"><span>Total</span><span>Rp226.000</span></div>
+<a class="btn btn-primary" href="DCheckout2.dc.html" style="width: 100%">Lanjut ke Pengiriman</a>
+<a href="DKeranjang.dc.html" style="text-align: center; font-size: 14px; font-weight: 600; min-height: 36px; display: flex; align-items: center; justify-content: center">Kembali ke keranjang</a>
+</aside>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;alamatBaru&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1180}}">
+class Component extends DCLogic {
+  renderVals() {
+    const sel = this.state.sel ?? 0;
+    const open = this.state.open ?? (this.props.alamatBaru ?? true);
+    const list = [
+      { label: 'Rumah', main: true, who: 'Nadia Azzahra · 0812-3456-7890', addr: 'Jl. Contoh No. 12, RT 03/RW 05, Kec. Contoh, Kota Contoh, Jawa Barat 46xxx' },
+      { label: 'Kos', main: false, who: 'Nadia Azzahra · 0812-3456-7890', addr: 'Jl. Contoh Kampus No. 4, Kec. Contoh, Kota Contoh, Jawa Barat 46xxx' }
+    ];
+    return {
+      open: open,
+      openStr: open ? 'true' : 'false',
+      toggle: () => this.setState({ open: !open }),
+      addrs: list.map((a, i) => Object.assign({}, a, { on: i === sel, bd: i === sel ? '#3F5A7D' : '#EFE1E2', pick: () => this.setState({ sel: i }) }))
+    };
+  }
+}
+</script>
+
+
+</body></html>

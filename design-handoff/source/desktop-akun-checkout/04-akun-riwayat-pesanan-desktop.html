@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Akun Riwayat Pesanan — Desktop</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#DCCBCD}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+.side a{display:flex;align-items:center;gap:12px;height:48px;padding:0 16px;border-radius:12px;font-size:15px;font-weight:500;color:#2B2B2B}
+.side a[aria-current="page"]{background:#E4F0F4;color:#2B3E5B;font-weight:700}
+.tab{height:44px;padding:0 16px;border:0;background:transparent;font:600 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.st{display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1560px; display: flex; flex-direction: column; background: #FFF6F5">
+<div style="position: sticky; top: 0; z-index: 30"><dc-import name="NavDesktop" active="" hint-size="1440px,80px"></dc-import></div>
+<section style="padding: 48px 80px 0; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 48px; align-items: start">
+<aside style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 52px; height: 52px; border-radius: 999px; background: #3F5A7D; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700">NA</span><div style="display: flex; flex-direction: column"><strong style="font-size: 16px">Nadia Azzahra</strong><span class="muted" style="font-size: 13px">nadia@email.com</span></div></div>
+<nav class="side" aria-label="Menu akun" style="display: flex; flex-direction: column; gap: 4px">
+<a href="DAkun.dc.html" aria-current="page"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8 12 4l8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path></svg>Riwayat pesanan</a>
+<a href="DWishlist.dc.html"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>Wishlist</a>
+<a href="DAkunProfil.dc.html"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>Profil &amp; alamat</a>
+<a href="DMasuk.dc.html" style="color: #8C2F48"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 16l-4-4 4-4M6 12h10"></path></svg>Keluar</a>
+</nav>
+</aside>
+<div style="display: flex; flex-direction: column; gap: 24px">
+<h1 class="serif" style="font-size: 40px; line-height: 48px">Riwayat pesanan</h1>
+<div role="tablist" aria-label="Filter status" style="display: flex; gap: 4px; border-bottom: 1px solid #EFE1E2">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="6"><button type="button" role="tab" class="tab" aria-selected="{{t.sel}}" sc-camel-on-click="{{t.pick}}" style="color: {{t.fg}}; box-shadow: {{t.u}}">{{t.label}}</button></sc-for>
+</div>
+<sc-for list="{{orders}}" as="o" hint-placeholder-count="4">
+<article class="card" style="padding: 0 24px; display: flex; flex-direction: column">
+<div style="height: 56px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #EFE1E2"><strong style="font-size: 14px">{{o.id}}</strong><span class="muted" style="font-size: 13px">{{o.date}}</span><span class="st" style="margin-left: auto; background: {{o.bg}}; color: {{o.fg}}">{{o.status}}</span></div>
+<div style="padding: 18px 0; display: grid; grid-template-columns: minmax(0, 1fr) 160px auto; gap: 24px; align-items: center">
+<div style="display: flex; gap: 14px; align-items: center"><span style="width: 52px; aspect-ratio: 4 / 5; border-radius: 8px; background: {{o.tone}}; flex-shrink: 0"></span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{o.name}}</span><span class="muted" style="font-size: 13px">{{o.more}}</span><span style="font-size: 12px; color: #6B4A0E; font-weight: 600">{{o.note}}</span></div></div>
+<div style="display: flex; flex-direction: column"><span class="muted" style="font-size: 12px">Total</span><strong style="font-size: 16px">{{o.total}}</strong></div>
+<div style="display: flex; gap: 8px; justify-content: flex-end"><a class="btn btn-outline" href="DStatus.dc.html">Lihat detail</a><sc-if value="{{o.pay}}" hint-placeholder-val="{{false}}"><a class="btn btn-primary" href="DCheckout3.dc.html">Bayar</a></sc-if><sc-if value="{{o.done}}" hint-placeholder-val="{{false}}"><a class="btn btn-outline" href="DProduk.dc.html">Ulas</a></sc-if></div>
+</div>
+</article>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<div class="card" style="padding: 64px 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center"><span style="width: 72px; height: 72px; border-radius: 999px; background: #E4F0F4; color: #3F5A7D; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8 12 4l8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path></svg></span><strong style="font-size: 18px">Belum ada pesanan di status ini</strong><span class="muted" style="font-size: 15px">Pesanan dengan status ini akan muncul di sini.</span><a class="btn btn-primary" href="DKoleksi.dc.html" style="margin-top: 8px">Mulai Belanja</a></div>
+</sc-if>
+</div>
+</section>
+<div style="margin-top: auto; padding-top: 96px"><dc-import name="FooterDesktop" hint-size="1440px,500px"></dc-import></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1560}}">
+class Component extends DCLogic {
+  renderVals() {
+    const S = {
+      bayar: { label: 'Menunggu Pembayaran', bg: '#F6EBD3', fg: '#6B4A0E' },
+      proses: { label: 'Diproses', bg: '#ECE8F5', fg: '#4A3F72' },
+      kirim: { label: 'Dikirim', bg: '#E4F0F4', fg: '#2B3E5B' },
+      selesai: { label: 'Selesai', bg: '#F0E8EA', fg: '#4A4650' }
+    };
+    const all = [
+      { id: 'KYN-260928-0142', date: '28 Sep 2026, 14.20', s: 'bayar', name: 'Pashmina Airflow Sekar', more: '+2 produk lainnya', note: 'Bayar sebelum 29 Sep, 14.20', total: 'Rp238.000', tone: '#9DAE9B' },
+      { id: 'KYN-260927-0137', date: '27 Sep 2026, 09.05', s: 'proses', name: 'Outer Linen Senja', more: '1 produk', note: '', total: 'Rp241.000', tone: '#D9A48C' },
+      { id: 'KYN-260925-0131', date: '25 Sep 2026, 19.48', s: 'kirim', name: 'Segi Empat Voal Aruna', more: '1 produk', note: 'Resi JNE0123456789', total: 'Rp101.000', tone: '#D9C7B0' },
+      { id: 'KYN-260902-0044', date: '2 Sep 2026, 11.12', s: 'selesai', name: 'Bergo Instan Nara', more: '+1 produk lainnya', note: '', total: 'Rp148.000', tone: '#8E735E' }
+    ];
+    const tab = this.state.tab ?? 'semua';
+    const list = all.filter((o) => tab === 'semua' || o.s === tab);
+    const tabs = [['semua', 'Semua'], ['bayar', 'Menunggu Pembayaran'], ['proses', 'Diproses'], ['kirim', 'Dikirim'], ['selesai', 'Selesai'], ['batal', 'Dibatalkan']];
+    return {
+      tabs: tabs.map((t) => { const on = tab === t[0]; return { label: t[1], sel: on ? 'true' : 'false', fg: on ? '#2B2B2B' : '#5E5A62', u: on ? 'inset 0 -2px 0 #3F5A7D' : 'none', pick: () => this.setState({ tab: t[0] }) }; }),
+      orders: list.map((o) => Object.assign({}, o, { status: S[o.s].label, bg: S[o.s].bg, fg: S[o.s].fg, pay: o.s === 'bayar', done: o.s === 'selesai' })),
+      empty: list.length === 0
+    };
+  }
+}
+</script>
+
+
+</body></html>

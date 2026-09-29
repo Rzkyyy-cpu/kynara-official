@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Status Pesanan — Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #DCCBCD;border-radius:12px;background:#FFFFFF;color:#2B2B2B;font:500 15px 'Plus Jakarta Sans',sans-serif}
+.copy{height:36px;padding:0 12px;border-radius:999px;border:1px solid #DCCBCD;background:#FFFFFF;font:600 12px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B;cursor:pointer}
+.ln{display:flex;justify-content:space-between;font-size:14px}
+.h{font-size:15px;font-weight:700}
+</style>
+</helmet>
+<div style="width: 390px; height: 1760px; display: flex; flex-direction: column; background: #FFF6F5">
+<div style="position: sticky; top: 0; z-index: 30"><dc-import name="NavMobile" hint-size="390px,64px"></dc-import></div>
+<header style="padding: 12px 20px 0 8px; display: flex; align-items: center; gap: 4px">
+<a href="MAkun.dc.html" aria-label="Kembali ke riwayat pesanan" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></a>
+<div style="display: flex; flex-direction: column"><h1 style="font-size: 18px; font-weight: 700">KYN-260928-0142</h1><span class="muted" style="font-size: 12px">Dipesan 28 Sep 2026, 14.20</span></div>
+</header>
+<main style="padding: 16px 20px 32px; display: flex; flex-direction: column; gap: 16px">
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: {{headColor}}">{{headLabel}}</span><h2 class="serif" style="font-size: 24px; line-height: 32px">{{headline}}</h2><p class="muted" style="font-size: 14px; line-height: 21px">{{subline}}</p></div>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<li aria-current="{{s.cur}}" style="display: grid; grid-template-columns: 28px 1fr; gap: 14px">
+<div style="display: flex; flex-direction: column; align-items: center"><span style="width: 28px; height: 28px; border-radius: 999px; background: {{s.bg}}; border: 2px solid {{s.bd}}; color: {{s.fg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0">{{s.mark}}</span><span style="width: 2px; flex-grow: 1; min-height: 22px; background: {{s.line}}"></span></div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 3px 0 18px"><span style="font-size: 15px; font-weight: {{s.fw}}; color: {{s.tc}}">{{s.label}}</span><span class="muted" style="font-size: 12px">{{s.time}}</span></div>
+</li>
+</sc-for>
+</ol>
+</section>
+
+<sc-if value="{{isPay}}" hint-placeholder-val="{{false}}">
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px; border-color: #E9D6A9; background: #FFFBF1">
+<div style="display: flex; justify-content: space-between; align-items: center"><span class="h">Selesaikan pembayaran</span><span style="font-size: 15px; font-weight: 700; color: #6B4A0E; font-variant-numeric: tabular-nums">23:41:10</span></div>
+<span class="muted" style="font-size: 13px">Batas waktu 29 Sep 2026, 14.20 WIB</span>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="muted" style="font-size: 12px">Nomor BCA Virtual Account</span><div style="display: flex; justify-content: space-between; align-items: center"><strong style="font-size: 20px; letter-spacing: 0.04em">8808 1234 5678 9012</strong><button type="button" class="copy">Salin</button></div></div>
+<div class="ln"><span class="muted">Jumlah</span><strong>Rp238.000</strong></div>
+<a class="btn btn-outline" href="MStatus.dc.html" style="width: 100%; height: 48px">Lihat cara bayar</a>
+</section>
+</sc-if>
+
+<sc-if value="{{isShip}}" hint-placeholder-val="{{true}}">
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<span class="h">Lacak pengiriman</span>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Nomor resi · JNE Reguler<span style="display: flex; gap: 8px"><input class="input" value="JNE0123456789" aria-label="Nomor resi"><button type="button" class="btn btn-primary" style="height: 48px; padding: 0 18px">Lacak</button></span></label>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; border-left: 2px solid #EFE1E2; padding-left: 16px; margin-left: 6px">
+<li style="display: flex; flex-direction: column; gap: 2px; position: relative"><span style="position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; border-radius: 999px; background: #3F5A7D"></span><span style="font-size: 14px; font-weight: 600">Paket dalam perjalanan ke kota tujuan</span><span class="muted" style="font-size: 12px">29 Sep 2026, 08.15</span></li>
+<li style="display: flex; flex-direction: column; gap: 2px; position: relative"><span style="position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; border-radius: 999px; background: #DCCBCD"></span><span style="font-size: 14px">Paket diproses di gudang transit</span><span class="muted" style="font-size: 12px">28 Sep 2026, 22.40</span></li>
+<li style="display: flex; flex-direction: column; gap: 2px; position: relative"><span style="position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; border-radius: 999px; background: #DCCBCD"></span><span style="font-size: 14px">Paket diserahkan ke kurir</span><span class="muted" style="font-size: 12px">28 Sep 2026, 17.02</span></li>
+</ul>
+</section>
+</sc-if>
+
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<span class="h">Produk</span>
+<div style="display: grid; grid-template-columns: 48px 1fr auto; gap: 12px; align-items: center"><span style="aspect-ratio: 4 / 5; border-radius: 8px; background: #9DAE9B"></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Pashmina Airflow Sekar</span><span class="muted" style="font-size: 12px">Sage · Standar · ×1</span></span><span style="font-size: 14px">Rp79.000</span></div>
+<div style="display: grid; grid-template-columns: 48px 1fr auto; gap: 12px; align-items: center"><span style="aspect-ratio: 4 / 5; border-radius: 8px; background: #D9C7B0"></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Segi Empat Voal Aruna</span><span class="muted" style="font-size: 12px">Pasir · ×1</span></span><span style="font-size: 14px">Rp89.000</span></div>
+<div style="display: grid; grid-template-columns: 48px 1fr auto; gap: 12px; align-items: center"><span style="aspect-ratio: 4 / 5; border-radius: 8px; background: #6B6660"></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Ciput Rajut Dasar</span><span class="muted" style="font-size: 12px">Arang · ×2</span></span><span style="font-size: 14px">Rp58.000</span></div>
+<div style="height: 1px; background: #EFE1E2"></div>
+<div class="ln"><span class="muted">Subtotal</span><span>Rp226.000</span></div>
+<div class="ln"><span class="muted">Ongkir · JNE Reguler</span><span>Rp12.000</span></div>
+<div class="ln" style="font-weight: 700; font-size: 15px"><span>Total · BCA Virtual Account</span><span>Rp238.000</span></div>
+</section>
+
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<span class="h">Alamat pengiriman</span>
+<span style="font-size: 14px; font-weight: 600">Nadia Azzahra · 0812-3456-7890</span>
+<span class="muted" style="font-size: 13px; line-height: 20px">Jl. Contoh No. 12, RT 03/RW 05, Kec. Contoh, Kota Contoh, Jawa Barat 46xxx</span>
+</section>
+
+<sc-if value="{{isShip}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-primary" sc-camel-on-click="{{receive}}" style="width: 100%">Pesanan Sudah Diterima</button></sc-if>
+<sc-if value="{{isDone}}" hint-placeholder-val="{{false}}"><a class="btn btn-primary" href="MProduk.dc.html" style="width: 100%">Beri Ulasan</a></sc-if>
+<a class="btn btn-outline" href="https://wa.me/" style="width: 100%"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"></path></svg>Tanya soal pesanan ini</a>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;status&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;bayar&quot;,&quot;proses&quot;,&quot;kirim&quot;,&quot;selesai&quot;],&quot;default&quot;:&quot;kirim&quot;},&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:1760}}">
+class Component extends DCLogic {
+  renderVals() {
+    const status = this.state.status ?? (this.props.status ?? 'kirim');
+    const order = ['bayar', 'proses', 'kirim', 'selesai'];
+    const idx = order.indexOf(status);
+    const labels = ['Menunggu Pembayaran', 'Diproses', 'Dikirim', 'Selesai'];
+    const times = ['28 Sep 2026, 14.20', '28 Sep 2026, 14.31 · Pembayaran diterima', '28 Sep 2026, 17.02 · JNE0123456789', 'Konfirmasi setelah paket diterima'];
+    const heads = {
+      bayar: ['Menunggu pembayaran', 'Satu langkah lagi', 'Pesanan diproses setelah pembayaran diterima.', '#6B4A0E'],
+      proses: ['Diproses', 'Pesananmu sedang dikemas', 'Kami kabari lewat WhatsApp begitu paket dikirim.', '#4A3F72'],
+      kirim: ['Dikirim', 'Paket sedang dalam perjalanan', 'Estimasi tiba 30 Sep – 1 Okt 2026.', '#33496A'],
+      selesai: ['Selesai', 'Pesanan sudah diterima', 'Terima kasih sudah belanja di kynara.', '#4A4650']
+    };
+    const h = heads[status];
+    return {
+      headLabel: h[0], headline: h[1], subline: h[2], headColor: h[3],
+      isPay: status === 'bayar',
+      isShip: status === 'kirim',
+      isDone: status === 'selesai',
+      receive: () => this.setState({ status: 'selesai' }),
+      steps: labels.map((l, i) => {
+        const done = i < idx || (status === 'selesai' && i === 3);
+        const cur = i === idx && status !== 'selesai';
+        return {
+          label: l,
+          time: i <= idx ? times[i] : (i === 3 ? times[3] : 'Menunggu'),
+          mark: done ? '✓' : String(i + 1),
+          bg: done ? '#3F5A7D' : (cur ? '#2B2B2B' : '#FFFFFF'),
+          bd: done ? '#3F5A7D' : (cur ? '#2B2B2B' : '#DCCBCD'),
+          fg: done || cur ? '#FFFFFF' : '#5E5A62',
+          line: i === 3 ? 'transparent' : (i < idx ? '#3F5A7D' : '#EFE1E2'),
+          fw: cur ? '700' : '500',
+          tc: i <= idx ? '#2B2B2B' : '#5E5A62',
+          cur: cur ? 'step' : 'false'
+        };
+      })
+    };
+  }
+}
+</script>
+
+
+</body></html>

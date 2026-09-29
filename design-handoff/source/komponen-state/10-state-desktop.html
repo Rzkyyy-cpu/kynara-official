@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>State Desktop</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#F5EAEA;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.lbl{height:40px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.tag{height:24px;padding:0 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;letter-spacing:.06em;text-transform:uppercase}
+.pn{height:520px;border-radius:16px;overflow:hidden;background:#FFF6F5;border:1px solid #DCCBCD;display:flex;flex-direction:column}
+.skel{background:#F1E3E4;border-radius:8px;animation:sk 1.6s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
+.ico{width:88px;height:88px;border-radius:999px;display:flex;align-items:center;justify-content:center}
+.mini{height:56px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #EFE1E2;background:#FFF6F5}
+.logo{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1240px; padding: 48px 64px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; align-content: start; background: #F5EAEA">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #ECE8F5; color: #4A3F72">Loading</span>Katalog sedang dimuat</div>
+<div class="pn" aria-busy="true">
+<div class="mini"><span class="logo">kynara</span><span style="display: flex; gap: 20px"><span class="skel" style="width: 60px; height: 10px"></span><span class="skel" style="width: 60px; height: 10px"></span><span class="skel" style="width: 60px; height: 10px"></span></span></div>
+<div style="padding: 28px; display: grid; grid-template-columns: 140px 1fr; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 14px"><span class="skel" style="width: 60%; height: 14px"></span><span class="skel" style="height: 10px"></span><span class="skel" style="width: 80%; height: 10px"></span><span class="skel" style="width: 70%; height: 10px"></span><span class="skel" style="width: 60%; height: 14px; margin-top: 12px"></span><span class="skel" style="height: 10px"></span><span class="skel" style="width: 75%; height: 10px"></span></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 40%; height: 14px; border-radius: 999px"></span><span class="skel" style="width: 90%; height: 10px"></span><span class="skel" style="width: 50%; height: 12px"></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 40%; height: 14px; border-radius: 999px"></span><span class="skel" style="width: 80%; height: 10px"></span><span class="skel" style="width: 45%; height: 12px"></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="aspect-ratio: 4 / 5; border-radius: 10px"></span><span class="skel" style="width: 40%; height: 14px; border-radius: 999px"></span><span class="skel" style="width: 85%; height: 10px"></span><span class="skel" style="width: 50%; height: 12px"></span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #F0E8EA; color: #4A4650">Kosong</span>Akun baru, belum ada pesanan</div>
+<div class="pn">
+<div class="mini"><span class="logo">kynara</span><span class="muted" style="font-size: 13px">Akun saya</span></div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px">
+<span class="ico" style="background: #E4F0F4; color: #3F5A7D"><svg width="36" height="36" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8 12 4l8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path></svg></span>
+<h2 class="serif" style="font-size: 28px; line-height: 36px">Belum ada pesanan</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px; max-width: 380px">Setelah checkout, status dan nomor resi pesananmu akan muncul di sini.</p>
+<a class="btn btn-primary" href="DKoleksi.dc.html" style="margin-top: 8px">Mulai Belanja</a>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #FBE3E8; color: #8C2F48">Error</span>Halaman tidak ditemukan / server bermasalah</div>
+<div class="pn">
+<div class="mini"><span class="logo">kynara</span><span class="muted" style="font-size: 13px">404</span></div>
+<div role="alert" style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px">
+<span class="ico" style="background: #FBE3E8; color: #8C2F48"><svg width="36" height="36" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 8v5M12 16h.01"></path></svg></span>
+<h2 class="serif" style="font-size: 28px; line-height: 36px">Halaman ini tidak ditemukan</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px; max-width: 400px">Mungkin produknya sudah tidak dijual atau tautannya salah ketik.</p>
+<div style="display: flex; gap: 12px; margin-top: 8px"><a class="btn btn-primary" href="DKoleksi.dc.html">Lihat Koleksi</a><a class="btn btn-outline" href="Main.dc.html">Ke Beranda</a></div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #E4F0F4; color: #2B3E5B">Sukses</span>Pesanan berhasil dibuat</div>
+<div class="pn">
+<div class="mini"><span class="logo">kynara</span><span style="font-size: 13px; font-weight: 600; color: #33496A">Checkout selesai</span></div>
+<div role="status" style="flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; padding: 32px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span class="ico" style="width: 64px; height: 64px; background: #3F5A7D; color: #FFFFFF"><svg width="30" height="30" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>
+<h2 class="serif" style="font-size: 28px; line-height: 36px">Pembayaran berhasil</h2>
+<p class="muted" style="font-size: 15px; line-height: 24px">Pesananmu sedang kami siapkan. Info resi dikirim lewat WhatsApp.</p>
+<a class="btn btn-primary" href="DStatus.dc.html" style="align-self: flex-start">Lihat Status Pesanan</a>
+</div>
+<div style="padding: 20px; border-radius: 14px; background: #FFFFFF; border: 1px solid #EFE1E2; display: flex; flex-direction: column; gap: 12px; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><span class="muted">No. pesanan</span><strong>KYN-260928-0142</strong></div>
+<div style="display: flex; justify-content: space-between"><span class="muted">Dibayar</span><span>Rp238.000</span></div>
+<div style="display: flex; justify-content: space-between"><span class="muted">Metode</span><span>BCA VA</span></div>
+<div style="display: flex; justify-content: space-between"><span class="muted">Kurir</span><span>JNE Reguler</span></div>
+<a href="DKoleksi.dc.html" style="font-weight: 600; margin-top: 4px">Lanjut belanja →</a>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1240}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>State Admin</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#F2E6E6;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.btn-danger{background:#8C2F48;color:#FFFFFF}
+.lbl{height:40px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.tag{height:24px;padding:0 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;letter-spacing:.06em;text-transform:uppercase}
+.pn{height:460px;border-radius:14px;overflow:hidden;background:#FAF1F1;border:1px solid #DCCBCD;display:flex;flex-direction:column;position:relative}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:14px}
+.skel{background:#EFE1E2;border-radius:6px;animation:sk 1.6s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
+.th{height:40px;background:#FBEFEF;border-bottom:1px solid #EFE1E2;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:16px;align-items:center;padding:0 16px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5E5A62}
+.tr{height:56px;border-bottom:1px solid #F4E9EA;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:16px;align-items:center;padding:0 16px}
+.ico{width:64px;height:64px;border-radius:999px;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1120px; padding: 48px 64px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; align-content: start; background: #F2E6E6">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #ECE8F5; color: #4A3F72">Loading</span>Tabel pesanan dimuat</div>
+<div class="pn" aria-busy="true" style="padding: 24px">
+<div class="card" style="overflow: hidden">
+<div class="th"><span>No. pesanan</span><span>Pembeli</span><span>Total</span><span>Status</span></div>
+<div class="tr"><span class="skel" style="height: 12px; width: 80%"></span><span class="skel" style="height: 12px; width: 60%"></span><span class="skel" style="height: 12px; width: 50%"></span><span class="skel" style="height: 22px; width: 80px; border-radius: 999px"></span></div>
+<div class="tr"><span class="skel" style="height: 12px; width: 75%"></span><span class="skel" style="height: 12px; width: 55%"></span><span class="skel" style="height: 12px; width: 45%"></span><span class="skel" style="height: 22px; width: 90px; border-radius: 999px"></span></div>
+<div class="tr"><span class="skel" style="height: 12px; width: 85%"></span><span class="skel" style="height: 12px; width: 65%"></span><span class="skel" style="height: 12px; width: 50%"></span><span class="skel" style="height: 22px; width: 70px; border-radius: 999px"></span></div>
+<div class="tr"><span class="skel" style="height: 12px; width: 70%"></span><span class="skel" style="height: 12px; width: 50%"></span><span class="skel" style="height: 12px; width: 40%"></span><span class="skel" style="height: 22px; width: 85px; border-radius: 999px"></span></div>
+<div class="tr" style="border-bottom: 0"><span class="skel" style="height: 12px; width: 80%"></span><span class="skel" style="height: 12px; width: 60%"></span><span class="skel" style="height: 12px; width: 50%"></span><span class="skel" style="height: 22px; width: 80px; border-radius: 999px"></span></div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #F0E8EA; color: #4A4650">Kosong</span>Belum ada pesanan masuk</div>
+<div class="pn" style="padding: 24px">
+<div class="card" style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 32px">
+<span class="ico" style="background: #E4F0F4; color: #3F5A7D"><svg width="28" height="28" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8 12 4l8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path></svg></span>
+<h2 class="serif" style="font-size: 24px; line-height: 32px">Belum ada pesanan</h2>
+<p class="muted" style="font-size: 14px; line-height: 22px; max-width: 360px">Pesanan baru akan muncul di sini. Pastikan produk sudah tampil dan banner beranda aktif.</p>
+<div style="display: flex; gap: 10px; margin-top: 6px"><a class="btn btn-primary" href="AProduk.dc.html">Kelola Produk</a><a class="btn btn-outline" href="Main.dc.html">Lihat Toko</a></div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #FBE3E8; color: #8C2F48">Error</span>Data gagal dimuat · simpan gagal</div>
+<div class="pn" style="padding: 24px; gap: 16px">
+<div role="alert" class="card" style="padding: 20px; display: flex; gap: 14px; align-items: flex-start; background: #FFF5F7; border-color: #F2CBD4">
+<svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="#8C2F48" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 8v5M12 16h.01"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 8px"><strong style="color: #8C2F48">Data pesanan gagal dimuat</strong><span style="font-size: 14px; line-height: 21px; color: #5E2236">Server tidak merespons (kode 503). Data terakhir yang tersimpan tetap aman.</span><button type="button" class="btn btn-outline" style="align-self: flex-start; height: 36px">Coba lagi</button></div>
+</div>
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Nomor resi · KYN-260928-0141<input value="JNE01234" aria-invalid="true" style="height: 40px; padding: 0 12px; border: 1px solid #A33A55; border-radius: 10px; background: #FFF5F7; font: 500 14px 'Plus Jakarta Sans', sans-serif"></label>
+<span style="font-size: 12px; color: #A33A55; font-weight: 600">Nomor resi JNE biasanya 13–16 karakter. Periksa lagi sebelum menyimpan.</span>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="lbl"><span class="tag" style="background: #E4F0F4; color: #2B3E5B">Sukses &amp; konfirmasi</span>Hapus produk · tersimpan</div>
+<div class="pn" style="background: rgba(43,43,43,0.45); align-items: center; justify-content: center">
+<div role="alertdialog" aria-modal="true" aria-labelledby="dlg-t" class="card" style="width: 400px; padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 24px 48px rgba(43,43,43,0.25)">
+<h2 id="dlg-t" style="font-size: 18px; font-weight: 700">Hapus "Rok Plisket Kirana"?</h2>
+<p class="muted" style="font-size: 14px; line-height: 22px">Produk dan 9 variannya akan dihapus dari toko. Riwayat pesanan lama tetap tersimpan. Tindakan ini tidak bisa dibatalkan.</p>
+<div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px"><button type="button" class="btn btn-outline">Batal</button><button type="button" class="btn btn-danger">Ya, hapus</button></div>
+</div>
+<div role="status" style="position: absolute; right: 20px; bottom: 20px; width: 340px; padding: 14px 16px; border-radius: 12px; background: #2B2B2B; color: #FFF6F5; display: flex; gap: 12px; align-items: center; font-size: 14px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#B9C4B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg><span style="flex-grow: 1">Perubahan produk tersimpan</span><button type="button" style="height: 32px; border: 0; background: transparent; color: #FFF6F5; font: 700 13px 'Plus Jakarta Sans', sans-serif; text-decoration: underline; cursor: pointer">Urungkan</button></div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1120}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+
+
+</body></html>

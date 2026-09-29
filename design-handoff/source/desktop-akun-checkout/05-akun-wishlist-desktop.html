@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Akun Wishlist — Desktop</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+.side a{display:flex;align-items:center;gap:12px;height:48px;padding:0 16px;border-radius:12px;font-size:15px;font-weight:500;color:#2B2B2B}
+.side a[aria-current="page"]{background:#E4F0F4;color:#2B3E5B;font-weight:700}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2000px; display: flex; flex-direction: column; background: #FFF6F5">
+<div style="position: sticky; top: 0; z-index: 30"><dc-import name="NavDesktop" active="" hint-size="1440px,80px"></dc-import></div>
+<section style="padding: 48px 80px 0; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 48px; align-items: start">
+<aside style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 52px; height: 52px; border-radius: 999px; background: #3F5A7D; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700">NA</span><div style="display: flex; flex-direction: column"><strong style="font-size: 16px">Nadia Azzahra</strong><span class="muted" style="font-size: 13px">nadia@email.com</span></div></div>
+<nav class="side" aria-label="Menu akun" style="display: flex; flex-direction: column; gap: 4px">
+<a href="DAkun.dc.html"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8 12 4l8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path></svg>Riwayat pesanan</a>
+<a href="DWishlist.dc.html" aria-current="page"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>Wishlist</a>
+<a href="DAkunProfil.dc.html"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>Profil &amp; alamat</a>
+<a href="DMasuk.dc.html" style="color: #8C2F48"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 16l-4-4 4-4M6 12h10"></path></svg>Keluar</a>
+</nav>
+</aside>
+<div style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: baseline; gap: 14px"><h1 class="serif" style="font-size: 40px; line-height: 48px">Wishlist</h1><span class="muted" style="font-size: 15px">{{count}} produk</span></div>
+<sc-if value="{{has}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 24px">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<dc-import name="ProductCard" item="{{p}}" href="DProduk.dc.html" hint-size="100%,511px"></dc-import>
+<a class="btn btn-outline" href="DKeranjang.dc.html" style="width: 100%">Tambah ke Keranjang</a>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<div class="card" style="padding: 72px 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center"><span style="width: 80px; height: 80px; border-radius: 999px; background: #E4F0F4; color: #3F5A7D; display: flex; align-items: center; justify-content: center"><svg width="34" height="34" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></span><h2 class="serif" style="font-size: 28px">Wishlist masih kosong</h2><p class="muted" style="font-size: 15px">Klik ikon hati di produk untuk menyimpannya di sini.</p><a class="btn btn-primary" href="DKoleksi.dc.html" style="margin-top: 8px">Lihat Koleksi</a></div>
+</sc-if>
+</div>
+</section>
+<div style="margin-top: auto; padding-top: 96px"><dc-import name="FooterDesktop" hint-size="1440px,500px"></dc-import></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;kosong&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:2000}}">
+class Component extends DCLogic {
+  renderVals() {
+    const kosong = this.props.kosong ?? false;
+    const items = kosong ? [] : [
+      { name: 'Pashmina Satin Lembayung', price: 'Rp99.000', material: 'Satin', tone: '#B8A9BF', colors: ['#B8A9BF', '#9AA9B5', '#EDE3D3'], tag: 'Stok terbatas' },
+      { name: 'Outer Linen Senja', price: 'Rp229.000', material: 'Linen', tone: '#D9A48C', colors: ['#D9A48C', '#EDE3D3', '#708BAA'], tag: '' },
+      { name: 'Dress Katun Rinjani', price: 'Rp289.000', material: 'Katun', tone: '#9AA9B5', colors: ['#9AA9B5', '#708BAA', '#D9C7B0'], tag: 'Baru' },
+      { name: 'Segi Empat Voal Aruna', price: 'Rp89.000', material: 'Voal', tone: '#D9C7B0', colors: ['#D9C7B0', '#708BAA', '#5B5752'], tag: '' },
+      { name: 'Rok Plisket Kirana', price: 'Rp159.000', material: 'Ceruty', tone: '#6B6660', colors: ['#5B5752', '#8E735E', '#D9C7B0'], tag: '' },
+      { name: 'Bergo Instan Nara', price: 'Rp95.000', material: 'Jersey', tone: '#8E735E', colors: ['#8E735E', '#2B2B2B', '#D9C7B0'], tag: '' }
+    ];
+    return { items: items, count: items.length, has: items.length > 0, empty: items.length === 0 };
+  }
+}
+</script>
+
+
+</body></html>

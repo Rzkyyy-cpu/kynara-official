@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Checkout Langkah 2 Kurir — Mobile</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+.dot{width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.opt{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;padding:14px 16px;border-radius:14px;background:#FFFFFF;cursor:pointer}
+.opt input{width:20px;height:20px;margin:0;accent-color:#3F5A7D}
+.skel{background:#F1E3E4;border-radius:8px;animation:sk 1.6s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1000px; display: flex; flex-direction: column; background: #FFF6F5">
+<header style="height: 56px; padding: 0 12px 0 8px; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #EFE1E2">
+<a href="MCheckout1.dc.html" aria-label="Kembali ke alamat" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2B2B2B"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></a>
+<span style="font-size: 16px; font-weight: 700">Checkout</span>
+<span style="display: flex; gap: 4px; align-items: center; font-size: 12px; font-weight: 600; color: #33496A"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Aman</span>
+</header>
+<ol aria-label="Langkah checkout" style="margin: 0; padding: 16px 20px; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #FFFFFF; border-bottom: 1px solid #EFE1E2">
+<li style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; color: #33496A; font-weight: 600"><span class="dot" style="background: #3F5A7D; color: #FFFFFF"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>Alamat</li>
+<li aria-current="step" style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 700"><span class="dot" style="background: #2B2B2B; color: #FFF6F5">2</span>Pengiriman</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; color: #5E5A62"><span class="dot" style="border: 1.5px solid #C9B7BA; color: #5E5A62">3</span>Pembayaran</li>
+</ol>
+<main style="padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 16px">
+<div class="card" style="padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #3F5A7D">Dikirim ke · Rumah</span><a href="MCheckout1.dc.html" style="grid-row: span 3; align-self: center; font-size: 13px; font-weight: 600; min-height: 44px; display: flex; align-items: center">Ubah</a>
+<span style="font-size: 14px; font-weight: 600">Nadia Azzahra · 0812-3456-7890</span>
+<span class="muted" style="font-size: 13px; line-height: 19px">Jl. Contoh No. 12, Kec. Contoh, Kota Contoh, Jawa Barat</span>
+</div>
+<h1 style="font-size: 18px; font-weight: 700; margin-top: 4px">Pilih kurir</h1>
+<sc-if value="{{isLoading}}" hint-placeholder-val="{{false}}">
+<div aria-busy="true" aria-label="Menghitung ongkos kirim" style="display: flex; flex-direction: column; gap: 10px">
+<div class="card" style="height: 72px; padding: 16px; display: flex; gap: 12px; align-items: center"><span class="skel" style="width: 20px; height: 20px; border-radius: 999px"></span><span style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1"><span class="skel" style="width: 60%; height: 12px"></span><span class="skel" style="width: 40%; height: 10px"></span></span><span class="skel" style="width: 64px; height: 14px"></span></div>
+<div class="card" style="height: 72px; padding: 16px; display: flex; gap: 12px; align-items: center"><span class="skel" style="width: 20px; height: 20px; border-radius: 999px"></span><span style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1"><span class="skel" style="width: 50%; height: 12px"></span><span class="skel" style="width: 35%; height: 10px"></span></span><span class="skel" style="width: 64px; height: 14px"></span></div>
+<div class="card" style="height: 72px; padding: 16px; display: flex; gap: 12px; align-items: center"><span class="skel" style="width: 20px; height: 20px; border-radius: 999px"></span><span style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1"><span class="skel" style="width: 55%; height: 12px"></span><span class="skel" style="width: 30%; height: 10px"></span></span><span class="skel" style="width: 64px; height: 14px"></span></div>
+<span class="muted" style="font-size: 13px; text-align: center">Menghitung ongkos kirim…</span>
+</div>
+</sc-if>
+<sc-if value="{{isError}}" hint-placeholder-val="{{false}}">
+<div role="alert" class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; background: #FFF5F7; border-color: #F2CBD4">
+<strong style="font-size: 15px; color: #8C2F48">Ongkos kirim gagal dimuat</strong>
+<p style="font-size: 14px; line-height: 21px; color: #5E2236">Layanan cek ongkir sedang tidak merespons. Coba lagi sebentar, atau lanjutkan pesanan lewat WhatsApp.</p>
+<div style="display: flex; gap: 8px"><button type="button" class="btn btn-outline" style="height: 44px" sc-camel-on-click="{{retry}}">Coba lagi</button><a class="btn" href="https://wa.me/" style="height: 44px; color: #3F5A7D">Pesan via WhatsApp</a></div>
+</div>
+</sc-if>
+<sc-if value="{{isNormal}}" hint-placeholder-val="{{true}}">
+<fieldset style="border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px">
+<legend class="muted" style="font-size: 13px; margin-bottom: 10px; padding: 0">Ongkos kirim untuk berat 450 gram</legend>
+<sc-for list="{{couriers}}" as="c" hint-placeholder-count="5">
+<label class="opt" style="border: 1.5px solid {{c.bd}}; opacity: {{c.op}}"><input type="radio" name="kurir" checked="{{c.on}}" disabled="{{c.off}}" sc-camel-on-change="{{c.pick}}"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 700">{{c.name}}</span><span class="muted" style="font-size: 12px">{{c.eta}}</span></span><span style="font-size: 14px; font-weight: 700">{{c.price}}</span></label>
+</sc-for>
+</fieldset>
+<label style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 21px; min-height: 44px"><input type="checkbox" style="width: 20px; height: 20px; margin: 1px 0 0; accent-color: #3F5A7D"><span>Tambah asuransi pengiriman <span class="muted">(+Rp1.000)</span></span></label>
+</sc-if>
+</main>
+<div style="position: sticky; bottom: 0; margin-top: auto; padding: 12px 20px 20px; background: #FFFFFF; border-top: 1px solid #EFE1E2; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column"><span class="muted" style="font-size: 12px">Total sementara</span><strong style="font-size: 18px">{{total}}</strong></div>
+<a class="btn btn-primary" href="MCheckout3.dc.html" style="flex-grow: 1; max-width: 220px">Lanjut ke Pembayaran</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;status&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;loading&quot;,&quot;error&quot;],&quot;default&quot;:&quot;normal&quot;},&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    const status = this.state.status ?? (this.props.status ?? 'normal');
+    const sel = this.state.sel ?? 0;
+    const fmt = (n) => 'Rp' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const list = [
+      { name: 'JNE Reguler', eta: 'Estimasi 2–3 hari', p: 12000 },
+      { name: 'J&T Express EZ', eta: 'Estimasi 2–3 hari', p: 13000 },
+      { name: 'SiCepat REG', eta: 'Estimasi 2–4 hari', p: 11000 },
+      { name: 'JNE YES', eta: 'Estimasi 1 hari', p: 25000 },
+      { name: 'Kurir instan', eta: 'Tidak tersedia untuk alamat ini', p: 0, off: true }
+    ];
+    const cur = list[sel];
+    return {
+      isLoading: status === 'loading',
+      isError: status === 'error',
+      isNormal: status === 'normal',
+      retry: () => { this.setState({ status: 'loading' }); setTimeout(() => this.setState({ status: 'normal' }), 1200); },
+      total: status === 'normal' ? fmt(226000 + cur.p) : 'Rp226.000',
+      couriers: list.map((c, i) => ({ name: c.name, eta: c.eta, price: c.off ? '—' : fmt(c.p), on: i === sel, off: !!c.off, op: c.off ? '0.55' : '1', bd: i === sel ? '#3F5A7D' : '#EFE1E2', pick: () => this.setState({ sel: i }) }))
+    };
+  }
+}
+</script>
+
+
+</body></html>

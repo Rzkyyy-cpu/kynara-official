@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Masuk — Desktop</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none;width:100%}
+.btn-primary{background:#4A6588;color:#FFFFFF}.btn-primary:hover{background:#3B5372}
+.btn-primary[aria-busy="true"]{background:#8EA2BD;cursor:progress}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #DCCBCD;border-radius:12px;background:#FFFFFF;color:#2B2B2B;font:400 15px 'Plus Jakarta Sans',sans-serif}
+.input:focus{outline:2px solid #708BAA;outline-offset:1px}
+.g{width:22px;height:22px;border-radius:999px;border:1.5px solid #2B2B2B;display:inline-flex;align-items:center;justify-content:center;font:700 12px 'Plus Jakarta Sans',sans-serif}
+.spin{width:18px;height:18px;border-radius:999px;border:2px solid rgba(255,255,255,.45);border-top-color:#FFFFFF;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.or{display:flex;align-items:center;gap:12px;font-size:13px;color:#5E5A62}.or::before,.or::after{content:"";flex:1;height:1px;background:#EFE1E2}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; display: grid; grid-template-columns: 1fr 1fr; background: #FFF6F5">
+<aside style="position: relative; overflow: hidden; margin: 24px 0 24px 24px; border-radius: 20px; background: #708BAA; display: flex; flex-direction: column; justify-content: space-between; padding: 40px">
+<svg sc-camel-view-box="0 0 80 100" sc-camel-preserve-aspect-ratio="xMidYMax meet" style="position: absolute; left: 22%; bottom: 0; width: 56%; height: 82%" aria-hidden="true"><path d="M40 12c-11 0-19 9-19 21 0 5 1.5 9.5 3.5 13C15 52 8 64 6 100h68c-2-36-9-48-18.5-54 2-3.5 3.5-8 3.5-13 0-12-8-21-19-21z" fill="#FFFFFF" fill-opacity="0.28"></path></svg>
+<a href="Main.dc.html" style="position: relative; font-family: 'Playfair Display', Georgia, serif; font-size: 32px; font-weight: 500; color: #FFFFFF">kynara</a>
+<p class="serif" style="position: relative; font-size: 34px; line-height: 44px; color: #FFFFFF; max-width: 420px; font-style: italic">Tenang dipakai, anggun dilihat.</p>
+</aside>
+<main style="display: flex; align-items: center; justify-content: center; padding: 40px">
+<div style="width: 420px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px"><h1 class="serif" style="font-size: 40px; line-height: 48px">Masuk</h1><p class="muted" style="font-size: 15px; line-height: 24px">Masuk untuk melacak pesanan dan menyimpan wishlist.</p></div>
+<sc-if value="{{isError}}" hint-placeholder-val="{{false}}"><div role="alert" style="padding: 12px 14px; border-radius: 12px; background: #FBE3E8; color: #8C2F48; font-size: 14px; line-height: 21px">Email atau password belum cocok. Coba lagi, atau <a href="DLupa.dc.html" style="color: #8C2F48; font-weight: 600; text-decoration: underline">reset password</a>.</div></sc-if>
+<sc-if value="{{isSuccess}}" hint-placeholder-val="{{false}}"><div role="status" style="padding: 12px 14px; border-radius: 12px; background: #E4F0F4; color: #2B3E5B; font-size: 14px; font-weight: 600">Berhasil masuk. Mengarahkan ke akunmu…</div></sc-if>
+<button type="button" class="btn btn-outline"><span class="g" aria-hidden="true">G</span>Masuk dengan Google</button>
+<div class="or">atau dengan email</div>
+<div class="field"><label class="label" for="em">Email</label><input id="em" class="input" type="email" autocomplete="email" placeholder="nama@email.com" style="border-color: {{border}}"></div>
+<div class="field"><div style="display: flex; justify-content: space-between; align-items: center"><label class="label" for="pw">Password</label><a href="DLupa.dc.html" style="font-size: 13px; font-weight: 600">Lupa password?</a></div><input id="pw" class="input" type="password" autocomplete="current-password" placeholder="Minimal 8 karakter" style="border-color: {{border}}"></div>
+<label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 32px"><input type="checkbox" style="width: 18px; height: 18px; margin: 0; accent-color: #3F5A7D">Ingat saya di perangkat ini</label>
+<button type="button" class="btn btn-primary" aria-busy="{{busy}}" sc-camel-on-click="{{submit}}"><sc-if value="{{isLoading}}" hint-placeholder-val="{{false}}"><span class="spin" aria-hidden="true"></span></sc-if>{{label}}</button>
+<p style="text-align: center; font-size: 14px">Belum punya akun? <a href="DDaftar.dc.html" style="font-weight: 700">Daftar</a></p>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;status&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;loading&quot;,&quot;error&quot;,&quot;sukses&quot;],&quot;default&quot;:&quot;normal&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    const status = this.state.status ?? (this.props.status ?? 'normal');
+    return {
+      isError: status === 'error',
+      isSuccess: status === 'sukses',
+      isLoading: status === 'loading',
+      busy: status === 'loading' ? 'true' : 'false',
+      border: status === 'error' ? '#A33A55' : '#DCCBCD',
+      label: status === 'loading' ? 'Memproses…' : 'Masuk',
+      submit: () => { this.setState({ status: 'loading' }); setTimeout(() => this.setState({ status: 'sukses' }), 1200); }
+    };
+  }
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Sistem Desain kynara</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFF6F5;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#3F5A7D}
+.muted{color:#5E5A62}
+.sec{display:flex;flex-direction:column;gap:24px}
+.st{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5E5A62;padding-bottom:12px;border-bottom:1px solid #EFE1E2}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;border:1px solid transparent;font:600 15px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:transparent;color:#2B2B2B;border-color:#2B2B2B}
+.btn-sage{background:#3F5A7D;color:#FFFFFF}
+.btn-ghost{background:transparent;color:#3F5A7D;padding:0 12px}
+.btn:disabled{background:#EFE1E2;color:#7A7074;border-color:#EFE1E2;cursor:not-allowed}
+.spin{width:18px;height:18px;border-radius:999px;border:2px solid rgba(255,255,255,.45);border-top-color:#FFFFFF;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;background:#E4F0F4;color:#33496A;font-size:11px;font-weight:600}
+.pill{display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:700}
+.chip{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:999px;border:1px solid #DCCBCD;background:#FFFFFF;color:#2B2B2B;font:500 13px 'Plus Jakarta Sans',sans-serif}
+.chip.on{background:#2B2B2B;border-color:#2B2B2B;color:#FFF6F5}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:600}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #DCCBCD;border-radius:12px;background:#FFFFFF;color:#2B2B2B;font:400 15px 'Plus Jakarta Sans',sans-serif}
+.cap{font-size:12px;color:#5E5A62}
+.sw{display:flex;flex-direction:column;gap:10px}
+.chipc{height:96px;border-radius:12px;border:1px solid rgba(43,43,43,.08)}
+.spec{display:grid;grid-template-columns:200px 1fr 220px;gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid #F4E9EA}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:16px}
+.al{padding:14px 16px;border-radius:12px;display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:21px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 3240px; padding: 64px 80px; display: flex; flex-direction: column; gap: 64px; background: #FFF6F5">
+<header style="display: flex; justify-content: space-between; align-items: flex-end">
+<div style="display: flex; flex-direction: column; gap: 12px"><span class="eyebrow">Sistem desain</span><h1 class="serif" style="font-size: 64px; line-height: 72px">kynara</h1><p class="muted" style="font-size: 17px; line-height: 28px; max-width: 640px">Bersih, lembut, elegan. Biru slate sebagai warna utama, blush sebagai latar, pink dan biru langit sebagai aksen.</p></div>
+<span class="muted" style="font-size: 13px">Mobile 390 · Desktop 1440 · Sudut foto 10px · Rasio foto 4:5</span>
+</header>
+
+<section class="sec">
+<h2 class="st">Warna</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{colors}}" as="c" hint-placeholder-count="8">
+<div class="sw"><span class="chipc" style="background: {{c.hex}}"></span><div style="display: flex; justify-content: space-between; font-size: 14px"><strong>{{c.name}}</strong><span class="muted" style="font-family: ui-monospace, monospace; font-size: 13px">{{c.hex}}</span></div><span class="cap" style="line-height: 18px">{{c.role}}</span></div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><span class="cap" style="margin-right: 8px">Status pesanan</span><span class="pill" style="background: #F6EBD3; color: #6B4A0E">Menunggu Pembayaran</span><span class="pill" style="background: #ECE8F5; color: #4A3F72">Diproses</span><span class="pill" style="background: #E4F0F4; color: #2B3E5B">Dikirim</span><span class="pill" style="background: #F0E8EA; color: #4A4650">Selesai</span><span class="pill" style="background: #FBE3E8; color: #8C2F48">Dibatalkan</span><span class="cap" style="margin-left: 12px">Error memakai berry gelap #8C2F48 di atas #FBE3E8, beda jelas dari pink aksen.</span></div>
+</section>
+
+<section class="sec">
+<h2 class="st">Tipografi</h2>
+<div>
+<div class="spec"><span class="cap">Display · Playfair Display 500</span><span class="serif" style="font-size: 64px; line-height: 72px">Anggun dilihat</span><span class="cap">64/72 desktop · 36/44 mobile</span></div>
+<div class="spec"><span class="cap">Judul seksi · Playfair Display 500</span><span class="serif" style="font-size: 40px; line-height: 48px">Produk terbaru</span><span class="cap">40/48 desktop · 28/36 mobile</span></div>
+<div class="spec"><span class="cap">Label · Plus Jakarta Sans 600</span><span class="eyebrow">Koleksi terbaru</span><span class="cap">12 · huruf kapital · spasi 0,14em</span></div>
+<div class="spec"><span class="cap">Isi · Plus Jakarta Sans 400</span><span style="font-size: 16px; line-height: 26px">Kerudung dan busana muslimah dari bahan pilihan, dijahit rapi untuk harimu.</span><span class="cap">16/26 desktop · 15/24 mobile</span></div>
+<div class="spec"><span class="cap">Nama produk · 500, maks. 2 baris</span><span style="font-size: 15px; line-height: 22px; font-weight: 500">Pashmina Airflow Sekar</span><span class="cap">Maks. 40 karakter: Jenis + Bahan + Seri</span></div>
+</div>
+</section>
+
+<section class="sec">
+<h2 class="st">Tombol</h2>
+<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
+<button type="button" class="btn btn-primary">Belanja Sekarang</button>
+<button type="button" class="btn btn-outline">Lihat semua</button>
+<button type="button" class="btn btn-sage">Simpan alamat</button>
+<button type="button" class="btn btn-ghost">Reset</button>
+<button type="button" class="btn" disabled="">Stok habis</button>
+<button type="button" class="btn btn-primary" aria-busy="true" style="background: #8EA2BD"><span class="spin" aria-hidden="true"></span>Memproses…</button>
+<a class="btn btn-outline" href="https://wa.me/"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"></path></svg>Pesan via WhatsApp</a>
+</div>
+<p class="cap" style="font-size: 13px; line-height: 20px; max-width: 900px">Satu tombol utama per layar. Tombol utama memakai #4A6588, versi lebih gelap dari biru slate #708BAA, supaya teks putih lolos kontras 4,5:1 (5,9:1). Tinggi 52 (utama), 48, 40 (admin). Target sentuh di HP minimal 44px.</p>
+</section>
+
+<section class="sec">
+<h2 class="st">Form</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+<div class="field"><label class="label" for="k1">Default</label><input id="k1" class="input" placeholder="nama@email.com"></div>
+<div class="field"><label class="label" for="k2">Fokus</label><input id="k2" class="input" value="nadia@" style="outline: 2px solid #708BAA; outline-offset: 1px; border-color: #708BAA"></div>
+<div class="field"><label class="label" for="k3">Error</label><input id="k3" class="input" value="nadia@" style="border-color: #A33A55; background: #FFF5F7"><span style="font-size: 12px; color: #A33A55; font-weight: 500">Format email belum benar.</span></div>
+<div class="field"><label class="label" for="k4">Nonaktif</label><input id="k4" class="input" value="Terkunci" disabled="" style="background: #F4E9EA; color: #7A7074"></div>
+</div>
+<div style="display: flex; gap: 32px; align-items: center; flex-wrap: wrap">
+<label style="display: flex; gap: 10px; align-items: center; font-size: 14px"><input type="checkbox" checked="" style="width: 20px; height: 20px; margin: 0; accent-color: #3F5A7D">Checkbox</label>
+<label style="display: flex; gap: 10px; align-items: center; font-size: 14px"><input type="radio" checked="" style="width: 20px; height: 20px; margin: 0; accent-color: #3F5A7D">Radio</label>
+<span style="display: flex; gap: 10px; align-items: center; font-size: 14px"><button type="button" role="switch" aria-checked="true" aria-label="Switch contoh" style="width: 40px; height: 24px; border-radius: 999px; border: 0; background: #3F5A7D; position: relative; padding: 0"><span style="position: absolute; top: 3px; left: 19px; width: 18px; height: 18px; border-radius: 999px; background: #FFFFFF"></span></button>Switch</span>
+<span style="display: flex; gap: 8px"><span class="chip on">Terpilih</span><span class="chip">Chip</span><span class="chip" style="background: #E4F0F4; border-color: #E4F0F4; color: #33496A">Filter aktif ×</span></span>
+<span style="display: flex; gap: 8px"><span style="width: 44px; height: 44px; border-radius: 999px; border: 2px solid #2B2B2B; padding: 3px"><span style="display: block; width: 100%; height: 100%; border-radius: 999px; background: #9DAE9B"></span></span><span style="width: 44px; height: 44px; border-radius: 999px; padding: 5px; position: relative"><span style="display: block; width: 100%; height: 100%; border-radius: 999px; background: #8E735E; opacity: 0.45"></span><span style="position: absolute; left: 50%; top: 6px; width: 1.5px; height: 32px; background: #2B2B2B; transform: rotate(45deg)"></span></span><span class="cap" style="align-self: center">Swatch warna: terpilih · habis</span></span>
+</div>
+</section>
+
+<section class="sec">
+<h2 class="st">Badge &amp; kartu produk</h2>
+<div style="display: grid; grid-template-columns: 300px 200px 1fr; gap: 40px; align-items: start">
+<dc-import name="ProductCard" hint-size="300px,520px"></dc-import>
+<dc-import name="ProductCard" compact="{{true}}" item="{{compactItem}}" hint-size="200px,380px"></dc-import>
+<div style="display: flex; flex-direction: column; gap: 16px; font-size: 14px; line-height: 22px">
+<div style="display: flex; gap: 8px"><span class="badge">Voal</span><span class="badge">Airflow</span><span class="badge">Satin</span><span class="badge">Ceruty</span><span class="badge">Jersey</span></div>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px" class="muted">
+<li>Foto 4:5, sudut 10px, label kecil di kiri atas (Baru / Stok terbatas).</li>
+<li>Badge bahan selalu ada, di atas nama produk.</li>
+<li>Nama maksimal 2 baris, dipotong dengan elipsis.</li>
+<li>Harga tebal, lalu titik warna tersedia.</li>
+<li>Tombol wishlist 44 × 44 di pojok kanan atas foto.</li>
+<li>Desktop 4 kolom (gap 24). Mobile 2 kolom (gap 12).</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="sec">
+<h2 class="st">Navigasi</h2>
+<div style="height: 430px; position: relative; border-radius: 12px; overflow: hidden; border: 1px solid #EFE1E2; background: #FFF6F5">
+<div style="transform: scale(0.8889); transform-origin: top left; width: 1440px"><dc-import name="NavDesktop" open="{{true}}" active="koleksi" hint-size="1440px,80px"></dc-import></div>
+</div>
+<div style="display: flex; gap: 40px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="cap">Navbar mobile (sticky) · hamburger membuka drawer</span><div style="border: 1px solid #EFE1E2; border-radius: 12px; overflow: hidden"><dc-import name="NavMobile" hint-size="390px,64px"></dc-import></div></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="cap">Bottom nav mobile · pelengkap, bukan pengganti navbar</span><div style="border: 1px solid #EFE1E2; border-radius: 12px; overflow: hidden"><dc-import name="BottomNav" active="koleksi" hint-size="390px,64px"></dc-import></div></div>
+</div>
+</section>
+
+<section class="sec">
+<h2 class="st">Umpan balik</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<div class="al" role="status" style="background: #E4F0F4; color: #2B3E5B"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="m5 12 5 5 9-10"></path></svg><span><strong>Sukses.</strong> Produk masuk keranjang.</span></div>
+<div class="al" role="alert" style="background: #FBE3E8; color: #8C2F48"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 8v5M12 16h.01"></path></svg><span><strong>Gagal.</strong> Koneksi terputus, coba lagi.</span></div>
+<div class="al" style="background: #F6EBD3; color: #6B4A0E"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg><span><strong>Perhatian.</strong> Sisa 3 pcs untuk varian ini.</span></div>
+<div class="al" style="background: #ECE8F5; color: #4A3F72"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 11v5M12 8h.01"></path></svg><span><strong>Info.</strong> Ongkir dihitung saat checkout.</span></div>
+</div>
+<div style="display: flex; gap: 24px; align-items: center">
+<div role="status" style="width: 380px; padding: 14px 16px; border-radius: 12px; background: #2B2B2B; color: #FFF6F5; display: flex; gap: 12px; align-items: center; font-size: 14px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#B9C4B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg><span style="flex-grow: 1">Ditambahkan ke keranjang</span><a href="MKeranjang.dc.html" style="color: #FFF6F5; font-weight: 700; text-decoration: underline">Lihat</a></div>
+<div style="display: flex; gap: 10px; align-items: center"><span style="width: 180px; height: 12px; border-radius: 6px; background: #F1E3E4"></span><span style="width: 120px; height: 12px; border-radius: 6px; background: #F1E3E4"></span><span class="cap">Skeleton (loading) · berdenyut pelan</span></div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:3240}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      compactItem: { name: 'Segi Empat Voal Aruna', price: 'Rp89.000', material: 'Voal', tone: '#D9C7B0', colors: ['#D9C7B0', '#708BAA', '#5B5752'], tag: '' },
+      colors: [
+        { name: 'Biru langit', hex: '#9FC7D5', role: 'Aksen: hero, tint badge bahan, latar seksi Tentang' },
+        { name: 'Biru slate', hex: '#708BAA', role: 'Warna utama: fokus input, border terpilih, grafik' },
+        { name: 'Slate tua', hex: '#4A6588', role: 'Tombol utama (teks putih lolos AA)' },
+        { name: 'Slate gelap', hex: '#3F5A7D', role: 'Teks link, ikon aktif, status aktif' },
+        { name: 'Pink', hex: '#F4C9CB', role: 'Aksen: foto brand, panel daftar, sorotan' },
+        { name: 'Blush', hex: '#FDE9E9', role: 'Badge "Baru", peringatan stok' },
+        { name: 'Blush muda', hex: '#FFF6F5', role: 'Latar halaman' },
+        { name: 'Charcoal', hex: '#2B2B2B', role: 'Teks utama, chip terpilih' }
+      ]
+    };
+  }
+}
+</script>
+
+
+</body></html>

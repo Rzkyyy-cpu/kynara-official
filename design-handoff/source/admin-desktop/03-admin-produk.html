@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<title>Admin Produk</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FAF1F1;color:#2B2B2B;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+a{color:#3F5A7D;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+.serif{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.01em}
+.muted{color:#5E5A62}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1px solid transparent;font:600 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:#4A6588;color:#FFFFFF}
+.btn-outline{background:#FFFFFF;color:#2B2B2B;border-color:#DCCBCD}
+.card{background:#FFFFFF;border:1px solid #EFE1E2;border-radius:14px}
+.input{height:40px;padding:0 12px;border:1px solid #DCCBCD;border-radius:10px;background:#FFFFFF;font:500 13px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B;width:100%}
+.select{height:40px;padding:0 10px;border:1px solid #DCCBCD;border-radius:10px;background:#FFFFFF;font:600 13px 'Plus Jakarta Sans',sans-serif;color:#2B2B2B}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #EFE1E2}
+.tab{height:44px;padding:0 14px;border:0;background:transparent;font:600 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{height:44px;padding:0 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5E5A62;background:#FBEFEF;border-bottom:1px solid #EFE1E2}
+.tbl td{height:72px;padding:0 12px;border-bottom:1px solid #F4E9EA;vertical-align:middle}
+.pill{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:700}
+.ib{width:36px;height:36px;border:0;border-radius:8px;background:transparent;display:inline-flex;align-items:center;justify-content:center;color:#2B2B2B;cursor:pointer}
+.sw{width:40px;height:24px;border-radius:999px;border:0;position:relative;cursor:pointer;padding:0}
+.sw span{position:absolute;top:3px;width:18px;height:18px;border-radius:999px;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1120px; display: grid; grid-template-columns: 248px minmax(0, 1fr); background: #FAF1F1">
+<div style="position: sticky; top: 0; height: 1024px; align-self: start"><dc-import name="AdminSidebar" active="produk" hint-size="248px,1024px"></dc-import></div>
+<main style="padding: 32px 40px; display: flex; flex-direction: column; gap: 20px">
+<header style="display: flex; justify-content: space-between; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 4px"><h1 class="serif" style="font-size: 32px; line-height: 40px">Produk</h1><span class="muted" style="font-size: 14px">48 produk · 6 kategori aktif</span></div>
+<a class="btn btn-primary" href="AProdukForm.dc.html"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Tambah Produk</a>
+</header>
+<div class="tabs" role="tablist" aria-label="Filter produk">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button type="button" role="tab" class="tab" aria-selected="{{t.sel}}" sc-camel-on-click="{{t.pick}}" style="color: {{t.fg}}; box-shadow: {{t.u}}">{{t.label}}</button></sc-for>
+</div>
+<div style="display: flex; gap: 12px; align-items: center">
+<label style="position: relative; width: 320px"><span style="position: absolute; left: 12px; top: 11px; color: #5E5A62" aria-hidden="true"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span><input class="input" aria-label="Cari produk" placeholder="Cari nama produk atau SKU" style="padding-left: 38px"></label>
+<sc-raw-select class="select" aria-label="Kategori"><option>Semua kategori</option><option>Hijab Segi Empat</option><option>Pashmina</option><option>Instan / Bergo</option><option>Outer</option><option>Bawahan</option><option>Dress</option><option>Aksesoris</option></sc-raw-select>
+<sc-raw-select class="select" aria-label="Bahan"><option>Semua bahan</option><option>Voal</option><option>Airflow</option><option>Satin</option></sc-raw-select>
+</div>
+<div class="card" style="overflow: hidden">
+<sc-raw-table class="tbl">
+<sc-raw-thead><sc-raw-tr><sc-raw-th style="width: 76px">Foto</sc-raw-th><sc-raw-th>Produk</sc-raw-th><sc-raw-th>Kategori</sc-raw-th><sc-raw-th>Bahan</sc-raw-th><sc-raw-th>Harga</sc-raw-th><sc-raw-th>Stok</sc-raw-th><sc-raw-th>Varian</sc-raw-th><sc-raw-th>Tampil</sc-raw-th><sc-raw-th style="width: 90px"></sc-raw-th></sc-raw-tr></sc-raw-thead>
+<sc-raw-tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<sc-raw-tr>
+<sc-raw-td><span style="display: block; width: 44px; aspect-ratio: 4 / 5; border-radius: 6px; background: {{r.tone}}"></span></sc-raw-td>
+<sc-raw-td><a href="AProdukForm.dc.html" style="font-weight: 700; color: #2B2B2B">{{r.name}}</a><div class="muted" style="font-size: 12px">SKU {{r.sku}}</div></sc-raw-td>
+<sc-raw-td>{{r.cat}}</sc-raw-td>
+<sc-raw-td><span class="pill" style="background: #E4F0F4; color: #33496A">{{r.mat}}</span></sc-raw-td>
+<sc-raw-td style="font-weight: 600">{{r.price}}</sc-raw-td>
+<sc-raw-td><div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600">{{r.stock}}</span><sc-if value="{{r.low}}" hint-placeholder-val="{{false}}"><span class="pill" style="background: #FDE9E9; color: #8A3A52">Menipis</span></sc-if><sc-if value="{{r.out}}" hint-placeholder-val="{{false}}"><span class="pill" style="background: #F0E8EA; color: #4A4650">Habis</span></sc-if></div></sc-raw-td>
+<sc-raw-td class="muted">{{r.vars}}</sc-raw-td>
+<sc-raw-td><button type="button" class="sw" role="switch" aria-checked="{{r.onStr}}" aria-label="Tampilkan {{r.name}} di toko" sc-camel-on-click="{{r.toggle}}" style="background: {{r.swBg}}"><span style="left: {{r.knob}}"></span></button></sc-raw-td>
+<sc-raw-td><div style="display: flex; gap: 2px"><a class="ib" href="AProdukForm.dc.html" aria-label="Edit {{r.name}}"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></a><button type="button" class="ib" aria-label="Hapus {{r.name}}" style="color: #8C2F48"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13"></path></svg></button></div></sc-raw-td>
+</sc-raw-tr>
+</sc-for>
+</sc-raw-tbody>
+</sc-raw-table>
+<div style="height: 56px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; font-size: 13px"><span class="muted">Menampilkan 1–7 dari 48</span><div style="display: flex; gap: 6px"><button type="button" class="btn btn-outline" style="height: 36px">Sebelumnya</button><button type="button" class="btn btn-outline" style="height: 36px">Berikutnya</button></div></div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1120}}">
+class Component extends DCLogic {
+  renderVals() {
+    const base = [
+      { name: 'Pashmina Airflow Sekar', sku: 'PSH-AF-SKR', cat: 'Pashmina', mat: 'Airflow', price: 'Rp79.000', stock: 50, vars: '5 warna · 2 ukuran', tone: '#9DAE9B', on: true },
+      { name: 'Segi Empat Voal Aruna', sku: 'SGE-VL-ARN', cat: 'Hijab Segi Empat', mat: 'Voal', price: 'Rp89.000', stock: 64, vars: '4 warna', tone: '#D9C7B0', on: true },
+      { name: 'Bergo Instan Nara', sku: 'BRG-JR-NRA', cat: 'Instan / Bergo', mat: 'Jersey', price: 'Rp95.000', stock: 22, vars: '3 warna · 2 ukuran', tone: '#8E735E', on: true },
+      { name: 'Pashmina Satin Lembayung', sku: 'PSH-ST-LMB', cat: 'Pashmina', mat: 'Satin', price: 'Rp99.000', stock: 4, vars: '3 warna', tone: '#B8A9BF', on: true },
+      { name: 'Outer Linen Senja', sku: 'OTR-LN-SNJ', cat: 'Outer', mat: 'Linen', price: 'Rp229.000', stock: 18, vars: '3 warna · S/M/L', tone: '#D9A48C', on: true },
+      { name: 'Rok Plisket Kirana', sku: 'BWH-CR-KRN', cat: 'Bawahan', mat: 'Ceruty', price: 'Rp159.000', stock: 0, vars: '3 warna · all size', tone: '#6B6660', on: false },
+      { name: 'Dress Katun Rinjani', sku: 'DRS-KT-RNJ', cat: 'Dress', mat: 'Katun', price: 'Rp289.000', stock: 12, vars: '3 warna · S/M/L/XL', tone: '#9AA9B5', on: true }
+    ];
+    const tab = this.state.tab ?? 'semua';
+    const off = this.state.off ?? {};
+    const rows = base.map((b) => Object.assign({}, b, { on: off[b.sku] === undefined ? b.on : !off[b.sku] }));
+    const shown = rows.filter((r) => tab === 'semua' || (tab === 'aktif' && r.on) || (tab === 'draf' && !r.on) || (tab === 'menipis' && r.stock <= 5));
+    const tabs = [['semua', 'Semua (48)'], ['aktif', 'Tampil'], ['draf', 'Disembunyikan'], ['menipis', 'Stok menipis / habis']];
+    return {
+      tabs: tabs.map((t) => { const on = t[0] === tab; return { label: t[1], sel: on ? 'true' : 'false', fg: on ? '#2B2B2B' : '#5E5A62', u: on ? 'inset 0 -2px 0 #3F5A7D' : 'none', pick: () => this.setState({ tab: t[0] }) }; }),
+      rows: shown.map((r) => ({
+        name: r.name, sku: r.sku, cat: r.cat, mat: r.mat, price: r.price, vars: r.vars, tone: r.tone,
+        stock: r.stock + ' pcs', low: r.stock > 0 && r.stock <= 5, out: r.stock === 0,
+        onStr: r.on ? 'true' : 'false', swBg: r.on ? '#3F5A7D' : '#D6C9CB', knob: r.on ? '19px' : '3px',
+        toggle: () => { const n = Object.assign({}, off); n[r.sku] = r.on; this.setState({ off: n }); }
+      }))
+    };
+  }
+}
+</script>
+
+
+</body></html>
