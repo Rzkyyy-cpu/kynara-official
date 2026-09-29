@@ -4,7 +4,7 @@
 Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun oleh dua mahasiswa informatika yang sedang belajar full stack, jadi setiap konsep baru harus dijelaskan dengan bahasa sederhana dan analogi.
 
 ## Tech stack
-- Next.js (App Router) + TypeScript + Tailwind CSS
+- Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Baca @AGENTS.md: API Next.js 16 berbeda dari versi lama (contoh: middleware sekarang bernama proxy).
 - Supabase (PostgreSQL, Auth, Storage)
 - Midtrans Snap (sandbox dulu)
 - Zod untuk validasi input
@@ -17,7 +17,7 @@ Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun oleh dua maha
   - desktop-akun-checkout / mobile-akun-checkout: Login, Akun, Checkout, Status Pesanan
   - admin-desktop: Dashboard admin
   - komponen-state: Button, ProductCard, form, state kosong/loading/error (acuan utama komponen reusable)
-- Ambil palet warna dan font langsung dari file desain, definisikan sebagai token di tailwind.config. Jangan tebak nilainya.
+- Ambil palet warna dan font langsung dari file desain, definisikan sebagai token di blok `@theme` pada src/app/globals.css (Tailwind v4 tidak memakai tailwind.config). Jangan tebak nilainya.
 - Semua halaman mobile-first.
 
 ## Aturan kerja

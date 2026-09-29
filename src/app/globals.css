@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/*
+  Token desain kynara.
+  Sumber: design-handoff/README.md (tabel warna & tipografi) dan design-handoff/source/.
+  Di Tailwind v4, token ditulis di blok @theme. Tiap variabel otomatis jadi class,
+  contoh: --color-slate-600 -> bg-slate-600, text-slate-600, border-slate-600.
+*/
+
+@theme {
+  /* Hapus palet bawaan Tailwind supaya yang terpakai hanya warna dari desain */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Palet utama (README "Warna") */
+  --color-sky: #9fc7d5;
+  --color-sky-tint: #e4f0f4;
+  --color-slate: #708baa;
+  --color-slate-400: #8ea2bd; /* tombol utama saat loading */
+  --color-slate-600: #4a6588; /* tombol utama */
+  --color-slate-700: #3f5a7d; /* link, ikon aktif */
+  --color-slate-900: #34496a; /* latar footer, teks badge bahan */
+  --color-pink: #f4c9cb;
+  --color-blush: #fde9e9;
+  --color-bg: #fff6f5;
+  --color-paper: #ffffff;
+  --color-line: #efe1e2;
+  --color-line-strong: #dccbcd; /* border input & tombol outline */
+  --color-ink: #2b2b2b;
+  --color-ink-soft: #4a4650; /* menu navbar tidak aktif */
+  --color-muted: #5e5a62;
+  --color-disabled: #7a7074;
+  --color-error: #8c2f48;
+  --color-error-bg: #fbe3e8;
+  --color-admin-bg: #faf1f1;
+
+  /* Footer (latar slate-900) */
+  --color-footer-ink: #f2ede4;
+  --color-footer-soft: #dce6ef;
+  --color-footer-label: #c3d3e2;
+
+  /* Status pesanan: latar & teks */
+  --color-status-bayar-bg: #f6ebd3;
+  --color-status-bayar: #6b4a0e;
+  --color-status-proses-bg: #ece8f5;
+  --color-status-proses: #4a3f72;
+  --color-status-kirim-bg: #e4f0f4;
+  --color-status-kirim: #2b3e5b;
+  --color-status-selesai-bg: #f0e8ea;
+  --color-status-selesai: #4a4650;
+  --color-status-batal-bg: #fbe3e8;
+  --color-status-batal: #8c2f48;
+
+  /* Tipografi (README "Tipografi"): mobile dulu, versi -lg untuk desktop */
+  --text-display: 2.25rem; /* 36/44 */
+  --text-display--line-height: 2.75rem;
+  --text-display-lg: 4rem; /* 64/72 */
+  --text-display-lg--line-height: 4.5rem;
+  --text-section: 1.75rem; /* 28/36 */
+  --text-section--line-height: 2.25rem;
+  --text-section-lg: 2.5rem; /* 40/48 */
+  --text-section-lg--line-height: 3rem;
+  --text-eyebrow: 0.75rem; /* label kapital kecil */
+  --text-eyebrow--letter-spacing: 0.14em;
+
+  /* Sudut */
+  --radius-photo: 10px; /* foto produk */
+  --radius-input: 12px;
+  --radius-card: 14px;
+}
+
+/* Font diisi dari next/font di layout.tsx (variabel --font-jakarta & --font-playfair) */
+@theme inline {
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
