@@ -1,17 +1,7 @@
-// Daftar menu & kategori untuk Navbar, Drawer, BottomNav, dan Footer.
-// SEMENTARA: kategori masih statis. Di Fase 2 diganti dengan data dari tabel categories.
+// Daftar menu untuk Navbar, Drawer, BottomNav, dan Footer.
+// Kategori diambil dari tabel categories di layout.tsx, lalu dikirim ke komponen sebagai props.
 
-export type Category = { name: string; slug: string; desc: string };
-
-export const categories: Category[] = [
-  { name: "Hijab Segi Empat", slug: "hijab-segi-empat", desc: "Voal, katun, satin" },
-  { name: "Pashmina", slug: "pashmina", desc: "Airflow, ceruty, satin" },
-  { name: "Instan / Bergo", slug: "instan-bergo", desc: "Siap pakai, tanpa peniti" },
-  { name: "Outer", slug: "outer", desc: "Cardigan, kimono, blazer" },
-  { name: "Bawahan", slug: "bawahan", desc: "Rok plisket, kulot, celana" },
-  { name: "Dress", slug: "dress", desc: "Gamis dan dress harian" },
-  { name: "Aksesoris", slug: "aksesoris", desc: "Ciput, inner, bros, peniti" },
-];
+export type NavCategory = { name: string; slug: string; description: string | null };
 
 export const categoryHref = (slug: string) => `/koleksi?kategori=${slug}`;
 

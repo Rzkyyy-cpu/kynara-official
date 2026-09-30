@@ -8,9 +8,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRightIcon, BagIcon, ChevronDownIcon, MenuIcon, SearchIcon, UserIcon } from "@/components/icons";
 import { MobileDrawer } from "@/components/layout/MobileDrawer";
 import { Container } from "@/components/ui/Container";
-import { categories, categoryHref, mainMenu } from "@/lib/navigation";
+import { type NavCategory, categoryHref, mainMenu } from "@/lib/navigation";
 
-export function Navbar({ cartCount }: { cartCount: number }) {
+export function Navbar({ cartCount, categories }: { cartCount: number; categories: NavCategory[] }) {
   const pathname = usePathname();
   const [koleksiOpen, setKoleksiOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -124,7 +124,7 @@ export function Navbar({ cartCount }: { cartCount: number }) {
                     className="flex flex-col gap-0.5 rounded-input px-3.5 py-3 hover:bg-bg"
                   >
                     <span className="text-base font-semibold">{c.name}</span>
-                    <span className="text-[13px] text-muted">{c.desc}</span>
+                    <span className="text-[13px] text-muted">{c.description}</span>
                   </Link>
                 ))}
                 <Link
@@ -145,7 +145,7 @@ export function Navbar({ cartCount }: { cartCount: number }) {
         </div>
       )}
 
-      <MobileDrawer open={drawerOpen} onClose={closeDrawer} />
+      <MobileDrawer open={drawerOpen} onClose={closeDrawer} categories={categories} />
     </header>
   );
 }

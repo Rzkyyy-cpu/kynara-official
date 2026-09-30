@@ -1,7 +1,7 @@
 # Proyek: Kynara Store
 
 ## Tentang proyek
-Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun oleh dua mahasiswa informatika yang sedang belajar full stack, jadi setiap konsep baru harus dijelaskan dengan bahasa sederhana dan analogi.
+Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun sendiri oleh mahasiswa informatika yang sedang belajar full stack, sebagai portofolio (repo publik) dan cikal bakal website bisnis nyata. Target hosting sekarang gratis (Vercel + Supabase). Setiap konsep baru harus dijelaskan dengan bahasa sederhana dan analogi.
 
 ## Tech stack
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Baca @AGENTS.md: API Next.js 16 berbeda dari versi lama (contoh: middleware sekarang bernama proxy).

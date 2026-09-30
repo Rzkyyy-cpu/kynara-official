@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChatIcon, ClockIcon, InstagramIcon, TikTokIcon, WhatsAppIcon } from "@/components/icons";
 import { Container } from "@/components/ui/Container";
-import { categories, categoryHref, helpLinks } from "@/lib/navigation";
+import { type NavCategory, categoryHref, helpLinks } from "@/lib/navigation";
 import { instagramUrl, site, tiktokUrl, whatsappUrl } from "@/lib/site";
 
 // Footer satu komponen untuk HP & desktop.
@@ -12,7 +12,7 @@ import { instagramUrl, site, tiktokUrl, whatsappUrl } from "@/lib/site";
 const labelCls = "text-eyebrow font-semibold uppercase text-footer-label";
 const linkCls = "flex min-h-8 items-center text-sm text-footer-ink hover:underline lg:min-h-0";
 
-export function Footer() {
+export function Footer({ categories }: { categories: NavCategory[] }) {
   const socials = [
     { label: "WhatsApp", href: whatsappUrl, Icon: WhatsAppIcon },
     { label: "Instagram", href: instagramUrl, Icon: InstagramIcon },

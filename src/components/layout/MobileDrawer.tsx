@@ -4,11 +4,19 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChatIcon, ChevronDownIcon, CloseIcon, SearchIcon } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
-import { categories, categoryHref, mainMenu } from "@/lib/navigation";
+import { type NavCategory, categoryHref, mainMenu } from "@/lib/navigation";
 import { whatsappUrl } from "@/lib/site";
 
 // Menu samping untuk HP (mobile-belanja/02-menu-drawer).
-export function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function MobileDrawer({
+  open,
+  onClose,
+  categories,
+}: {
+  open: boolean;
+  onClose: () => void;
+  categories: NavCategory[];
+}) {
   const [koleksiOpen, setKoleksiOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 
