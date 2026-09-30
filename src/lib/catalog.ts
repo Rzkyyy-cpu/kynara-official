@@ -159,6 +159,29 @@ export async function getReviewSummary(productId: string) {
   return { count, average, distribution };
 }
 
+// Testimoni beranda: ulasan asli dari pembeli (rating 4–5 dan ada teksnya), terbaru dulu.
+// reviewer_name sudah disingkat oleh database ("Nadia A."), jadi aman ditampilkan publik.
+export async function getTestimonials(limit = 4) {
+  const { data, error } = await createPublicClient()
+    .from("reviews")
+    .select("id, rating, body, reviewer_name, products!inner(name, slug)")
+    .gte("rating", 4)
+    .neq("body", "")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) fail("testimoni", error);
+
+  return data.map((r) => ({
+    id: r.id,
+    rating: r.rating,
+    text: r.body,
+    name: r.reviewer_name,
+    product: r.products.name,
+    href: `/produk/${r.products.slug}`,
+  }));
+}
+export type Testimonial = Awaited<ReturnType<typeof getTestimonials>>[number];
+
 // "Cocok dipadukan dengan": produk lain di kategori yang sama, ditambah produk terlaris bila kurang
 export async function getRelatedProducts(productId: string, categoryId: string, limit = 4) {
   const supabase = createPublicClient();

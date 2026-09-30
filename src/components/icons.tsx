@@ -231,3 +231,41 @@ export const LockIcon = (p: IconProps) => (
     <path d="M8 11V8a4 4 0 0 1 8 0v3" />
   </Svg>
 );
+
+// Ikon seksi "Tentang kynara" di beranda
+export const LeafIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M5 19c0-8 5-14 14-14 0 9-6 14-14 14z" />
+    <path d="M5 19 13 11" />
+  </Svg>
+);
+
+export const ScissorsIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="6" cy="6" r="2.5" />
+    <circle cx="6" cy="18" r="2.5" />
+    <path d="M8 7.5 20 17M8 16.5 20 7" />
+  </Svg>
+);
+
+export const RulerIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="3" y="8" width="18" height="8" rx="1.5" />
+    <path d="M7 8v3M11 8v4M15 8v3M19 8v2" />
+  </Svg>
+);
+
+export const TruckIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7" />
+    <circle cx="7" cy="17.5" r="1.8" />
+    <circle cx="17" cy="17.5" r="1.8" />
+  </Svg>
+);
+
+// Bintang terisi (testimoni)
+export const StarIcon = ({ size = 16, className }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+    <path d="m12 3.5 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" />
+  </svg>
+);

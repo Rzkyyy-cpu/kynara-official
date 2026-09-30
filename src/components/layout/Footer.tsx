@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ChatIcon, ClockIcon, InstagramIcon, TikTokIcon, WhatsAppIcon } from "@/components/icons";
 import { Container } from "@/components/ui/Container";
 import { type NavCategory, categoryHref, helpLinks } from "@/lib/navigation";
-import { instagramUrl, site, tiktokUrl, whatsappUrl } from "@/lib/site";
+import { instagramUrl, site, tiktokUrl, whatsappDisplay, whatsappUrl } from "@/lib/site";
 
 // Footer satu komponen untuk HP & desktop.
 // HP (footer-mobile): brand -> hubungi kami -> kebijakan retur -> 2 kolom link.
@@ -73,7 +73,7 @@ export function Footer({ categories }: { categories: NavCategory[] }) {
               rel="noopener noreferrer"
               className="flex min-h-11 items-center gap-3 rounded-input bg-[rgba(247,242,234,0.08)] px-3.5 text-sm font-semibold text-bg lg:min-h-0 lg:gap-2.5 lg:bg-transparent lg:px-0 lg:font-normal lg:text-footer-ink"
             >
-              <ChatIcon size={18} /> WhatsApp {site.whatsapp ?? "[NOMOR WHATSAPP]"}
+              <ChatIcon size={18} /> WhatsApp {whatsappDisplay}
             </a>
             <span className="flex min-h-8 items-center gap-3 px-3.5 text-sm lg:min-h-0 lg:gap-2.5 lg:px-0">
               <InstagramIcon size={18} /> Instagram @{site.instagram ?? "[USERNAME]"}

@@ -39,6 +39,8 @@
   --color-error-bg: #fbe3e8;
   --color-error-field: #a33a55; /* border & pesan error di bawah input (form akun) */
   --color-admin-bg: #faf1f1;
+  --color-table-head: #f7ecec; /* kepala tabel panduan bahan */
+  --color-star: #e8a3ac; /* bintang testimoni */
 
   /* Footer (latar slate-900) */
   --color-footer-ink: #f2ede4;

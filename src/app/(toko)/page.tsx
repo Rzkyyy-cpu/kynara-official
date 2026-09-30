@@ -1,43 +1,24 @@
 import Link from "next/link";
+import { AboutSection } from "@/components/home/AboutSection";
+import { MaterialGuide } from "@/components/home/MaterialGuide";
+import { SectionHeader } from "@/components/home/SectionHeader";
+import { Testimonials } from "@/components/home/Testimonials";
 import { ArrowRightIcon, PlaceholderFigure } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { ProductCard } from "@/components/ui/ProductCard";
-import { getCategories, getLatestProducts } from "@/lib/catalog";
+import { getCategories, getLatestProducts, getTestimonials } from "@/lib/catalog";
 import { categoryHref } from "@/lib/navigation";
 
 // Warna pengganti foto kategori (dari desain beranda) selama foto asli belum diunggah
 const CATEGORY_TONES = ["#D9C7B0", "#B9C4B2", "#8E735E", "#D9A48C", "#6B6660", "#9AA9B5"];
 
-function SectionHeader({
-  eyebrow,
-  title,
-  link,
-}: {
-  eyebrow: string;
-  title: string;
-  link?: { href: string; label: string };
-}) {
-  return (
-    <div className="flex items-end justify-between gap-4">
-      <div className="flex flex-col gap-2">
-        <span className="text-eyebrow font-semibold text-slate-700 uppercase">{eyebrow}</span>
-        <h2 className="font-serif text-section font-medium lg:text-section-lg">{title}</h2>
-      </div>
-      {link && (
-        <Link
-          href={link.href}
-          className="flex shrink-0 items-center gap-1.5 pb-1 text-sm font-semibold text-slate-700 hover:underline"
-        >
-          {link.label} <ArrowRightIcon size={16} />
-        </Link>
-      )}
-    </div>
-  );
-}
-
 export default async function HomePage() {
-  const [categories, latest] = await Promise.all([getCategories(), getLatestProducts(8)]);
+  const [categories, latest, testimonials] = await Promise.all([
+    getCategories(),
+    getLatestProducts(8),
+    getTestimonials(4),
+  ]);
   // Desain: maksimal 6 kategori tampil di beranda (diatur admin lewat kolom show_on_home)
   const homeCategories = categories.filter((c) => c.show_on_home).slice(0, 6);
 
@@ -105,6 +86,44 @@ export default async function HomePage() {
           Lihat semua produk
         </Button>
       </Container>
+
+      {/* ---------- Tentang kynara ---------- */}
+      <AboutSection />
+
+      {/* ---------- Panduan bahan ---------- */}
+      <Container as="section" className="flex flex-col gap-5 lg:gap-8">
+        <SectionHeader
+          eyebrow="Panduan bahan"
+          title={
+            <>
+              <span className="lg:hidden">Pilih bahan yang pas</span>
+              <span className="hidden lg:inline">Pilih bahan sesuai kebutuhanmu</span>
+            </>
+          }
+          aside={
+            <p className="hidden max-w-[380px] text-[15px]/6 text-muted lg:block">
+              Setiap bahan punya karakter sendiri. Bandingkan singkat di sini sebelum memilih.
+            </p>
+          }
+        />
+        <p className="-mt-3 text-sm/[22px] text-muted lg:hidden">Geser untuk membandingkan karakter tiap bahan.</p>
+        <MaterialGuide />
+      </Container>
+
+      {/* ---------- Testimoni (hanya tampil kalau sudah ada ulasan asli) ---------- */}
+      {testimonials.length > 0 && (
+        <Container as="section" className="flex flex-col gap-5 lg:gap-8">
+          <SectionHeader
+            eyebrow="Testimoni"
+            title={
+              <>
+                Kata mereka<span className="hidden lg:inline"> yang sudah memakai</span>
+              </>
+            }
+          />
+          <Testimonials items={testimonials} />
+        </Container>
+      )}
     </div>
   );
 }
