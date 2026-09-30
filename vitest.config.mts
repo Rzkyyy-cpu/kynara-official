@@ -11,5 +11,6 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.test.ts"],
+    exclude: ["src/**/*.db.test.ts"], // tes database dijalankan terpisah: npm run test:db
   },
 });

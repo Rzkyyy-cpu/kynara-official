@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Avatar } from "@/components/account/AccountHeader";
 import { LogoutButton, TileNav } from "@/components/account/AccountNav";
+import { OrderCard } from "@/components/account/OrderCard";
 import { Alert } from "@/components/form/Alert";
 import { BoxIcon } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 import { getProfile } from "@/lib/account";
 import { requireUser } from "@/lib/auth";
 import { initials } from "@/lib/format";
+import { type OrderStatus, getMyOrders } from "@/lib/orders";
 
 export const metadata: Metadata = { title: "Riwayat pesanan — kynara" };
 
@@ -21,12 +23,14 @@ const TABS = [
   { label: "Dibatalkan", value: "dibatalkan" },
 ];
 
-// SEMENTARA: pesanan baru bisa dibuat di Fase 4 (checkout), jadi daftar ini masih selalu kosong.
 export default async function PesananPage({ searchParams }: PageProps<"/akun/pesanan">) {
   const sp = await searchParams;
   const status = TABS.some((t) => t.value === sp.status) ? (sp.status as string) : "";
   const user = await requireUser("/akun/pesanan");
-  const profile = await getProfile(user.id);
+  const [profile, orders] = await Promise.all([
+    getProfile(user.id),
+    getMyOrders(user.id, (status || undefined) as OrderStatus | undefined),
+  ]);
 
   const tabHref = (value: string) => (value ? `/akun/pesanan?status=${value}` : "/akun/pesanan");
 
@@ -76,6 +80,13 @@ export default async function PesananPage({ searchParams }: PageProps<"/akun/pes
           })}
         </nav>
 
+        {orders.length > 0 ? (
+          <div className="flex flex-col gap-3 lg:gap-6">
+            {orders.map((o) => (
+              <OrderCard key={o.id} order={o} />
+            ))}
+          </div>
+        ) : (
         <div className="flex flex-col items-center gap-2.5 rounded-2xl border border-line bg-paper px-5 py-10 text-center lg:gap-3 lg:px-10 lg:py-16">
           <span className="flex size-16 items-center justify-center rounded-full bg-sky-tint text-slate-700 lg:size-[72px]">
             <BoxIcon size={30} />
@@ -90,6 +101,7 @@ export default async function PesananPage({ searchParams }: PageProps<"/akun/pes
             Mulai Belanja
           </Button>
         </div>
+        )}
       </section>
 
       <LogoutButton className="h-12 w-full rounded-full border border-line-strong text-[15px] font-semibold text-error lg:hidden">

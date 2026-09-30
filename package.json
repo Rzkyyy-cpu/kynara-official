@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts",
     "test": "vitest run",
+    "test:db": "vitest run --config vitest.db.config.mts",
     "test:watch": "vitest"
   },
   "dependencies": {

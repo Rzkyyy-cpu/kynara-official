@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { useCart } from "@/components/cart/CartProvider";
 import { ChatIcon, PlaceholderFigure } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 import { WishlistButton } from "@/components/ui/WishlistButton";
@@ -44,7 +46,9 @@ export function ProductView({
   const [selected, setSelected] = useState(() => initialVariant(variants));
   const [qty, setQty] = useState(1);
   const [photo, setPhoto] = useState(0);
-  const [notice, setNotice] = useState(false);
+  const cart = useCart();
+  const [adding, setAdding] = useState(false);
+  const [notice, setNotice] = useState<{ tone: "ok" | "warn"; text: string } | null>(null);
 
   const colors = colorOptions(variants);
   const sizes = sizeNames(variants);
@@ -58,6 +62,20 @@ export function ProductView({
         .slice(0, 5)
         .map((tone) => ({ tone }));
   const slide = slides[Math.min(photo, slides.length - 1)];
+
+  const addToCart = async () => {
+    if (!selected) return;
+    setAdding(true);
+    const res = await cart.add(selected.id, qty, selected.stock);
+    setAdding(false);
+    setNotice(
+      res === "added"
+        ? { tone: "ok", text: `${qty} pcs masuk ke keranjang.` }
+        : res === "full"
+          ? { tone: "warn", text: "Jumlah di keranjang sudah mencapai stok yang tersedia." }
+          : { tone: "warn", text: "Gagal menambahkan ke keranjang. Coba lagi, ya." },
+    );
+  };
 
   const pickColor = (color: string) => {
     const v = variantForColor(variants, color, selected?.size_name ?? sizes[0]);
@@ -246,15 +264,24 @@ export function ProductView({
               +
             </button>
           </div>
-          <Button className="flex-1" disabled={stock <= 0} onClick={() => setNotice(true)}>
+          <Button className="flex-1" disabled={stock <= 0} loading={adding} onClick={addToCart}>
             {stock <= 0 ? "Stok habis" : "Tambah ke Keranjang"}
           </Button>
           <WishlistButton productId={productId} productName={name} variant="detail" />
         </div>
-        {/* SEMENTARA: keranjang dibuat di Fase 4 */}
         {notice && (
-          <p role="status" className="rounded-input bg-sky-tint px-4 py-3 text-sm text-slate-900">
-            Keranjang belanja sedang disiapkan. Sementara ini, pesan lewat WhatsApp dulu, ya.
+          <p
+            role="status"
+            className={`flex flex-wrap items-center justify-between gap-2 rounded-input px-4 py-3 text-sm ${
+              notice.tone === "ok" ? "bg-sky-tint text-slate-900" : "bg-error-bg text-error"
+            }`}
+          >
+            {notice.text}
+            {notice.tone === "ok" && (
+              <Link href="/keranjang" className="font-semibold text-slate-700 underline">
+                Lihat keranjang
+              </Link>
+            )}
           </p>
         )}
 

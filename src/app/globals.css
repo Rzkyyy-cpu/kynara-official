@@ -29,6 +29,7 @@
   --color-paper: #ffffff;
   --color-line: #efe1e2;
   --color-line-strong: #dccbcd; /* border input & tombol outline */
+  --color-line-dashed: #c9b7ba; /* lingkaran langkah checkout & tombol "alamat baru" bergaris putus */
   --color-ink: #2b2b2b;
   --color-ink-soft: #4a4650; /* menu navbar tidak aktif */
   --color-muted: #5e5a62;

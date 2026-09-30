@@ -13,6 +13,8 @@ export const LIMITS = {
   register: { max: 5, windowSeconds: 60 * 60 },
   resetEmail: { max: 3, windowSeconds: 60 * 60 }, // kirim email reset per email
   changePassword: { max: 5, windowSeconds: 15 * 60 },
+  checkout: { max: 10, windowSeconds: 10 * 60 }, // buat pesanan per user
+  shippingQuote: { max: 30, windowSeconds: 10 * 60 }, // cek ongkir per user (Fase 6 memakai kuota API)
 } as const;
 
 export async function clientIp(): Promise<string> {

@@ -218,3 +218,16 @@ export const PlaceholderFigure = ({ className }: { className?: string }) => (
     />
   </svg>
 );
+
+export const TrashIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13" />
+  </Svg>
+);
+
+export const LockIcon = (p: IconProps) => (
+  <Svg strokeWidth={2} {...p}>
+    <rect x="5" y="11" width="14" height="9" rx="2" />
+    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+  </Svg>
+);

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/components/cart/CartProvider";
 import { BagIcon, GridIcon, HomeIcon, UserIcon } from "@/components/icons";
 
 // Navigasi bawah untuk HP. Hanya pelengkap: menu lengkap tetap ada di navbar atas.
@@ -12,8 +13,9 @@ const items = [
   { label: "Akun", href: "/akun", Icon: UserIcon },
 ];
 
-export function BottomNav({ cartCount }: { cartCount: number }) {
+export function BottomNav() {
   const pathname = usePathname();
+  const { count: cartCount } = useCart();
 
   return (
     <nav

@@ -19,6 +19,3 @@ export const helpLinks = [
   { label: "Kebijakan Retur", href: "/kebijakan-retur" },
   { label: "Pertanyaan Umum", href: "/panduan#faq" },
 ] as const;
-
-// SEMENTARA: angka contoh untuk mengecek tampilan badge. Diganti isi keranjang asli di Fase 4.
-export const DEMO_CART_COUNT = 3;

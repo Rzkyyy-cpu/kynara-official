@@ -660,6 +660,17 @@ export type Database = {
         Args: { p_key: string; p_max: number; p_window_seconds: number }
         Returns: boolean
       }
+      create_order: {
+        Args: {
+          p_courier: string
+          p_courier_service: string
+          p_expected_total?: number
+          p_shipping_address: Json
+          p_shipping_cost: number
+          p_user_id: string
+        }
+        Returns: Json
+      }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {

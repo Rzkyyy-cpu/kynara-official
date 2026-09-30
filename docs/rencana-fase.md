@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -55,7 +55,7 @@ Jelaskan alur login dengan analogi sederhana sebelum menulis kode.
 - Tambah kolom nama tampilan di `reviews`, karena `profiles` dikunci RLS dan nama pengulas tidak bisa dibaca publik.
 - **Siapkan Vitest** (library tes) di fase ini, untuk validasi form. Fase 4 dan 5 memakainya untuk tes wajib.
 
-## Fase 4 — Keranjang & checkout
+## Fase 4 — Keranjang & checkout ✅
 
 1. Keranjang: tamu memakai localStorage, user login memakai tabel carts di database. Saat tamu login, gabungkan keduanya.
 2. Halaman Keranjang: ubah jumlah, hapus item, ringkasan harga, peringatan kalau stok berubah.
@@ -73,6 +73,11 @@ Setelah selesai, jelaskan kenapa harga tidak boleh dihitung di browser.
 - **Rate limit checkout** dipasang di fase ini.
 - **Tes pengurangan stok** butuh database sungguhan. Karena tidak memakai Docker, buat **project Supabase kedua (gratis) khusus tes**, supaya tes tidak pernah menyentuh data production.
 - Kolom "Kode voucher" di desain belum masuk script, jadi ditampilkan nonaktif atau disembunyikan dulu.
+
+Catatan pelaksanaan:
+- Project Supabase tes belum dibuat, jadi `npm run test:db` sementara memakai project utama (data berawalan `zz-tes`, dihapus lagi di akhir tes). **Sebelum toko jualan sungguhan, isi `TEST_SUPABASE_*` di `.env.local` dengan project khusus tes.**
+- Langkah 3 checkout berupa Konfirmasi. Pilihan metode pembayaran diputuskan di Fase 5 (daftar sesuai desain atau langsung popup Snap).
+- Voucher, asuransi pengiriman, dan "Catatan untuk penjual" disembunyikan karena belum masuk script.
 
 ## Fase 4B — Halaman statis & deploy awal *(tambahan)*
 
