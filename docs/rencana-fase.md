@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -79,7 +79,7 @@ Catatan pelaksanaan:
 - Langkah 3 checkout berupa Konfirmasi. Pilihan metode pembayaran diputuskan di Fase 5 (daftar sesuai desain atau langsung popup Snap).
 - Voucher, asuransi pengiriman, dan "Catatan untuk penjual" disembunyikan karena belum masuk script.
 
-## Fase 4B — Halaman statis & deploy awal *(tambahan)*
+## Fase 4B — Halaman statis & deploy awal *(tambahan)* ✅
 
 Bukan ketentuan baru, tapi langkah yang belum tercantum di script. Dibutuhkan portofolio dan Fase 5.
 1. Halaman Panduan, Tentang Kami, Kebijakan Retur, dan seksi statis beranda (Tentang, Panduan bahan, Testimoni), supaya tidak ada link 404.
@@ -87,6 +87,12 @@ Bukan ketentuan baru, tapi langkah yang belum tercantum di script. Dibutuhkan po
 3. Daftarkan domain Vercel di Supabase Auth (redirect URL) dan Google OAuth.
 
 Alasannya: webhook Midtrans di Fase 5 butuh URL publik. Dengan deploy duluan, webhook bisa diuji langsung di URL Vercel, sedangkan tunnel lokal jadi cadangan. Repo publik juga sudah menampilkan demo yang bisa dibuka.
+
+Catatan pelaksanaan:
+- Demo online: **https://kynaraofficial.vercel.app** (Vercel Hobby, deploy otomatis dari branch `main`). Langkah lengkap di `docs/deploy.md`.
+- Testimoni beranda diambil dari ulasan asli (rating 4–5), dan seksinya disembunyikan selama belum ada ulasan.
+- Cerita brand, kebijakan retur, syarat & ketentuan, dan kebijakan privasi masih **draf** (`src/lib/content.ts` dan halamannya). Tinjau sebelum jualan sungguhan.
+- Vercel Hobby hanya untuk non-komersial. Pindah paket atau hosting sebelum toko jualan sungguhan.
 
 ## Fase 5 — Pembayaran Midtrans
 
