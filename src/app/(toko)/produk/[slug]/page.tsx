@@ -65,6 +65,7 @@ export default async function ProductPage({ params }: PageProps<"/produk/[slug]"
         />
 
         <ProductView
+          productId={product.id}
           name={product.name}
           material={product.material}
           isNew={product.isNew}

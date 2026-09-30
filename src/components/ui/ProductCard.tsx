@@ -7,6 +7,7 @@ import { formatRupiah } from "@/lib/format";
 // Kartu produk sesuai design-handoff/source/_komponen/kartu-produk.html.
 
 export type ProductCardData = {
+  id: string; // id produk, dipakai tombol wishlist
   href: string;
   name: string;
   price: number;
@@ -18,7 +19,7 @@ export type ProductCardData = {
 };
 
 export function ProductCard({ product }: { product: ProductCardData }) {
-  const { href, name, price, material, tag, colors, imageUrl, tone = "#D9C7B0" } = product;
+  const { id, href, name, price, material, tag, colors, imageUrl, tone = "#D9C7B0" } = product;
 
   return (
     <article className="relative flex flex-col gap-2.5">
@@ -73,7 +74,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         </ul>
       )}
 
-      <WishlistButton productName={name} />
+      <WishlistButton productId={id} productName={name} />
     </article>
   );
 }

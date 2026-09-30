@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ChatIcon, ChevronDownIcon, CloseIcon, SearchIcon } from "@/components/icons";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { ChatIcon, ChevronDownIcon, CloseIcon, SearchIcon, UserIcon } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 import { type NavCategory, categoryHref, mainMenu } from "@/lib/navigation";
 import { whatsappUrl } from "@/lib/site";
@@ -18,6 +19,7 @@ export function MobileDrawer({
   categories: NavCategory[];
 }) {
   const [koleksiOpen, setKoleksiOpen] = useState(false);
+  const { user, ready } = useAuth();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -112,14 +114,27 @@ export function MobileDrawer({
         </nav>
 
         <div className="mt-auto flex flex-col gap-3 border-t border-line px-5 pt-4 pb-5">
-          <div className="grid grid-cols-2 gap-2.5">
-            <Button href="/masuk" variant="outline" size="md" onClick={onClose}>
-              Masuk
-            </Button>
-            <Button href="/daftar" size="md" onClick={onClose}>
-              Daftar
-            </Button>
-          </div>
+          {/* Sudah login: pintasan ke akun. Belum: tombol Masuk & Daftar. Selama status belum diketahui, kosong (tanpa kedip). */}
+          {user ? (
+            <Link href="/akun" onClick={onClose} className="flex min-h-12 items-center gap-3 rounded-input bg-bg px-3.5">
+              <UserIcon size={20} />
+              <span className="flex min-w-0 flex-col">
+                <span className="truncate text-[15px] font-semibold">{user.name || "Akun saya"}</span>
+                <span className="truncate text-xs text-muted">{user.email}</span>
+              </span>
+            </Link>
+          ) : ready ? (
+            <div className="grid grid-cols-2 gap-2.5">
+              <Button href="/masuk" variant="outline" size="md" onClick={onClose}>
+                Masuk
+              </Button>
+              <Button href="/daftar" size="md" onClick={onClose}>
+                Daftar
+              </Button>
+            </div>
+          ) : (
+            <div className="h-12" />
+          )}
           <a
             href={whatsappUrl}
             target="_blank"

@@ -128,6 +128,81 @@ export const ClockIcon = (p: IconProps) => (
   </Svg>
 );
 
+// ---------- Ikon halaman akun & form (desktop/mobile-akun-checkout) ----------
+
+export const EyeIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </Svg>
+);
+
+export const EyeOffIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+    <circle cx="12" cy="12" r="3" />
+    <path d="M4 4l16 16" />
+  </Svg>
+);
+
+export const CheckIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.8} {...p}>
+    <path d="m5 12 5 5 9-10" />
+  </Svg>
+);
+
+export const AlertIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.7} {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 8v5M12 16h.01" />
+  </Svg>
+);
+
+export const BoxIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 8 12 4l8 4v8l-8 4-8-4z" />
+    <path d="M4 8l8 4 8-4M12 12v8" />
+  </Svg>
+);
+
+export const PinIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z" />
+    <circle cx="12" cy="10" r="2.2" />
+  </Svg>
+);
+
+export const LogoutIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M15 4h4v16h-4M10 16l-4-4 4-4M6 12h10" />
+  </Svg>
+);
+
+export const PlusIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.8} {...p}>
+    <path d="M12 5v14M5 12h14" />
+  </Svg>
+);
+
+export const ChevronLeftIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.7} {...p}>
+    <path d="m15 6-6 6 6 6" />
+  </Svg>
+);
+
+export const ChevronRightIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.8} {...p}>
+    <path d="m9 6 6 6-6 6" />
+  </Svg>
+);
+
+export const MailIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.5} {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="m3 7 9 6 9-6" />
+  </Svg>
+);
+
 // Siluet pengganti foto produk (dipakai selama foto asli belum ada)
 export const PlaceholderFigure = ({ className }: { className?: string }) => (
   <svg

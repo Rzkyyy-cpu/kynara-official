@@ -36,6 +36,7 @@
   --color-error: #8c2f48;
   --color-stock-low: #9a3f58; /* teks "Sisa N pcs, segera habis" */
   --color-error-bg: #fbe3e8;
+  --color-error-field: #a33a55; /* border & pesan error di bawah input (form akun) */
   --color-admin-bg: #faf1f1;
 
   /* Footer (latar slate-900) */

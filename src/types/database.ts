@@ -26,6 +26,7 @@ export type Database = {
           phone: string
           postal_code: string
           province: string
+          rajaongkir_destination_id: string | null
           recipient_name: string
           street: string
           updated_at: string
@@ -42,6 +43,7 @@ export type Database = {
           phone: string
           postal_code: string
           province: string
+          rajaongkir_destination_id?: string | null
           recipient_name: string
           street: string
           updated_at?: string
@@ -58,6 +60,7 @@ export type Database = {
           phone?: string
           postal_code?: string
           province?: string
+          rajaongkir_destination_id?: string | null
           recipient_name?: string
           street?: string
           updated_at?: string
@@ -504,6 +507,24 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          hits: number
+          key: string
+          window_start: string
+        }
+        Insert: {
+          hits?: number
+          key: string
+          window_start?: string
+        }
+        Update: {
+          hits?: number
+          key?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           body: string
@@ -511,6 +532,7 @@ export type Database = {
           id: string
           product_id: string
           rating: number
+          reviewer_name: string
           updated_at: string
           user_id: string
           variant_label: string | null
@@ -521,6 +543,7 @@ export type Database = {
           id?: string
           product_id: string
           rating: number
+          reviewer_name?: string
           updated_at?: string
           user_id: string
           variant_label?: string | null
@@ -531,6 +554,7 @@ export type Database = {
           id?: string
           product_id?: string
           rating?: number
+          reviewer_name?: string
           updated_at?: string
           user_id?: string
           variant_label?: string | null
@@ -632,6 +656,10 @@ export type Database = {
       }
     }
     Functions: {
+      check_rate_limit: {
+        Args: { p_key: string; p_max: number; p_window_seconds: number }
+        Returns: boolean
+      }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {

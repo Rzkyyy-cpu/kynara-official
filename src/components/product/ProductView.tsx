@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ChatIcon, PlaceholderFigure } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
+import { WishlistButton } from "@/components/ui/WishlistButton";
 import { formatRupiah } from "@/lib/format";
 import { whatsappUrl } from "@/lib/site";
 import {
@@ -22,6 +23,7 @@ type Img = { url: string; alt: string; color_name: string | null };
 // Berjalan di browser karena pilihan warna/ukuran/jumlah berubah saat diklik.
 // Konten yang tidak interaktif (deskripsi, dll.) dikirim dari server lewat "children".
 export function ProductView({
+  productId,
   name,
   material,
   isNew,
@@ -30,6 +32,7 @@ export function ProductView({
   rating,
   children,
 }: {
+  productId: string;
   name: string;
   material: string;
   isNew: boolean;
@@ -246,6 +249,7 @@ export function ProductView({
           <Button className="flex-1" disabled={stock <= 0} onClick={() => setNotice(true)}>
             {stock <= 0 ? "Stok habis" : "Tambah ke Keranjang"}
           </Button>
+          <WishlistButton productId={productId} productName={name} variant="detail" />
         </div>
         {/* SEMENTARA: keranjang dibuat di Fase 4 */}
         {notice && (

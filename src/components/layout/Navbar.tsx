@@ -6,12 +6,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRightIcon, BagIcon, ChevronDownIcon, MenuIcon, SearchIcon, UserIcon } from "@/components/icons";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { MobileDrawer } from "@/components/layout/MobileDrawer";
 import { Container } from "@/components/ui/Container";
 import { type NavCategory, categoryHref, mainMenu } from "@/lib/navigation";
 
 export function Navbar({ cartCount, categories }: { cartCount: number; categories: NavCategory[] }) {
   const pathname = usePathname();
+  const { user } = useAuth();
   const [koleksiOpen, setKoleksiOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -88,8 +90,8 @@ export function Navbar({ cartCount, categories }: { cartCount: number; categorie
             <SearchIcon />
           </Link>
           <Link
-            href="/akun"
-            aria-label="Akun saya"
+            href={user ? "/akun" : "/masuk"}
+            aria-label={user ? "Akun saya" : "Masuk"}
             className="hidden size-11 items-center justify-center rounded-full lg:flex"
           >
             <UserIcon />

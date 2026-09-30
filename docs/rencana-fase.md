@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -35,7 +35,7 @@ Catatan pelaksanaan: kolom `weight_gram` (berat produk) sudah dibuat di fase ini
 
 ---
 
-## Fase 3 — Auth & akun
+## Fase 3 — Auth & akun ✅
 
 1. Auth dengan Supabase: daftar, login email/password, login Google, lupa password.
 2. Buat trigger agar profil otomatis dibuat saat user daftar, dengan role default "user".

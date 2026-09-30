@@ -15,9 +15,10 @@ export type Color = { name: string; hex: string };
 const CARD_COLUMNS = "id, slug, name, material, min_price, colors, is_new, is_low_stock, image_url";
 
 // Baris view -> data untuk komponen ProductCard
-export function toCardData(row: Pick<CardRow, "slug" | "name" | "material" | "min_price" | "colors" | "is_new" | "is_low_stock" | "image_url">): ProductCardData {
+export function toCardData(row: Pick<CardRow, "id" | "slug" | "name" | "material" | "min_price" | "colors" | "is_new" | "is_low_stock" | "image_url">): ProductCardData {
   const colors = (row.colors as Color[] | null) ?? [];
   return {
+    id: row.id ?? "",
     href: `/produk/${row.slug}`,
     name: row.name ?? "",
     price: row.min_price ?? 0,
