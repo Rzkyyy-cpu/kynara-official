@@ -21,6 +21,7 @@ Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun sendiri oleh 
 - Semua halaman mobile-first.
 
 ## Aturan kerja
+- Rencana dan status fase ada di docs/rencana-fase.md. Alat bantu: skill `alur-fase` (alur tiap fase), skill `migration-supabase` (perubahan database), agent `qa-reviewer` (review akhir fase). Hook di .claude/settings.json memblokir edit ke design-handoff/ dan .env*, dan menjalankan ESLint setiap file diubah.
 - Kerjakan per fase dan berhenti untuk konfirmasi di akhir tiap fase.
 - Sebelum menulis kode, tampilkan rencana singkat: file apa yang dibuat atau diubah.
 - Jelaskan konsep baru dengan bahasa sederhana. Beri komentar singkat di kode yang penting.
