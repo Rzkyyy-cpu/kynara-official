@@ -42,15 +42,25 @@ export const ORDER_HEADLINE: Record<string, [string, string, string, string]> = 
   dikirim: ["Dikirim", "Paket sedang dalam perjalanan", "Lacak paket dengan nomor resi di bawah", "text-slate-900"],
   selesai: ["Selesai", "Pesanan sudah diterima", "Terima kasih sudah belanja di kynara", "text-status-selesai"],
   kedaluwarsa: ["Kedaluwarsa", "Batas waktu pembayaran habis", "Stok sudah kami lepas lagi. Silakan pesan ulang kalau masih berminat", "text-status-batal"],
-  dibatalkan: ["Dibatalkan", "Pesanan dibatalkan", "Pembayaran dibatalkan atau ditolak. Silakan pesan ulang kalau masih berminat", "text-status-batal"],
+  dibatalkan: ["Dibatalkan", "Pesanan dibatalkan", "Stok sudah kami lepas lagi. Silakan pesan ulang kalau masih berminat", "text-status-batal"],
 };
 
 const FLOW = ["menunggu_pembayaran", "diproses", "dikirim", "selesai"] as const;
 
+// Catatan riwayat yang BUKAN perubahan status (hanya penanda masalah bayar), dilewati timeline.
+// Catatan lain (DIBATALKAN_ADMIN, PERLU_REFUND) menempel di baris perubahan status yang asli.
+const ISSUE_NOTES: Record<string, PaymentIssue> = {
+  PEMBAYARAN_TERLAMBAT: "late",
+  PEMBAYARAN_GANDA: "duplicate",
+  PERLU_REFUND: "refund",
+};
+const RESOLVED_NOTE = "MASALAH_BAYAR_DITANGANI";
+const isMarkerRow = (note: string | null) => note === RESOLVED_NOTE || note === "PEMBAYARAN_TERLAMBAT" || note === "PEMBAYARAN_GANDA";
+
 // Menyusun langkah timeline dari status sekarang + riwayat status (waktu tiap perubahan).
 export function orderTimeline(o: TimelineInput): TimelineStep[] {
   const at = (status: string) => {
-    const row = [...o.history].reverse().find((h) => h.status === status && !h.note);
+    const row = [...o.history].reverse().find((h) => h.status === status && !isMarkerRow(h.note));
     return row ? formatDateTime(row.created_at) : null;
   };
   const created = formatDateTime(o.created_at);
@@ -80,11 +90,19 @@ export function orderTimeline(o: TimelineInput): TimelineStep[] {
   });
 }
 
-// Uang masuk tapi pesanan sudah tidak menunggu (dicatat apply_payment_status), perlu ditangani admin:
-//   late      = dibayar setelah pesanan kedaluwarsa/dibatalkan
+// Uang pembeli yang perlu ditangani admin di luar sistem:
+//   late      = dibayar setelah pesanan kedaluwarsa/dibatalkan (dicatat apply_payment_status)
 //   duplicate = dibayar dua kali (mis. VA lama dan QR baru)
-export function paymentIssue(history: TimelineInput["history"]): "late" | "duplicate" | null {
-  if (history.some((h) => h.note === "PEMBAYARAN_TERLAMBAT")) return "late";
-  if (history.some((h) => h.note === "PEMBAYARAN_GANDA")) return "duplicate";
-  return null;
+//   refund    = pesanan lunas dibatalkan admin (dicatat admin_update_order)
+// Masalah dianggap selesai kalau setelahnya ada catatan MASALAH_BAYAR_DITANGANI dari admin.
+export type PaymentIssue = "late" | "duplicate" | "refund";
+
+export function paymentIssue(history: TimelineInput["history"]): PaymentIssue | null {
+  let issue: PaymentIssue | null = null;
+  // Riwayat diurutkan dari lama ke baru; yang terakhir menang
+  for (const h of history) {
+    if (h.note && ISSUE_NOTES[h.note]) issue = ISSUE_NOTES[h.note];
+    else if (h.note === RESOLVED_NOTE) issue = null;
+  }
+  return issue;
 }

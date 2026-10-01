@@ -184,6 +184,20 @@ export const PlusIcon = (p: IconProps) => (
   </Svg>
 );
 
+// ---------- Ikon admin (admin-desktop) ----------
+
+export const DownloadIcon = (p: IconProps) => (
+  <Svg strokeWidth={1.8} {...p}>
+    <path d="M12 5v11M7 11l5 5 5-5M5 20h14" />
+  </Svg>
+);
+
+export const ExternalIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" />
+  </Svg>
+);
+
 export const ChevronLeftIcon = (p: IconProps) => (
   <Svg strokeWidth={1.7} {...p}>
     <path d="m15 6-6 6 6 6" />

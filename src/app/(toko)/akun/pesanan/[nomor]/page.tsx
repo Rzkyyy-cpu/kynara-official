@@ -80,6 +80,11 @@ export default async function DetailPesananPage({ params, searchParams }: PagePr
           mengembalikan kelebihannya.
         </Alert>
       )}
+      {paymentIssue(order.history) === "refund" && (
+        <Alert tone="error">
+          Pesanan ini dibatalkan oleh toko. Pembayaranmu akan dikembalikan, dan tim kami akan menghubungimu lewat WhatsApp.
+        </Alert>
+      )}
 
       {/* Judul: HP = nomor pesanan, desktop = status besar */}
       <div className="flex flex-col lg:hidden">

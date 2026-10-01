@@ -795,6 +795,19 @@ export type Database = {
       }
     }
     Functions: {
+      admin_dashboard: { Args: { p_period?: string }; Returns: Json }
+      admin_resolve_payment_issue: {
+        Args: { p_order_number: string }
+        Returns: undefined
+      }
+      admin_update_order: {
+        Args: {
+          p_order_number: string
+          p_status: Database["public"]["Enums"]["order_status"]
+          p_tracking?: string
+        }
+        Returns: Json
+      }
       apply_payment_status: {
         Args: {
           p_amount: number

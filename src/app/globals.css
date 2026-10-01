@@ -39,6 +39,15 @@
   --color-error-bg: #fbe3e8;
   --color-error-field: #a33a55; /* border & pesan error di bawah input (form akun) */
   --color-admin-bg: #faf1f1;
+  /* Admin (admin-desktop & _komponen/sidebar-admin) */
+  --color-admin-side: #2b3c57; /* latar sidebar */
+  --color-admin-side-ink: #e8eef5; /* teks menu sidebar */
+  --color-admin-thead: #fbefef; /* kepala tabel admin */
+  --color-line-soft: #f4e9ea; /* garis antar baris tabel admin */
+  --color-admin-row-error: #fff5f7; /* baris yang belum lengkap (resi wajib) */
+  --color-stock-critical: #8a3a52; /* "Sisa 2" di ringkasan admin */
+  --color-toast-sub: #d8d2c8; /* teks kedua di toast gelap */
+  --color-toast-check: #b9c4b2;
   --color-table-head: #f7ecec; /* kepala tabel panduan bahan */
   --color-star: #e8a3ac; /* bintang testimoni */
 

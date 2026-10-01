@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7A ✅ · Fase 7B berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -165,6 +165,16 @@ Jelaskan bagaimana saya menjadikan akun saya admin dengan aman.
 - Tabel `banners` belum ada, jadi perlu migration baru, ditambah policy Storage (bucket foto produk: publik baca, admin tulis, batas ukuran dan tipe file di level bucket).
 - Aturan desain "maksimal 6 kategori di beranda" dijaga di database, bukan hanya di form.
 - Angka dashboard dihitung oleh fungsi database khusus admin, supaya data pesanan tidak perlu dikirim semua ke browser.
+
+Catatan pelaksanaan — dibagi dua: **7A** (tugas 1, 2, 4 + Ringkasan/Pesanan) ✅ dan **7B** (tugas 3, 5: Produk, Kategori, Banner) berikutnya.
+- **Tiga lapis penjaga /admin:** `proxy.ts` (login + `is_admin()`), `requireAdmin()` di layout/aksi/route CSV (bukan admin = 404), lalu fungsi database yang mengecek `is_admin()` lagi.
+- **Hak `update status, tracking_number` langsung ke `orders` dicabut.** Semua perubahan lewat RPC `admin_update_order`: menunggu→dibatalkan, diproses→dikirim (resi wajib, 6–40 huruf/angka/strip), diproses→dibatalkan, dikirim→selesai, plus koreksi resi. Admin tidak bisa menandai lunas. Pembatalan mengembalikan stok, menutup VA/QR yang menunggu (juga lewat API cancel Komerce), dan pada pesanan lunas mengurangi `sold_count` serta mencatat `PERLU_REFUND` (keputusan: pesanan lunas boleh dibatalkan, refund manual).
+- Pembayaran terlambat/ganda/refund tampil di detail pesanan admin dan ditutup dengan tombol "Tandai sudah ditangani" (RPC `admin_resolve_payment_issue`, catatan `MASALAH_BAYAR_DITANGANI`). Halaman status pesanan pembeli ikut menampilkan pemberitahuan refund.
+- Ringkasan: periode Hari ini / 7 / 30 hari / Bulan ini (WIB), penjualan = pesanan yang sudah dibayar dihitung dari `paid_at`. Penjualan hari ini dan bulan ini selalu tampil di bawah judul, ditambah baris jumlah pesanan per status. Stok menipis = varian aktif dengan stok ≤ 5.
+- Pesanan: tab status (Dibatalkan = dibatalkan + kedaluwarsa), cari nomor/nama, rentang tanggal, kurir, 20 per halaman, Unduh CSV (aman dari CSV injection), toast dengan link WhatsApp ke pembeli. Checkbox pilih banyak di desain tidak dibuat karena belum ada aksi massal.
+- Desain admin hanya desktop. Di HP sidebar jadi bilah atas dengan menu geser, dan tabel bisa digeser ke samping.
+- Field produk dari desain yang belum ada di database (harga coret, label foto, toggle "Produk terbaru") **dilewati** (keputusan pemilik proyek), tidak masuk 7B.
+- Tes: `admin-orders.db.test.ts` (7 tes, dipanggil sebagai user login sungguhan) dan `admin/admin.test.ts`.
 
 ## Fase 8 — Audit, SEO, performa
 

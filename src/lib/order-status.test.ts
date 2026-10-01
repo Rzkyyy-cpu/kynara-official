@@ -43,4 +43,26 @@ describe("timeline status pesanan", () => {
     expect(paymentIssue([{ status: "diproses", note: "PEMBAYARAN_GANDA", created_at: created }])).toBe("duplicate");
     expect(paymentIssue([])).toBeNull();
   });
+
+  it("refund & masalah yang sudah ditangani admin", () => {
+    const refund = { status: "dibatalkan", note: "PERLU_REFUND", created_at: created };
+    const resolved = { status: "dibatalkan", note: "MASALAH_BAYAR_DITANGANI", created_at: created };
+    expect(paymentIssue([refund])).toBe("refund");
+    expect(paymentIssue([refund, resolved])).toBeNull();
+    // Masalah baru setelah ditangani tetap muncul
+    expect(paymentIssue([refund, resolved, { status: "dibatalkan", note: "PEMBAYARAN_GANDA", created_at: created }])).toBe("duplicate");
+  });
+
+  it("dibatalkan admin: waktu batal tetap tampil di timeline", () => {
+    const steps = orderTimeline({
+      ...base,
+      status: "dibatalkan",
+      history: [
+        { status: "menunggu_pembayaran", note: null, created_at: created },
+        { status: "dibatalkan", note: "DIBATALKAN_ADMIN", created_at: "2026-09-29T07:30:00.000Z" },
+        { status: "dibatalkan", note: "MASALAH_BAYAR_DITANGANI", created_at: "2026-09-30T07:30:00.000Z" },
+      ],
+    });
+    expect(steps[1].time).toBe("29 Sep 2026, 14.30");
+  });
 });
