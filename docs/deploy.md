@@ -20,7 +20,7 @@ Kunci rahasia (environment variable) **tidak ikut ke GitHub**. Kunci itu dititip
 | `SUPABASE_SECRET_KEY` | **ya** | Hanya dibaca server. Jangan pernah diberi awalan `NEXT_PUBLIC_`. |
 | `NEXT_PUBLIC_SITE_URL` | tidak | Isi `https://<nama-project>.vercel.app` (tanpa `/` di akhir). Kalau belum tahu nama domainnya, deploy dulu, lalu isi dan **Redeploy**. |
 
-   Env Midtrans (`MIDTRANS_*`) ditambahkan di Fase 5. `TEST_SUPABASE_*` **tidak perlu** diisi di Vercel.
+   Env pembayaran ada di langkah 4. `TEST_SUPABASE_*` **tidak perlu** diisi di Vercel.
 5. Klik **Deploy**. Tunggu ±2–3 menit, lalu catat domainnya, misalnya `https://kynara-official.vercel.app`.
 
 > Mengubah environment variable **tidak** otomatis memperbarui website. Setelah mengubahnya, buka tab **Deployments → ⋯ → Redeploy**.
@@ -43,13 +43,43 @@ Google Cloud Console → project **Kynara** → **APIs & Services → Credential
 
 Perubahan di Google kadang butuh beberapa menit sebelum berlaku.
 
-## 4. Cek setelah deploy
+## 4. Pembayaran: Komerce Payment API (Fase 5)
+
+**a. Kunci.** Isi di `.env.local` **dan** di Vercel (Settings → Environment Variables), lalu **Redeploy**:
+
+| Nama | Rahasia? | Catatan |
+|---|---|---|
+| `KOMERCE_PAYMENT_API_KEY` | **ya** | Dashboard Komerce (collaborator.komerce.id) → **Developer → Settings → Api Key** → bagian **Payment API**, mode **Sandbox**. Bukan key ongkir. |
+| `KOMERCE_CALLBACK_KEY` | **ya** | Kita buat **sendiri**: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Dikirim ke Komerce di setiap transaksi dan dipakai memeriksa segel callback. Nilai di Vercel dan laptop **boleh sama**. |
+| `KOMERCE_IS_PRODUCTION` | tidak | `false` selama sandbox. |
+
+**b. Callback (webhook).** Tidak perlu didaftarkan di dashboard. Alamat `https://<domain>/api/pembayaran/notifikasi`
+dikirim otomatis di setiap transaksi, beserta kunci segelnya.
+
+**c. Mencoba di laptop (localhost).** Komerce tidak bisa mengetuk `localhost`, jadi callback tidak sampai. Tidak masalah:
+tekan **"Sudah bayar? Cek status"** di halaman pesanan, dan server akan bertanya langsung ke Komerce.
+Kalau ingin menguji callback-nya sendiri dari laptop, buka website lewat tunnel, misalnya
+`npx cloudflared tunnel --url http://localhost:3000` (gratis, tanpa akun), lalu belanja lewat alamat
+`https://….trycloudflare.com` yang muncul. Callback URL otomatis mengikuti alamat itu.
+
+**d. Membayar di sandbox.** Uang sungguhan tidak dipakai. Di halaman pesanan, klik **"Lihat cara bayar"**. Halaman bayar
+sandbox Komerce punya tombol **Simulate Payment**.
+
+**e. Jadwal kedaluwarsa.** Job `kedaluwarsakan-pesanan` (pg_cron, tiap 10 menit) dibuat oleh migration.
+Cek di Supabase → **Integrations → Cron**.
+
+**f. Biaya (per dokumentasi Komerce, cek lagi sebelum jualan).** VA Rp4.440 per transaksi, QRIS 0,99%. Keduanya sudah termasuk PPN
+dan dipotong dari dana yang masuk.
+
+## 5. Cek setelah deploy
 
 - [ ] Beranda, Koleksi, Detail produk, Panduan, Tentang, Kebijakan retur terbuka tanpa error.
 - [ ] Daftar akun baru → link di email mengarah ke domain Vercel → akun aktif.
 - [ ] Masuk dengan email dan dengan Google.
 - [ ] Lupa password → link reset mengarah ke domain Vercel.
-- [ ] Tambah ke keranjang → checkout → pesanan tercipta (status menunggu pembayaran).
+- [ ] Tambah ke keranjang → checkout (pilih BCA VA) → pesanan tercipta dan nomor VA tampil.
+- [ ] "Lihat cara bayar" → Simulate Payment → dalam ±20 detik status berubah jadi Diproses tanpa menekan apa pun (callback sampai).
+- [ ] Coba juga QRIS: QR tampil dan berlaku 5 menit, lalu tombol "Buat QR baru" muncul.
 
 ## Kalau ada masalah
 
@@ -57,5 +87,7 @@ Perubahan di Google kadang butuh beberapa menit sebelum berlaku.
 |---|---|
 | Build gagal "Missing env" | Environment variable belum diisi, atau salah nama. |
 | Login Google error `redirect_uri_mismatch` / origin | Domain belum ditambahkan di Google (langkah 3). |
+| "Kode pembayaran belum berhasil dibuat" | `KOMERCE_PAYMENT_API_KEY` / `KOMERCE_CALLBACK_KEY` kosong atau salah, atau belum Redeploy. Lihat log Vercel (`startPayment:`). |
+| Status tidak berubah sendiri setelah bayar | Callback ditolak: cek log Vercel `signature salah`. Sementara itu, tombol "Sudah bayar? Cek status" tetap bisa dipakai. |
 | Setelah login dilempar ke localhost | Site URL Supabase masih localhost, atau redirect URL Vercel belum didaftarkan (langkah 2). |
 | Halaman error 500 semua | Project Supabase sedang dijeda (lihat catatan di atas). |

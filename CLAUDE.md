@@ -6,7 +6,7 @@ Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun sendiri oleh 
 ## Tech stack
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Baca @AGENTS.md: API Next.js 16 berbeda dari versi lama (contoh: middleware sekarang bernama proxy).
 - Supabase (PostgreSQL, Auth, Storage)
-- Midtrans Snap (sandbox dulu)
+- Komerce Payment API untuk pembayaran: VA + QRIS, sandbox dulu. Akunnya sama dengan RajaOngkir.
 - Zod untuk validasi input
 - Deploy: Vercel + Supabase, semua paket gratis
 
@@ -34,7 +34,7 @@ Toko online kerudung dan fashion muslimah bernama Kynara. Dibangun sendiri oleh 
 ## Aturan keamanan
 - Aktifkan Row Level Security (RLS) di semua tabel Supabase.
 - Harga dan total selalu dihitung ulang di server, jangan percaya angka dari browser.
-- Verifikasi signature webhook Midtrans sebelum mengubah status pesanan.
+- Verifikasi signature webhook (callback) pembayaran sebelum mengubah status pesanan.
 - Kurangi stok secara atomik saat pesanan dibuat, kembalikan stok kalau pembayaran kedaluwarsa.
 - Rate limit pada endpoint login dan checkout.
 - Validasi semua input dengan Zod.

@@ -14,6 +14,7 @@ export const LIMITS = {
   resetEmail: { max: 3, windowSeconds: 60 * 60 }, // kirim email reset per email
   changePassword: { max: 5, windowSeconds: 15 * 60 },
   checkout: { max: 10, windowSeconds: 10 * 60 }, // buat pesanan per user
+  payment: { max: 20, windowSeconds: 10 * 60 }, // buat VA/QR & cek status bayar per user
   shippingQuote: { max: 30, windowSeconds: 10 * 60 }, // cek ongkir per user (Fase 6 memakai kuota API)
 } as const;
 

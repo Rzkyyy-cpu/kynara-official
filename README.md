@@ -18,7 +18,7 @@ It is a portfolio project that is also being built to become a real, working sto
 - **Product page:** gallery, color and size picker with live stock ("Only 3 left", "Sold out for this variant"), and related products.
 - **Responsive layout:** sticky navbar with a category mega-menu, mobile drawer, bottom navigation, and footer.
 
-**Coming next:** sign-up/login (email + Google), address book, wishlist, guest + logged-in cart, 3-step checkout, Midtrans payments, real shipping rates, and an admin dashboard.
+**Coming next:** sign-up/login (email + Google), address book, wishlist, guest + logged-in cart, 3-step checkout, online payments, real shipping rates, and an admin dashboard.
 
 ## Tech stack
 
@@ -27,7 +27,7 @@ It is a portfolio project that is also being built to become a real, working sto
 | Frontend | [Next.js 16](https://nextjs.org) (App Router, Server Components), TypeScript, [Tailwind CSS v4](https://tailwindcss.com) |
 | Backend & data | [Supabase](https://supabase.com): PostgreSQL, Auth, Storage, Row Level Security |
 | Validation | [Zod](https://zod.dev) |
-| Payments | [Midtrans Snap](https://midtrans.com) (sandbox) |
+| Payments | [Komerce Payment API](https://rajaongkir.com/docs/payment-api/getting-started/getting-started): virtual account + QRIS (sandbox) |
 | Hosting | Vercel + Supabase (free tiers) |
 
 No paid libraries. UI icons are inline SVGs taken from the design files.
@@ -40,8 +40,8 @@ These rules are part of the project from day one, not added at the end:
 - **Users cannot promote themselves.** The `role` column is not writable from the browser (column-level privileges).
 - **Prices are never trusted from the browser.** Order totals are recalculated on the server from the database *(checkout: in progress)*.
 - **Atomic stock updates.** Stock is reduced inside one database transaction when an order is created, and returned when a payment expires *(in progress)*.
-- **Verified payment webhooks.** Midtrans notifications are accepted only with a valid signature *(planned)*.
-- **All input validated with Zod**, including URL query parameters, and rate limits on login and checkout *(planned)*.
+- **Verified payment webhooks.** Payment callbacks are accepted only with a valid HMAC-SHA256 signature, and the status is re-checked with the payment API before anything changes.
+- **All input validated with Zod**, including URL query parameters, and rate limits on login and checkout.
 - **Integrity rules in the database:** stock can't go negative, totals must equal subtotal + shipping, and an order can't be marked "shipped" without a tracking number.
 
 ## Project structure
@@ -92,9 +92,9 @@ npm run dev                       # http://localhost:3000
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | No |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key (browser-safe, protected by RLS) | No |
 | `SUPABASE_SECRET_KEY` | Server-only Supabase key (bypasses RLS) | **Yes** |
-| `NEXT_PUBLIC_MIDTRANS_CLIENT_KEY` | Midtrans Snap client key | No |
-| `MIDTRANS_SERVER_KEY` | Midtrans server key | **Yes** |
-| `MIDTRANS_IS_PRODUCTION` | `false` for sandbox | No |
+| `KOMERCE_PAYMENT_API_KEY` | Komerce Payment API key | **Yes** |
+| `KOMERCE_CALLBACK_KEY` | Self-generated secret used to sign payment callbacks (HMAC) | **Yes** |
+| `KOMERCE_IS_PRODUCTION` | `false` for sandbox | No |
 
 Secrets live only in `.env.local` (git-ignored) and in the hosting provider's settings. They are never committed.
 
@@ -111,10 +111,10 @@ Secrets live only in `.env.local` (git-ignored) and in the hosting provider's se
 
 - [x] **Phase 1:** Project setup, design tokens, layout
 - [x] **Phase 2:** Database schema + RLS, seed data, collection & product pages
-- [ ] **Phase 3:** Auth (email, Google, password reset), account pages, address book, wishlist
-- [ ] **Phase 4:** Cart (guest + logged in), 3-step checkout, server-side order creation with atomic stock
-- [ ] **Phase 4B:** Static content pages, first deployment
-- [ ] **Phase 5:** Midtrans payments, verified webhooks, order status timeline
+- [x] **Phase 3:** Auth (email, Google, password reset), account pages, address book, wishlist
+- [x] **Phase 4:** Cart (guest + logged in), 3-step checkout, server-side order creation with atomic stock
+- [x] **Phase 4B:** Static content pages, first deployment
+- [x] **Phase 5:** Online payments (virtual account + QRIS), verified callbacks, order status timeline
 - [ ] **Phase 6:** Real shipping-rate provider with fallback
 - [ ] **Phase 7:** Admin dashboard (products, orders, categories, banners)
 - [ ] **Phase 8:** Security audit, SEO, performance (Lighthouse mobile > 85), accessibility
@@ -151,11 +151,11 @@ Proyek ini adalah portofolio yang sekaligus disiapkan untuk menjadi toko sungguh
 - **Halaman Produk:** galeri, pilihan warna dan ukuran dengan stok langsung ("Sisa 3 pcs", "Habis untuk varian ini"), dan produk terkait.
 - **Layout responsif:** navbar sticky dengan menu kategori, drawer di HP, bottom navigation, dan footer.
 
-**Berikutnya:** daftar/masuk (email + Google), buku alamat, wishlist, keranjang tamu dan user login, checkout 3 langkah, pembayaran Midtrans, ongkir sungguhan, dan dashboard admin.
+**Berikutnya:** daftar/masuk (email + Google), buku alamat, wishlist, keranjang tamu dan user login, checkout 3 langkah, pembayaran online, ongkir sungguhan, dan dashboard admin.
 
 ### Teknologi
 
-Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Supabase (PostgreSQL, Auth, Storage, Row Level Security), Zod, Midtrans Snap (sandbox). Hosting di Vercel + Supabase (paket gratis). Tanpa library berbayar.
+Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Supabase (PostgreSQL, Auth, Storage, Row Level Security), Zod, Komerce Payment API (VA + QRIS, sandbox). Hosting di Vercel + Supabase (paket gratis). Tanpa library berbayar.
 
 ### Keamanan sejak awal
 
@@ -163,8 +163,8 @@ Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Supabase (PostgreSQL, Auth
 - **User tidak bisa menjadikan dirinya admin.** Kolom `role` tidak bisa diubah dari browser.
 - **Harga tidak pernah dipercaya dari browser.** Total pesanan dihitung ulang di server dari database *(checkout: sedang dikerjakan)*.
 - **Pengurangan stok atomik** dalam satu transaksi database, dan stok dikembalikan kalau pembayaran kedaluwarsa *(sedang dikerjakan)*.
-- **Webhook pembayaran terverifikasi.** Notifikasi Midtrans hanya diterima dengan signature yang valid *(direncanakan)*.
-- **Semua input divalidasi Zod**, termasuk parameter URL, ditambah rate limit di login dan checkout *(direncanakan)*.
+- **Webhook pembayaran terverifikasi.** Callback pembayaran hanya diterima dengan signature HMAC-SHA256 yang valid, dan statusnya dicek ulang ke API pembayaran sebelum pesanan diubah.
+- **Semua input divalidasi Zod**, termasuk parameter URL, ditambah rate limit di login dan checkout.
 - **Aturan integritas di database:** stok tidak bisa minus, total harus sama dengan subtotal + ongkir, dan pesanan tidak bisa berstatus "dikirim" tanpa nomor resi.
 
 ### Menjalankan di komputer sendiri
@@ -188,16 +188,16 @@ npx supabase db push --include-seed
 npm run dev                       # http://localhost:3000
 ```
 
-Daftar environment variable ada di tabel versi Inggris di atas. Kunci rahasia (`SUPABASE_SECRET_KEY`, `MIDTRANS_SERVER_KEY`) hanya disimpan di `.env.local` (diabaikan git) dan di pengaturan hosting. Kunci tersebut tidak pernah di-commit.
+Daftar environment variable ada di tabel versi Inggris di atas. Kunci rahasia (`SUPABASE_SECRET_KEY`, `KOMERCE_PAYMENT_API_KEY`, `KOMERCE_CALLBACK_KEY`) hanya disimpan di `.env.local` (diabaikan git) dan di pengaturan hosting. Kunci tersebut tidak pernah di-commit.
 
 ### Roadmap
 
 - [x] **Fase 1:** Setup proyek, token desain, layout
 - [x] **Fase 2:** Skema database + RLS, data contoh, halaman Koleksi & Produk
-- [ ] **Fase 3:** Auth (email, Google, reset password), halaman akun, buku alamat, wishlist
-- [ ] **Fase 4:** Keranjang (tamu + login), checkout 3 langkah, pembuatan pesanan di server dengan stok atomik
-- [ ] **Fase 4B:** Halaman konten statis, deploy pertama
-- [ ] **Fase 5:** Pembayaran Midtrans, webhook terverifikasi, timeline status pesanan
+- [x] **Fase 3:** Auth (email, Google, reset password), halaman akun, buku alamat, wishlist
+- [x] **Fase 4:** Keranjang (tamu + login), checkout 3 langkah, pembuatan pesanan di server dengan stok atomik
+- [x] **Fase 4B:** Halaman konten statis, deploy pertama
+- [x] **Fase 5:** Pembayaran online (VA + QRIS), callback terverifikasi, timeline status pesanan
 - [ ] **Fase 6:** Ongkir dari penyedia sungguhan + cadangan tarif flat
 - [ ] **Fase 7:** Dashboard admin (produk, pesanan, kategori, banner)
 - [ ] **Fase 8:** Audit keamanan, SEO, performa (Lighthouse mobile > 85), aksesibilitas

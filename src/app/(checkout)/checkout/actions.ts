@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getUser } from "@/lib/auth";
+import { getUser, siteOrigin } from "@/lib/auth";
 import {
   type AddressSummary,
   addressSummary,
@@ -10,6 +10,7 @@ import {
   orderErrorMessage,
   resolveCheckoutAddress,
 } from "@/lib/checkout";
+import { startPayment } from "@/lib/payments";
 import { LIMITS, TOO_MANY, checkRateLimit } from "@/lib/rate-limit";
 import { type ShippingRate, ShippingError, findRate, getRates } from "@/lib/shipping";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -60,7 +61,7 @@ export async function quoteShipping(input: CheckoutAddressInput): Promise<QuoteR
   }
 }
 
-// Langkah 3: buat pesanan. Semua dihitung ulang di server; dari browser hanya dipakai
+// Langkah 3: buat pesanan + VA/QR, lalu arahkan ke halaman pesanan untuk membayar. Semua dihitung ulang di server; dari browser hanya dipakai
 // pilihan alamat, id kurir, dan total yang DILIHAT pembeli (untuk memastikan angkanya sama).
 export async function placeOrder(input: PlaceOrderInput): Promise<Fail> {
   const user = await getUser();
@@ -104,5 +105,14 @@ export async function placeOrder(input: PlaceOrderInput): Promise<Fail> {
   const order = data as { order_number: string };
   revalidatePath("/akun/pesanan");
   revalidatePath("/", "layout"); // stok di katalog berubah
-  redirect(`/akun/pesanan/${order.order_number}?baru=1`);
+
+  // Pesanan sudah tersimpan. Langsung buat VA/QR dengan metode yang dipilih.
+  // Kalau gagal (mis. layanan pembayaran gangguan), pembeli bisa mencoba lagi dari halaman pesanan.
+  let ready = false;
+  try {
+    ready = (await startPayment(user, order.order_number, parsed.data.payment, await siteOrigin())).ok;
+  } catch (e) {
+    console.error("startPayment:", e instanceof Error ? e.message : e);
+  }
+  redirect(`/akun/pesanan/${order.order_number}?baru=1${ready ? "" : "&bayar=gagal"}`);
 }

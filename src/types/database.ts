@@ -242,6 +242,38 @@ export type Database = {
           },
         ]
       }
+      order_status_history: {
+        Row: {
+          created_at: string
+          id: number
+          note: string | null
+          order_id: string
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          note?: string | null
+          order_id: string
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          note?: string | null
+          order_id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           courier: string | null
@@ -306,6 +338,68 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          channel_code: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          method: string
+          order_id: string
+          paid_at: string | null
+          payment_url: string | null
+          provider: string
+          provider_payment_id: string
+          qr_string: string | null
+          status: string
+          updated_at: string
+          va_number: string | null
+        }
+        Insert: {
+          amount: number
+          channel_code?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          method: string
+          order_id: string
+          paid_at?: string | null
+          payment_url?: string | null
+          provider?: string
+          provider_payment_id: string
+          qr_string?: string | null
+          status?: string
+          updated_at?: string
+          va_number?: string | null
+        }
+        Update: {
+          amount?: number
+          channel_code?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          method?: string
+          order_id?: string
+          paid_at?: string | null
+          payment_url?: string | null
+          provider?: string
+          provider_payment_id?: string
+          qr_string?: string | null
+          status?: string
+          updated_at?: string
+          va_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
         ]
@@ -656,6 +750,15 @@ export type Database = {
       }
     }
     Functions: {
+      apply_payment_status: {
+        Args: {
+          p_amount: number
+          p_paid_at?: string
+          p_payment_id: string
+          p_status: string
+        }
+        Returns: string
+      }
       check_rate_limit: {
         Args: { p_key: string; p_max: number; p_window_seconds: number }
         Returns: boolean
@@ -671,7 +774,9 @@ export type Database = {
         }
         Returns: Json
       }
+      expire_overdue_orders: { Args: never; Returns: number }
       is_admin: { Args: never; Returns: boolean }
+      release_order_stock: { Args: { p_order_id: string }; Returns: undefined }
     }
     Enums: {
       order_status:

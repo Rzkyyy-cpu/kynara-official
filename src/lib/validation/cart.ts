@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paymentChoiceSchema } from "@/lib/komerce-payment/status";
 import { MAX_CART_LINES, MAX_QTY } from "@/lib/cart/totals";
 import { addressSchema } from "@/lib/validation/account";
 
@@ -27,6 +28,7 @@ export const placeOrderSchema = z.object({
   rateId: z.string().min(1, "Pilih kurir dulu, ya.").max(60),
   expectedTotal: z.int().min(0),
   agree: z.literal(true, "Centang persetujuan dulu, ya."),
+  payment: paymentChoiceSchema,
 });
 
 export type PlaceOrderInput = z.input<typeof placeOrderSchema>;

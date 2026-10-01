@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CheckIcon, ChevronLeftIcon, LockIcon } from "@/components/icons";
 
-export const STEPS = ["Alamat", "Pengiriman", "Konfirmasi"] as const;
+export const STEPS = ["Alamat", "Pengiriman", "Pembayaran"] as const;
 
 // Kepala halaman checkout: tanpa menu toko supaya pembeli fokus menyelesaikan pesanan.
 // Desktop: logo · langkah · "Checkout aman". HP: tombol kembali · "Checkout" · "Aman", langkah di bawahnya.

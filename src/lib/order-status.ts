@@ -22,3 +22,69 @@ export function formatDateTime(iso: string, withYear = true) {
     .format(new Date(iso))
     .replace(" pukul ", ", ");
 }
+
+// ---------- Timeline halaman status pesanan (desktop-akun-checkout/10, mobile-akun-checkout/11) ----------
+
+export type TimelineStep = { label: string; time: string; state: "done" | "current" | "todo"; failed?: boolean };
+
+export type TimelineInput = {
+  status: string;
+  created_at: string;
+  paid_at: string | null;
+  tracking_number: string | null;
+  history: { status: string; note: string | null; created_at: string }[];
+};
+
+// Judul besar di atas timeline: [label kecil, judul, keterangan, kelas warna label]
+export const ORDER_HEADLINE: Record<string, [string, string, string, string]> = {
+  menunggu_pembayaran: ["Menunggu pembayaran", "Satu langkah lagi", "Diproses setelah pembayaran diterima", "text-status-bayar"],
+  diproses: ["Diproses", "Pesananmu sedang dikemas", "Kami kabari lewat WhatsApp saat dikirim", "text-status-proses"],
+  dikirim: ["Dikirim", "Paket sedang dalam perjalanan", "Lacak paket dengan nomor resi di bawah", "text-slate-900"],
+  selesai: ["Selesai", "Pesanan sudah diterima", "Terima kasih sudah belanja di kynara", "text-status-selesai"],
+  kedaluwarsa: ["Kedaluwarsa", "Batas waktu pembayaran habis", "Stok sudah kami lepas lagi. Silakan pesan ulang kalau masih berminat", "text-status-batal"],
+  dibatalkan: ["Dibatalkan", "Pesanan dibatalkan", "Pembayaran dibatalkan atau ditolak. Silakan pesan ulang kalau masih berminat", "text-status-batal"],
+};
+
+const FLOW = ["menunggu_pembayaran", "diproses", "dikirim", "selesai"] as const;
+
+// Menyusun langkah timeline dari status sekarang + riwayat status (waktu tiap perubahan).
+export function orderTimeline(o: TimelineInput): TimelineStep[] {
+  const at = (status: string) => {
+    const row = [...o.history].reverse().find((h) => h.status === status && !h.note);
+    return row ? formatDateTime(row.created_at) : null;
+  };
+  const created = formatDateTime(o.created_at);
+
+  // Pesanan gagal: cukup dua langkah, yang kedua ditandai gagal
+  if (o.status === "kedaluwarsa" || o.status === "dibatalkan") {
+    return [
+      { label: ORDER_STATUS.menunggu_pembayaran.label, time: created, state: "done" },
+      { label: ORDER_STATUS[o.status].label, time: at(o.status) ?? "", state: "current", failed: true },
+    ];
+  }
+
+  const idx = Math.max(0, FLOW.indexOf(o.status as (typeof FLOW)[number]));
+  const times = [
+    created,
+    o.paid_at ? `${formatDateTime(o.paid_at)} · Pembayaran diterima` : at("diproses"),
+    [at("dikirim"), o.tracking_number && `Resi ${o.tracking_number}`].filter(Boolean).join(" · "),
+    at("selesai") ?? "Konfirmasi setelah paket diterima",
+  ];
+  return FLOW.map((status, i) => {
+    const done = i < idx || (o.status === "selesai" && i === FLOW.length - 1);
+    return {
+      label: ORDER_STATUS[status].label,
+      time: i <= idx || i === FLOW.length - 1 ? times[i] || "" : "Menunggu",
+      state: done ? "done" : i === idx ? "current" : "todo",
+    };
+  });
+}
+
+// Uang masuk tapi pesanan sudah tidak menunggu (dicatat apply_payment_status), perlu ditangani admin:
+//   late      = dibayar setelah pesanan kedaluwarsa/dibatalkan
+//   duplicate = dibayar dua kali (mis. VA lama dan QR baru)
+export function paymentIssue(history: TimelineInput["history"]): "late" | "duplicate" | null {
+  if (history.some((h) => h.note === "PEMBAYARAN_TERLAMBAT")) return "late";
+  if (history.some((h) => h.note === "PEMBAYARAN_GANDA")) return "duplicate";
+  return null;
+}

@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -94,7 +94,7 @@ Catatan pelaksanaan:
 - Cerita brand, kebijakan retur, syarat & ketentuan, dan kebijakan privasi masih **draf** (`src/lib/content.ts` dan halamannya). Tinjau sebelum jualan sungguhan.
 - Vercel Hobby hanya untuk non-komersial. Pindah paket atau hosting sebelum toko jualan sungguhan.
 
-## Fase 5 — Pembayaran Midtrans
+## Fase 5 — Pembayaran Midtrans ✅
 
 1. Integrasi Midtrans Snap mode sandbox: buat transaksi dari pesanan, buka popup pembayaran.
 2. Buat endpoint webhook untuk notifikasi Midtrans. Verifikasi signature sebelum mengubah status pesanan. Tolak request yang signature-nya salah.
@@ -110,6 +110,20 @@ Jelaskan apa itu webhook dengan analogi, dan cara mengujinya di sandbox (termasu
 - **Jaring pengaman kedaluwarsa:** job terjadwal (`pg_cron` di Supabase) menandai pesanan yang lewat `expires_at` sebagai kedaluwarsa dan mengembalikan stok, meskipun notifikasi Midtrans tidak pernah sampai.
 - Tambah `sold_count` produk saat pembayaran berhasil (dipakai urutan "Terlaris").
 - Server Key juga didaftarkan di environment variable Vercel, bukan hanya di `.env.local`.
+
+Catatan pelaksanaan:
+- **Gateway diganti dari Midtrans Snap ke Komerce Payment API** (keputusan pemilik proyek, 2026-10-01). Alasannya: satu akun dengan RajaOngkir, alur pilih-metode-di-website sesuai desain, dan biaya jelas (VA Rp4.440, QRIS 0,99%). Isi tugas tetap sama: "Midtrans" di tugas 1–2 dan 5 dibaca sebagai "Komerce Payment". Server Key diganti `KOMERCE_PAYMENT_API_KEY` dan `KOMERCE_CALLBACK_KEY`, Client Key tidak diperlukan.
+- Metode: VA (bank dari API `/methods`) dan QRIS. E-wallet (GoPay, OVO, DANA, ShopeePay) dibayar lewat QRIS. Transfer manual via WhatsApp dibuang karena tidak bisa diverifikasi otomatis.
+- Satu pesanan bisa punya beberapa percobaan bayar (tabel `payments`): QRIS hanya berlaku 5 menit, dan pembeli bisa ganti metode. VA lama dinonaktifkan lewat API saat ganti metode. VA atau QR yang kedaluwarsa tidak membatalkan pesanan, yang membatalkan hanya batas bayar 24 jam.
+- Masa berlaku VA disamakan dengan batas bayar pesanan. Karena minimal VA 1 jam, kalau sisa waktu kurang dari 1 jam hanya QRIS yang bisa dipilih.
+- Callback diverifikasi dengan HMAC-SHA256 dari body mentah (header `X-Callback-Api-Key`), lalu status **ditanyakan ulang ke API Komerce**. Status diubah hanya lewat RPC `apply_payment_status` (idempoten).
+- Uang yang masuk setelah pesanan kedaluwarsa (`PEMBAYARAN_TERLAMBAT`) atau pembayaran kedua (`PEMBAYARAN_GANDA`) tidak mengubah status. Keduanya dicatat di `order_status_history` untuk ditangani admin di **Fase 7** (refund atau proses manual).
+- **Untuk Fase 7:** pembatalan pesanan oleh admin harus lewat fungsi database yang juga mengembalikan stok dan menutup VA yang masih aktif (API cancel), jangan `update status` langsung.
+- pg_cron `kedaluwarsakan-pesanan` berjalan tiap 10 menit, dengan tenggang 15 menit setelah `expires_at`.
+- Halaman status pesanan dimuat ulang dari server tiap 20 detik selama ada VA/QR aktif, jadi status berubah sendiri begitu callback masuk.
+- Halaman status pesanan tetap memakai sidebar akun di desktop (desainnya tanpa sidebar), sama seperti halaman akun lain.
+- Migration berurutan: `pembayaran_midtrans` (riwayat status, pg_cron), `perbaiki_kolom_metode_bayar`, lalu `pembayaran_komerce` (tabel payments, RPC versi Komerce). Dua migration pertama tetap di repo karena sudah terpasang di database.
+- Library baru: `qrcode-generator` (MIT, tanpa dependensi), untuk menggambar QRIS dari `qr_string`.
 
 ## Fase 6 — Ongkos kirim
 

@@ -58,6 +58,9 @@
   --color-status-selesai: #4a4650;
   --color-status-batal-bg: #fbe3e8;
   --color-status-batal: #8c2f48;
+  --color-pay-bg: #fffbf1; /* kartu "Selesaikan pembayaran" di status pesanan */
+  --color-pay-line: #e9d6a9;
+  --color-pay-selected: #eef5f8; /* baris metode bayar terpilih (checkout langkah 3, HP) */
 
   /* Tipografi (README "Tipografi"): mobile dulu, versi -lg untuk desktop */
   --text-display: 2.25rem; /* 36/44 */

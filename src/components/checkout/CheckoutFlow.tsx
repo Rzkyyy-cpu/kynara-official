@@ -9,8 +9,10 @@ import { AddressStep } from "@/components/checkout/AddressStep";
 import { CheckoutHeader } from "@/components/checkout/CheckoutHeader";
 import { MobileSummary, type SummaryItem, SummaryItems, SummaryLines } from "@/components/checkout/OrderSummary";
 import { Alert } from "@/components/form/Alert";
+import { type MethodOption, PaymentMethodPicker, methodTag, toChoice } from "@/components/payment/PaymentMethodPicker";
 import { Button } from "@/components/ui/Button";
 import { formatPhone, formatRupiah } from "@/lib/format";
+import type { PaymentChoice } from "@/lib/komerce-payment/status";
 import { type ShippingRate, etdText } from "@/lib/shipping/types";
 import type { ADDRESS_LABELS } from "@/lib/validation/account";
 
@@ -23,11 +25,13 @@ export function CheckoutFlow({
   subtotal,
   addresses,
   provinces,
+  methods,
 }: {
   items: SummaryItem[];
   subtotal: number;
   addresses: AddressCardData[];
   provinces: [string, string][];
+  methods: MethodOption[];
 }) {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -37,6 +41,7 @@ export function CheckoutFlow({
   const [quote, setQuote] = useState<Quote | null>(null);
   const [rateId, setRateId] = useState<string | null>(null);
   const [agree, setAgree] = useState(false);
+  const [payment, setPayment] = useState<PaymentChoice | null>(() => (methods[0] ? toChoice(methods[0]) : null));
   const [pending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -104,15 +109,16 @@ export function CheckoutFlow({
   // Langkah 3: buat pesanan
   const submitOrder = () =>
     startTransition(async () => {
-      if (!quote || !rate) return;
+      if (!quote || !rate || !payment) return;
       setError(null);
       const res = await placeOrder({
         address: quote.addressInput,
         rateId: rate.id,
         expectedTotal: currentSubtotal + rate.cost,
         agree: agree as true,
+        payment,
       });
-      // Kalau berhasil, server langsung mengarahkan ke halaman pesanan (redirect), jadi baris ini hanya untuk gagal
+      // Kalau berhasil, server mengarahkan ke halaman pesanan (nomor VA / QR tampil di sana), jadi baris ini hanya untuk gagal
       if (res && !res.ok) setError(res.error ?? "Pesanan gagal dibuat.");
     });
 
@@ -120,8 +126,8 @@ export function CheckoutFlow({
     step === 1
       ? { label: "Lanjut ke Pengiriman", onClick: toShipping, disabled: false }
       : step === 2
-        ? { label: "Lanjut ke Konfirmasi", onClick: () => go(3), disabled: !rate }
-        : { label: "Buat Pesanan", onClick: submitOrder, disabled: !agree || !rate };
+        ? { label: "Lanjut ke Pembayaran", onClick: () => go(3), disabled: !rate }
+        : { label: `Bayar Sekarang · ${methodTag(payment)}`, onClick: submitOrder, disabled: !agree || !rate || !payment };
 
   const shipping = step === 1 ? null : (rate?.cost ?? null);
   const barLabel = step === 1 ? "Subtotal" : step === 2 ? "Total sementara" : "Total bayar";
@@ -172,15 +178,16 @@ export function CheckoutFlow({
           )}
 
           {step === 3 && (
-            <section className="flex flex-col gap-3 lg:gap-4">
-              <h1 className="text-lg font-bold lg:font-serif lg:text-5xl/[56px] lg:font-medium">Konfirmasi pesanan</h1>
-              <div className="rounded-2xl border border-line bg-paper p-4 lg:p-6">
+            <section className="flex flex-col gap-3 lg:gap-6">
+              <h1 className="text-lg font-bold lg:font-serif lg:text-4xl/[44px] lg:font-medium">Metode pembayaran</h1>
+              <PaymentMethodPicker methods={methods} value={payment} onChange={setPayment} />
+              <p className="rounded-input bg-sky-tint px-4 py-3 text-sm/[21px] text-slate-900">
+                Setelah menekan <strong>Bayar Sekarang</strong>, pesanan dibuat dan stok kami simpan untukmu selama{" "}
+                <strong>24 jam</strong>. Nomor virtual account atau kode QR tampil di halaman pesanan.
+              </p>
+              <div className="rounded-2xl border border-line bg-paper p-4 lg:hidden">
                 <SummaryItems items={items} withPhotos />
               </div>
-              <p className="rounded-input bg-sky-tint px-4 py-3 text-sm/[21px] text-slate-900">
-                Setelah pesanan dibuat, stok langsung kami simpan untukmu selama <strong>24 jam</strong>. Pilih metode
-                pembayaran (transfer bank, e-wallet, atau QRIS) di halaman pesanan.
-              </p>
             </section>
           )}
         </main>
