@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PlaceholderFigure } from "@/components/icons";
+import { HeartIcon, PlaceholderFigure } from "@/components/icons";
 import { WishlistButton } from "@/components/ui/WishlistButton";
 import { formatRupiah } from "@/lib/format";
 
@@ -18,7 +18,9 @@ export type ProductCardData = {
   tone?: string; // warna latar pengganti foto selama foto asli belum ada
 };
 
-export function ProductCard({ product }: { product: ProductCardData }) {
+// preview = pratinjau di admin: tampilan sama, tapi tombol wishlist hanya gambar
+// (wishlist butuh status login pembeli dari AuthProvider, yang tidak ada di halaman admin).
+export function ProductCard({ product, preview = false }: { product: ProductCardData; preview?: boolean }) {
   const { id, href, name, price, material, tag, colors, imageUrl, tone = "#D9C7B0" } = product;
 
   return (
@@ -74,7 +76,15 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         </ul>
       )}
 
-      <WishlistButton productId={id} productName={name} />
+      {preview ? (
+        <span aria-hidden="true" className="absolute top-1 right-1 flex size-11 items-center justify-center">
+          <span className="flex size-[34px] items-center justify-center rounded-full bg-[rgba(255,253,249,0.92)]">
+            <HeartIcon size={18} />
+          </span>
+        </span>
+      ) : (
+        <WishlistButton productId={id} productName={name} />
+      )}
     </article>
   );
 }

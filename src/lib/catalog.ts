@@ -47,6 +47,23 @@ export async function getCategories(): Promise<Category[]> {
 
 // ---------- Beranda ----------
 
+// Banner hero = banner tayang paling atas yang tanggalnya sedang berlaku (WIB). RLS hanya
+// memberi pengunjung banner yang sudah ditayangkan; filter tanggal dilakukan di sini.
+export async function getHeroBanner() {
+  const today = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Jakarta" }).format(new Date());
+  const { data, error } = await createPublicClient()
+    .from("banners")
+    .select("title, subtitle, cta_text, cta_href, image_desktop_url, image_mobile_url")
+    .eq("is_published", true)
+    .lte("starts_at", today)
+    .or(`ends_at.is.null,ends_at.gte.${today}`)
+    .order("sort_order")
+    .limit(1)
+    .maybeSingle();
+  if (error) fail("banner", error);
+  return data;
+}
+
 export async function getLatestProducts(limit = 8): Promise<ProductCardData[]> {
   const { data, error } = await createPublicClient()
     .from("product_cards")

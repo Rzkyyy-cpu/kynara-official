@@ -73,6 +73,54 @@ export type Database = {
           },
         ]
       }
+      banners: {
+        Row: {
+          created_at: string
+          cta_href: string
+          cta_text: string
+          ends_at: string | null
+          id: string
+          image_desktop_url: string | null
+          image_mobile_url: string | null
+          is_published: boolean
+          sort_order: number
+          starts_at: string
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_href: string
+          cta_text: string
+          ends_at?: string | null
+          id?: string
+          image_desktop_url?: string | null
+          image_mobile_url?: string | null
+          is_published?: boolean
+          sort_order?: number
+          starts_at?: string
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_href?: string
+          cta_text?: string
+          ends_at?: string | null
+          id?: string
+          image_desktop_url?: string | null
+          image_mobile_url?: string | null
+          is_published?: boolean
+          sort_order?: number
+          starts_at?: string
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cart_items: {
         Row: {
           cart_id: string
@@ -214,6 +262,13 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_product_list"
             referencedColumns: ["id"]
           },
           {
@@ -434,6 +489,13 @@ export type Database = {
             foreignKeyName: "product_images_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "admin_product_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "product_cards"
             referencedColumns: ["id"]
           },
@@ -493,6 +555,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_product_list"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "product_variants_product_id_fkey"
             columns: ["product_id"]
@@ -655,6 +724,13 @@ export type Database = {
             foreignKeyName: "reviews_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "admin_product_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "product_cards"
             referencedColumns: ["id"]
           },
@@ -743,6 +819,13 @@ export type Database = {
             foreignKeyName: "wishlists_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "admin_product_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishlists_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "product_cards"
             referencedColumns: ["id"]
           },
@@ -764,6 +847,36 @@ export type Database = {
       }
     }
     Views: {
+      admin_product_list: {
+        Row: {
+          category_id: string | null
+          category_name: string | null
+          color_count: number | null
+          cover_url: string | null
+          created_at: string | null
+          id: string | null
+          is_active: boolean | null
+          low_variant_count: number | null
+          material: string | null
+          min_price: number | null
+          name: string | null
+          sizes: string[] | null
+          skus: string | null
+          slug: string | null
+          total_stock: number | null
+          updated_at: string | null
+          variant_count: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_cards: {
         Row: {
           category_id: string | null
@@ -796,10 +909,16 @@ export type Database = {
     }
     Functions: {
       admin_dashboard: { Args: { p_period?: string }; Returns: Json }
+      admin_reorder_banners: { Args: { p_ids: string[] }; Returns: undefined }
+      admin_reorder_categories: {
+        Args: { p_ids: string[] }
+        Returns: undefined
+      }
       admin_resolve_payment_issue: {
         Args: { p_order_number: string }
         Returns: undefined
       }
+      admin_save_product: { Args: { p_product: Json }; Returns: string }
       admin_update_order: {
         Args: {
           p_order_number: string

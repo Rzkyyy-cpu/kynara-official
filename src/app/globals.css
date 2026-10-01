@@ -48,6 +48,11 @@
   --color-stock-critical: #8a3a52; /* "Sisa 2" di ringkasan admin */
   --color-toast-sub: #d8d2c8; /* teks kedua di toast gelap */
   --color-toast-check: #b9c4b2;
+  --color-switch-on: #3f5a7d; /* toggle Tampil/Beranda/Aktif */
+  --color-switch-off: #d6c9cb;
+  --color-admin-row-selected: #f2f7f9; /* baris kategori yang sedang diedit */
+  --color-upload-error-line: #d9a48c; /* kotak foto gagal unggah */
+  --color-delete-line: #f2cbd4; /* tombol "Hapus produk" */
   --color-table-head: #f7ecec; /* kepala tabel panduan bahan */
   --color-star: #e8a3ac; /* bintang testimoni */
 

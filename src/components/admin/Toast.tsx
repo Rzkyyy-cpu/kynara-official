@@ -1,12 +1,12 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { CheckIcon, CloseIcon } from "@/components/icons";
+import { AlertIcon, CheckIcon, CloseIcon } from "@/components/icons";
 
-// Notifikasi kecil di pojok bawah setelah admin mengubah pesanan (admin-desktop/02).
+// Notifikasi kecil di pojok bawah setelah admin menyimpan sesuatu (admin-desktop/02), berhasil atau gagal.
 // Satu Provider per halaman, supaya notifikasi dari baris mana pun tampil di tempat yang sama.
 
-type Toast = { title: string; waUrl?: string | null };
+type Toast = { title: string; waUrl?: string | null; tone?: "success" | "error" };
 
 const ToastContext = createContext<(t: Toast) => void>(() => {});
 export const useToast = () => useContext(ToastContext);
@@ -28,7 +28,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <div role="status" aria-live="polite" className="fixed inset-x-4 bottom-4 z-50 lg:inset-x-auto lg:right-10 lg:bottom-8 lg:w-[380px]">
         {toast && (
           <div className="flex items-start gap-3 rounded-input bg-ink px-4 py-3.5 text-bg shadow-[0_12px_32px_rgba(43,43,43,0.25)]">
-            <CheckIcon size={20} className="shrink-0 text-toast-check" />
+            {toast.tone === "error" ? (
+              <AlertIcon size={20} className="shrink-0 text-star" />
+            ) : (
+              <CheckIcon size={20} className="shrink-0 text-toast-check" />
+            )}
             <div className="flex grow flex-col gap-1 text-sm">
               <strong>{toast.title}</strong>
               {toast.waUrl && (

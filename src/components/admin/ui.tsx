@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ORDER_STATUS } from "@/lib/order-status";
 
 // Potongan tampilan yang dipakai berulang di halaman admin (admin-desktop).
@@ -40,3 +41,17 @@ export const cardCls = "rounded-card border border-line bg-paper";
 // Kelas tabel admin: kepala huruf kapital kecil, garis tipis antar baris
 export const thCls = "h-11 px-2.5 text-left text-[11px] font-bold tracking-[0.08em] whitespace-nowrap text-muted uppercase";
 export const tdCls = "px-2.5 py-3 align-middle";
+
+// Tombol halaman sebelumnya/berikutnya; href null = nonaktif
+export function PageLink({ href, children }: { href: string | null; children: React.ReactNode }) {
+  const cls = "inline-flex h-9 items-center rounded-full border px-4 text-sm font-semibold";
+  return href ? (
+    <Link href={href} className={`${cls} border-line-strong bg-paper hover:border-ink`}>
+      {children}
+    </Link>
+  ) : (
+    <span aria-disabled="true" className={`${cls} border-line text-disabled`}>
+      {children}
+    </span>
+  );
+}

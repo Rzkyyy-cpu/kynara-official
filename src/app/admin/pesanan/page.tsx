@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { OrderFilters } from "@/components/admin/OrderFilters";
+import { FilterBar } from "@/components/admin/FilterBar";
 import { OrderStatusControl } from "@/components/admin/OrderStatusControl";
 import { ToastProvider } from "@/components/admin/Toast";
-import { PageHeader, PaidBadge, cardCls, tdCls, thCls } from "@/components/admin/ui";
+import { PageHeader, PageLink, PaidBadge, cardCls, tdCls, thCls } from "@/components/admin/ui";
 import { DownloadIcon, EyeIcon } from "@/components/icons";
 import { ORDERS_PER_PAGE, countOrdersByTab, listOrders } from "@/lib/admin/orders";
 import type { AddressSnapshot } from "@/lib/checkout";
 import { formatRupiah } from "@/lib/format";
 import { formatDateTime } from "@/lib/order-status";
-import { ORDER_TABS, type OrderFilters as Filters, type OrderTab, orderFiltersSchema } from "@/lib/validation/admin";
+import {
+  COURIER_FILTERS,
+  ORDER_RANGES,
+  ORDER_TABS,
+  type OrderFilters as Filters,
+  type OrderTab,
+  orderFiltersSchema,
+} from "@/lib/validation/admin";
 
 export const metadata: Metadata = { title: "Pesanan — Admin kynara" };
 
@@ -70,7 +77,15 @@ export default async function AdminPesananPage({ searchParams }: PageProps<"/adm
         })}
       </nav>
 
-      <OrderFilters q={f.q} rentang={f.rentang} kurir={f.kurir} total={total} />
+      <FilterBar
+        q={f.q}
+        placeholder="Cari no. pesanan atau nama pembeli"
+        selects={[
+          { name: "rentang", label: "Rentang tanggal", value: f.rentang, options: Object.entries(ORDER_RANGES) },
+          { name: "kurir", label: "Kurir", value: f.kurir, options: Object.entries(COURIER_FILTERS) },
+        ]}
+        summary={`${total} pesanan`}
+      />
 
       <div className={`${cardCls} overflow-hidden`}>
         {/* relative: teks sr-only (absolute) di dalam tabel ikut terpotong wadah ini, tidak melebarkan halaman di HP */}
@@ -152,18 +167,5 @@ export default async function AdminPesananPage({ searchParams }: PageProps<"/adm
         </div>
       </div>
     </ToastProvider>
-  );
-}
-
-function PageLink({ href, children }: { href: string | null; children: React.ReactNode }) {
-  const cls = "inline-flex h-9 items-center rounded-full border px-4 text-sm font-semibold";
-  return href ? (
-    <Link href={href} className={`${cls} border-line-strong bg-paper hover:border-ink`}>
-      {children}
-    </Link>
-  ) : (
-    <span aria-disabled="true" className={`${cls} border-line text-disabled`}>
-      {children}
-    </span>
   );
 }

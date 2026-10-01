@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7A ✅ · Fase 7B berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 ✅ · Fase 8 berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -149,7 +149,7 @@ Catatan pelaksanaan:
 - Berat produk seed (50–600 gram) dipakai apa adanya. Ganti dengan berat hasil timbang lewat admin di Fase 7.
 - `RAJAONGKIR_API_KEY` dan `RAJAONGKIR_ORIGIN_ID` juga harus didaftarkan di environment variable Vercel.
 
-## Fase 7 — Admin
+## Fase 7 — Admin ✅
 
 1. Halaman /admin yang hanya bisa diakses role admin (cek di middleware dan di policy database, jangan hanya di tampilan).
 2. Dashboard ringkasan: penjualan hari ini dan bulan ini, jumlah pesanan per status.
@@ -166,7 +166,7 @@ Jelaskan bagaimana saya menjadikan akun saya admin dengan aman.
 - Aturan desain "maksimal 6 kategori di beranda" dijaga di database, bukan hanya di form.
 - Angka dashboard dihitung oleh fungsi database khusus admin, supaya data pesanan tidak perlu dikirim semua ke browser.
 
-Catatan pelaksanaan — dibagi dua: **7A** (tugas 1, 2, 4 + Ringkasan/Pesanan) ✅ dan **7B** (tugas 3, 5: Produk, Kategori, Banner) berikutnya.
+Catatan pelaksanaan — dibagi dua: **7A** (tugas 1, 2, 4 + Ringkasan/Pesanan) ✅ dan **7B** (tugas 3, 5: Produk, Kategori, Banner) ✅.
 - **Tiga lapis penjaga /admin:** `proxy.ts` (login + `is_admin()`), `requireAdmin()` di layout/aksi/route CSV (bukan admin = 404), lalu fungsi database yang mengecek `is_admin()` lagi.
 - **Hak `update status, tracking_number` langsung ke `orders` dicabut.** Semua perubahan lewat RPC `admin_update_order`: menunggu→dibatalkan, diproses→dikirim (resi wajib, 6–40 huruf/angka/strip), diproses→dibatalkan, dikirim→selesai, plus koreksi resi. Admin tidak bisa menandai lunas. Pembatalan mengembalikan stok, menutup VA/QR yang menunggu (juga lewat API cancel Komerce), dan pada pesanan lunas mengurangi `sold_count` serta mencatat `PERLU_REFUND` (keputusan: pesanan lunas boleh dibatalkan, refund manual).
 - Pembayaran terlambat/ganda/refund tampil di detail pesanan admin dan ditutup dengan tombol "Tandai sudah ditangani" (RPC `admin_resolve_payment_issue`, catatan `MASALAH_BAYAR_DITANGANI`). Halaman status pesanan pembeli ikut menampilkan pemberitahuan refund.
@@ -175,6 +175,16 @@ Catatan pelaksanaan — dibagi dua: **7A** (tugas 1, 2, 4 + Ringkasan/Pesanan) �
 - Desain admin hanya desktop. Di HP sidebar jadi bilah atas dengan menu geser, dan tabel bisa digeser ke samping.
 - Field produk dari desain yang belum ada di database (harga coret, label foto, toggle "Produk terbaru") **dilewati** (keputusan pemilik proyek), tidak masuk 7B.
 - Tes: `admin-orders.db.test.ts` (7 tes, dipanggil sebagai user login sungguhan) dan `admin/admin.test.ts`.
+
+Catatan 7B:
+- **Bucket Storage `katalog`** (publik baca, hanya admin tulis/hapus/daftar). Batas 2 MB dan JPG/PNG/WebP dijaga bucket. Foto diunggah **langsung dari browser** ke Storage; server hanya menerima URL, dan Zod menolak URL di luar bucket ini. Resolusi minimum dicek di browser (produk 1080×1350, kategori 800×1000, banner desktop 1440×640, HP 800×1000): foto lebih kecil ditolak (keputusan pemilik proyek). Foto yang dibuang/diganti dihapus dari Storage saat form disimpan; unggahan yang batal disimpan masih tertinggal (bisa dibersihkan manual di dashboard).
+- **`admin_save_product`**: produk + varian + foto dalam satu transaksi. **Stok disimpan sebagai selisih** (keputusan pemilik proyek), jadi pesanan yang masuk saat admin mengedit tidak hilang. Varian yang dibuang tapi pernah dipesan dinonaktifkan, bukan dihapus. Slug produk tidak berubah saat diedit.
+- **Produk yang pernah dipesan tidak bisa dihapus** (trigger `PRODUK_PERNAH_DIPESAN`), cukup disembunyikan. Kategori yang masih punya produk tidak bisa dihapus (foreign key).
+- Form produk: varian dibentuk dari chip Warna × Ukuran; detail ukuran (mis. 175 × 75 cm) per ukuran; harga dasar bisa diterapkan ke semua varian; SKU otomatis dan bisa diubah; pratinjau memakai `ProductCard` asli (mode `preview`, tanpa wishlist). Maks. 8 foto, urutan dengan tombol panah (tanpa library seret).
+- Kategori: tambah/edit (nama, slug, deskripsi, foto), urutan naik/turun, toggle beranda. **Maks. 6 di beranda dan maks. 3 banner tayang dijaga trigger database** (dengan kunci antrean, aman dari klik bersamaan).
+- Banner: judul, subjudul, tombol (hanya ke koleksi/kategori/produk sendiri), gambar desktop + HP, tanggal mulai/selesai, tayang atau draf. **Hero beranda memakai banner aktif paling atas saja** (keputusan pemilik proyek); tanpa banner, teks hero bawaan tetap dipakai. Foto kategori tampil di beranda kalau sudah diunggah.
+- **Gambar tidak tampil di `next start` lokal laptop ini**: jaringan memakai NAT64 (`64:ff9b::`), dan optimizer gambar Next menolak alamat itu sebagai "IP lokal" (perlindungan SSRF). Di Vercel normal. `images.dangerouslyAllowLocalIP` sengaja **tidak** dipasang.
+- Tes: `admin-catalog.db.test.ts` (6 tes: batas beranda & banner, simpan atomik, stok selisih, varian dipesan, Storage) dan `admin/catalog.test.ts`.
 
 ## Fase 8 — Audit, SEO, performa
 

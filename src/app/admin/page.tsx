@@ -95,13 +95,9 @@ export default async function AdminRingkasanPage({ searchParams }: PageProps<"/a
           <TodoLink href={pesanan("menunggu_pembayaran")} count={waiting} cls="bg-status-bayar-bg text-status-bayar">
             Menunggu pembayaran
           </TodoLink>
-          {/* Link ke halaman produk menyusul di Fase 7B */}
-          <div className="flex min-h-14 items-center gap-3 border-b border-line-soft px-1 text-sm">
-            <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-blush px-2 text-xs font-bold text-stock-critical">
-              {d.low_stock_count}
-            </span>
-            <span className="grow">Varian stok menipis (≤5)</span>
-          </div>
+          <TodoLink href="/admin/produk?tab=menipis" count={d.low_stock_count} cls="bg-blush text-stock-critical">
+            Varian stok menipis (≤5)
+          </TodoLink>
           {d.low_stock.length > 0 && (
             <ul className="flex flex-col gap-1.5 pt-2 text-[13px]">
               {d.low_stock.map((v) => (

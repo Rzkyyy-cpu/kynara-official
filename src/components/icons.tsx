@@ -192,6 +192,12 @@ export const DownloadIcon = (p: IconProps) => (
   </Svg>
 );
 
+export const EditIcon = ({ size = 18, ...p }: IconProps) => (
+  <Svg size={size} {...p}>
+    <path d="M4 20h4L19 9l-4-4L4 16z" />
+  </Svg>
+);
+
 export const ExternalIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" />
