@@ -36,6 +36,13 @@ describe("pemilihan ID tujuan RajaOngkir", () => {
     expect(pickDestination([rows[0]], soreang)).toBeNull();
   });
 
+  it("kecamatan kembar di kota lain dalam provinsi yang sama tidak dipilih", () => {
+    const sukasari = { province: "Jawa Barat", city: "Kota Bandung", district: "Sukasari", postalCode: "40999" };
+    const lain = row({ id: 9, city_name: "SUMEDANG", district_name: "SUKASARI", zip_code: "45366" });
+    expect(pickDestination([lain], sukasari)).toBeNull();
+    expect(pickDestination([lain, row({ id: 10, district_name: "SUKASARI", zip_code: "40151" })], sukasari)?.id).toBe(10);
+  });
+
   it("nama provinsi resmi dicocokkan dengan singkatan RajaOngkir", () => {
     const sleman = { province: "Daerah Istimewa Yogyakarta", city: "Kabupaten Sleman", district: "Ngaglik", postalCode: "55581" };
     const r = row({ id: 31555, province_name: "DI YOGYAKARTA", city_name: "SLEMAN", district_name: "NGAGLIK", zip_code: "55581" });

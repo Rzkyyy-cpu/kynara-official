@@ -59,6 +59,20 @@ export const costResponseSchema = z.object({
 });
 export type CostRow = NonNullable<z.infer<typeof costResponseSchema>["data"]>[number];
 
+// Isi cache tarif dibaca ulang dengan Zod: kalau bentuk ShippingRate berubah di versi kode berikutnya,
+// catatan lama dianggap tidak ada (ditanya ulang), bukan dipakai mentah-mentah.
+export const cachedRatesSchema = z.array(
+  z.object({
+    id: z.string(),
+    courier: z.string(),
+    service: z.string(),
+    label: z.string(),
+    cost: z.number().int().positive(),
+    etd: z.object({ min: z.number(), max: z.number() }).nullable(),
+    available: z.boolean(),
+  }),
+);
+
 // "Coblong" -> "COBLONG", "KAB. BANDUNG" -> "KABUPATENBANDUNG"
 function norm(s: string) {
   return s
@@ -87,12 +101,16 @@ export function destinationKey(d: ShippingDestination) {
   return [d.province, d.city, d.district, d.postalCode].map((x) => x.trim().toUpperCase()).join("|");
 }
 
-// Pilih hasil pencarian yang provinsi DAN kecamatannya sama dengan alamat (nama kecamatan bisa kembar,
-// contoh Soreang ada di Kab. Bandung dan di Parepare). Kode pos dan kota dipakai sebagai penentu
-// kalau ada beberapa kandidat. RajaOngkir menulis kota tanpa "Kota"/"Kabupaten", contoh "BANDUNG". Tidak ada yang cocok -> null (jangan menebak ID wilayah lain).
+// Pilih hasil pencarian yang provinsi, kota, DAN kecamatannya sama dengan alamat. Nama kecamatan bisa kembar,
+// di provinsi lain (Soreang: Kab. Bandung dan Parepare) maupun di provinsi yang sama (Sukasari).
+// RajaOngkir menulis kota tanpa "Kota"/"Kabupaten" (contoh "BANDUNG"), jadi kota dicocokkan tanpa awalan,
+// lalu kode pos dan awalan yang sama dipakai sebagai penentu kalau masih ada beberapa kandidat. Tidak ada yang cocok -> null (jangan menebak ID wilayah lain).
 export function pickDestination(rows: DestinationRow[], d: ShippingDestination): DestinationRow | null {
   const sameDistrict = rows.filter(
-    (r) => province(r.province_name) === province(d.province) && norm(r.district_name) === norm(d.district),
+    (r) =>
+      province(r.province_name) === province(d.province) &&
+      bare(r.city_name) === bare(d.city) &&
+      norm(r.district_name) === norm(d.district),
   );
   if (sameDistrict.length === 0) return null;
   const cityScore = (city: string) => (norm(city) === norm(d.city) ? 2 : bare(city) === bare(d.city) ? 1 : 0);

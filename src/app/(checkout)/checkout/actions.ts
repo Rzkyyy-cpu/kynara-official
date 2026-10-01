@@ -19,7 +19,8 @@ import { type CheckoutAddressInput, type PlaceOrderInput, placeOrderSchema } fro
 const NOT_LOGGED_IN = "Sesi login berakhir. Silakan masuk lagi.";
 const CART_CHANGED = "Isi keranjang berubah. Cek keranjangmu lagi, ya.";
 
-type Fail = { ok: false; error?: string; fieldErrors?: Record<string, string> };
+// rateChanged: pilihan kurir tidak ada lagi di hitungan terbaru server -> browser kembali ke langkah 2
+type Fail = { ok: false; error?: string; fieldErrors?: Record<string, string>; rateChanged?: boolean };
 
 export type QuoteResult =
   | {
@@ -86,9 +87,9 @@ export async function placeOrder(input: PlaceOrderInput): Promise<Fail> {
     rate = findRate(rates, parsed.data.rateId);
   } catch (e) {
     console.error("shipping rates:", e);
-    return { ok: false, error: "Ongkos kirim gagal dihitung. Coba lagi sebentar lagi." };
+    return { ok: false, error: e instanceof ShippingError ? e.message : "Ongkos kirim gagal dihitung. Coba lagi sebentar lagi." };
   }
-  if (!rate) return { ok: false, error: "Kurir yang dipilih tidak tersedia. Pilih kurir lain, ya." };
+  if (!rate) return { ok: false, rateChanged: true, error: "Ongkos kirim baru saja berubah. Pilih kurir lagi, ya." };
 
   // Fungsi database create_order hanya bisa dijalankan dengan kunci server (service_role).
   // user.id berasal dari sesi yang sudah dicek getUser(), bukan dari browser.

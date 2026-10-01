@@ -119,7 +119,17 @@ export function CheckoutFlow({
         payment,
       });
       // Kalau berhasil, server mengarahkan ke halaman pesanan (nomor VA / QR tampil di sana), jadi baris ini hanya untuk gagal
-      if (res && !res.ok) setError(res.error ?? "Pesanan gagal dibuat.");
+      if (!res || res.ok) return;
+      if (res.rateChanged) {
+        // Ongkir berubah (mis. tarif asli -> tarif flat): hitung ulang dan kembali ke pilihan kurir
+        const fresh = await quoteShipping(quote.addressInput);
+        if (fresh.ok) {
+          setQuote(fresh);
+          setRateId(fresh.rates.find((r) => r.available)?.id ?? null);
+        }
+        go(2);
+      }
+      setError(res.error ?? "Pesanan gagal dibuat.");
     });
 
   const primary =

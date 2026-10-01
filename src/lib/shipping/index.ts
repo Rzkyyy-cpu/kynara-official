@@ -2,7 +2,7 @@ import "server-only";
 
 import { flatProvider } from "@/lib/shipping/flat";
 import { rajaongkirProvider } from "@/lib/shipping/rajaongkir";
-import type { RateQuote, RateRequest, ShippingProvider, ShippingRate } from "@/lib/shipping/types";
+import { type RateQuote, type RateRequest, ShippingError, type ShippingProvider, type ShippingRate } from "@/lib/shipping/types";
 
 export type { RateQuote, RateRequest, ShippingDestination, ShippingRate } from "@/lib/shipping/types";
 export { ShippingError } from "@/lib/shipping/types";
@@ -19,9 +19,15 @@ export function parcelWeight(itemsWeightGram: number) {
   return itemsWeightGram + PACKAGING_GRAM;
 }
 
+// Batas umum kurir reguler per paket. Di atas ini tarif (asli maupun flat) tidak bisa dipercaya,
+// jadi pembeli diminta memecah pesanan.
+export const MAX_PARCEL_GRAM = 30_000;
+export const TOO_HEAVY = `Berat paket lebih dari ${MAX_PARCEL_GRAM / 1000} kg. Pecah menjadi beberapa pesanan, ya.`;
+
 // Provider utama gagal (gangguan, kuota habis, wilayah tidak dikenal) atau tidak ada kurir
 // yang melayani -> tarif flat, supaya pembeli tetap bisa checkout.
 export async function getRates(request: RateRequest): Promise<RateQuote> {
+  if (request.weightGram > MAX_PARCEL_GRAM) throw new ShippingError(TOO_HEAVY);
   try {
     const rates = await provider.getRates(request);
     if (rates.length > 0) return { rates, isFallback: false };
