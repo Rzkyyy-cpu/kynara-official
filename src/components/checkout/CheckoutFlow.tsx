@@ -168,6 +168,12 @@ export function CheckoutFlow({
                   {quote.weightGram} gram
                 </span>
               </div>
+              {quote.isFallback && (
+                <p role="status" className="rounded-input bg-sky-tint px-4 py-3 text-sm/[21px] text-slate-900">
+                  Cek ongkir otomatis sedang tidak tersedia, jadi kami pakai <strong>tarif flat</strong>. Paket tetap
+                  dikirim dengan kurir reguler, dan nomor resi tampil di halaman pesanan.
+                </p>
+              )}
               <fieldset className="flex flex-col gap-2.5 lg:gap-3">
                 <legend className="sr-only">Pilih kurir</legend>
                 {quote.rates.map((r) => (

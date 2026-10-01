@@ -12,7 +12,7 @@ import {
 } from "@/lib/checkout";
 import { startPayment } from "@/lib/payments";
 import { LIMITS, TOO_MANY, checkRateLimit } from "@/lib/rate-limit";
-import { type ShippingRate, ShippingError, findRate, getRates } from "@/lib/shipping";
+import { type ShippingRate, ShippingError, findRate, getRates, parcelWeight } from "@/lib/shipping";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { type CheckoutAddressInput, type PlaceOrderInput, placeOrderSchema } from "@/lib/validation/cart";
 
@@ -27,7 +27,8 @@ export type QuoteResult =
       address: AddressSummary;
       addressInput: CheckoutAddressInput; // alamat baru yang disimpan berubah jadi { kind: "saved" }
       rates: ShippingRate[];
-      weightGram: number;
+      isFallback: boolean; // true = ongkir otomatis gagal, yang tampil tarif flat
+      weightGram: number; // berat paket (isi + kemasan)
       subtotal: number;
     }
   | Fail;
@@ -44,15 +45,17 @@ export async function quoteShipping(input: CheckoutAddressInput): Promise<QuoteR
   const cart = await loadCheckoutCart(user.id);
   if (cart.items.length === 0 || cart.issues.length > 0) return { ok: false, error: CART_CHANGED };
 
+  const weightGram = parcelWeight(cart.weightGram);
   try {
-    const rates = await getRates({ destination: address.value.destination, weightGram: cart.weightGram });
+    const { rates, isFallback } = await getRates({ destination: address.value.destination, weightGram });
     if (address.value.savedId) revalidatePath("/akun", "layout"); // alamat baru muncul di buku alamat
     return {
       ok: true,
       address: addressSummary(address.value.snapshot),
       addressInput: address.value.savedId ? { kind: "saved", addressId: address.value.savedId } : input,
       rates,
-      weightGram: cart.weightGram,
+      isFallback,
+      weightGram,
       subtotal: cart.subtotal,
     };
   } catch (e) {
@@ -79,7 +82,7 @@ export async function placeOrder(input: PlaceOrderInput): Promise<Fail> {
 
   let rate: ShippingRate | null;
   try {
-    const rates = await getRates({ destination: address.value.destination, weightGram: cart.weightGram });
+    const { rates } = await getRates({ destination: address.value.destination, weightGram: parcelWeight(cart.weightGram) });
     rate = findRate(rates, parsed.data.rateId);
   } catch (e) {
     console.error("shipping rates:", e);

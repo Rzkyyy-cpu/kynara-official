@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -125,7 +125,7 @@ Catatan pelaksanaan:
 - Migration berurutan: `pembayaran_midtrans` (riwayat status, pg_cron), `perbaiki_kolom_metode_bayar`, lalu `pembayaran_komerce` (tabel payments, RPC versi Komerce). Dua migration pertama tetap di repo karena sudah terpasang di database.
 - Library baru: `qrcode-generator` (MIT, tanpa dependensi), untuk menggambar QRIS dari `qr_string`.
 
-## Fase 6 — Ongkos kirim
+## Fase 6 — Ongkos kirim ✅
 
 1. Rapikan /lib/shipping dengan interface yang jelas, sehingga provider bisa diganti tanpa mengubah halaman checkout.
 2. Implementasi satu provider ongkir nyata. Sebelum memilih, cek syarat dan batas paket gratis terbaru, dan beri tahu pilihannya beserta alasannya.
@@ -137,6 +137,17 @@ Catatan pelaksanaan:
 - Kolom berat sudah ada sejak Fase 2. Tinggal isi berat asli dan hitung total berat.
 - Ongkir tetap dihitung ulang di server saat pesanan dibuat. Angka ongkir dari browser tidak dipercaya.
 - Hasil cek ongkir disimpan sementara (cache) supaya kuota API gratis tidak cepat habis.
+
+Catatan pelaksanaan:
+- Provider: **RajaOngkir (Komerce) Starter**, gratis 100 hit cek ongkir per hari (dicek 2026-10-01). Asal kirim Soreang, Kab. Bandung (`RAJAONGKIR_ORIGIN_ID=4975`). Kurir: JNE, J&T, SiCepat, semuanya dihitung dalam 1 hit. Layanan kargo/truk dan Super Speed (SPS) disembunyikan.
+- **SiCepat tidak muncul:** RajaOngkir menjawab "not found" untuk SiCepat dari Soreang. Kodenya dibiarkan (tidak menambah hit), jadi akan muncul sendiri kalau rutenya tersedia.
+- Cache di database (hanya server yang bisa akses): `shipping_destinations` (ID wilayah per provinsi/kota/kecamatan/kode pos, disimpan permanen; wilayah yang tidak ditemukan dicoba lagi setelah 7 hari) dan `shipping_rate_cache` (tarif per tujuan dan berat per kg, berlaku 24 jam).
+- **Kolom `addresses.rajaongkir_destination_id` dihapus**, tidak dipakai seperti rencana Fase 3. Pemilik alamat boleh mengubah barisnya sendiri, jadi kolom itu bisa diisi ID kota yang lebih murah. ID tujuan sekarang dicari server dari data wilayah resmi.
+- Pencocokan wilayah mewajibkan provinsi dan kecamatan sama (nama kecamatan bisa kembar, contoh Soreang di Kab. Bandung dan Parepare). RajaOngkir masih memakai provinsi Papua sebelum pemekaran 2022, jadi Papua Selatan/Tengah/Pegunungan dicocokkan dengan "PAPUA".
+- Berat paket = berat produk + **100 gram kemasan**. `orders.total_weight_gram` tetap berat isi (dihitung `create_order`).
+- **Fallback tarif flat** kalau API gagal, kuota habis, atau tidak ada kurir: Jawa Rp5.000/kg (maks. Rp10.000), Bali & Sumatera bagian selatan Rp10.000/kg (maks. Rp20.000), lainnya Rp40.000. Pembeli melihat pesan bahwa tarif flat sedang dipakai.
+- Berat produk seed (50–600 gram) dipakai apa adanya. Ganti dengan berat hasil timbang lewat admin di Fase 7.
+- `RAJAONGKIR_API_KEY` dan `RAJAONGKIR_ORIGIN_ID` juga harus didaftarkan di environment variable Vercel.
 
 ## Fase 7 — Admin
 

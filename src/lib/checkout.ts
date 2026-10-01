@@ -77,7 +77,6 @@ function fromRow(a: Address): ResolvedAddress {
       city: a.city,
       district: a.district,
       postalCode: a.postal_code,
-      rajaongkirDestinationId: a.rajaongkir_destination_id,
     },
     savedId: a.id,
   };

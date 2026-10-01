@@ -52,6 +52,8 @@ Perubahan di Google kadang butuh beberapa menit sebelum berlaku.
 | `KOMERCE_PAYMENT_API_KEY` | **ya** | Dashboard Komerce (collaborator.komerce.id) → **Developer → Settings → Api Key** → bagian **Payment API**, mode **Sandbox**. Bukan key ongkir. |
 | `KOMERCE_CALLBACK_KEY` | **ya** | Kita buat **sendiri**: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Dikirim ke Komerce di setiap transaksi dan dipakai memeriksa segel callback. Nilai di Vercel dan laptop **boleh sama**. |
 | `KOMERCE_IS_PRODUCTION` | tidak | `false` selama sandbox. |
+| `RAJAONGKIR_API_KEY` | **ya** | Dashboard Komerce → **Developer → Settings → Api Key** → bagian **Shipping Cost** (RajaOngkir). Bukan key Payment. |
+| `RAJAONGKIR_ORIGIN_ID` | tidak | ID wilayah asal kirim. Sekarang `4975` (Soreang, Kab. Bandung). |
 
 **b. Callback (webhook).** Tidak perlu didaftarkan di dashboard. Alamat `https://<domain>/api/pembayaran/notifikasi`
 dikirim otomatis di setiap transaksi, beserta kunci segelnya.
@@ -88,6 +90,7 @@ dan dipotong dari dana yang masuk.
 | Build gagal "Missing env" | Environment variable belum diisi, atau salah nama. |
 | Login Google error `redirect_uri_mismatch` / origin | Domain belum ditambahkan di Google (langkah 3). |
 | "Kode pembayaran belum berhasil dibuat" | `KOMERCE_PAYMENT_API_KEY` / `KOMERCE_CALLBACK_KEY` kosong atau salah, atau belum Redeploy. Lihat log Vercel (`startPayment:`). |
+| Checkout selalu menampilkan "tarif flat" | `RAJAONGKIR_API_KEY` / `RAJAONGKIR_ORIGIN_ID` kosong atau salah, atau kuota harian (100 hit) habis. Lihat log Vercel (`ongkir rajaongkir gagal`). |
 | Status tidak berubah sendiri setelah bayar | Callback ditolak: cek log Vercel `signature salah`. Sementara itu, tombol "Sudah bayar? Cek status" tetap bisa dipakai. |
 | Setelah login dilempar ke localhost | Site URL Supabase masih localhost, atau redirect URL Vercel belum didaftarkan (langkah 2). |
 | Halaman error 500 semua | Project Supabase sedang dijeda (lihat catatan di atas). |

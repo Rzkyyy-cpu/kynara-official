@@ -28,6 +28,7 @@ It is a portfolio project that is also being built to become a real, working sto
 | Backend & data | [Supabase](https://supabase.com): PostgreSQL, Auth, Storage, Row Level Security |
 | Validation | [Zod](https://zod.dev) |
 | Payments | [Komerce Payment API](https://rajaongkir.com/docs/payment-api/getting-started/getting-started): virtual account + QRIS (sandbox) |
+| Shipping rates | [RajaOngkir](https://rajaongkir.com) (Komerce) free plan, cached in Postgres, flat-rate fallback |
 | Hosting | Vercel + Supabase (free tiers) |
 
 No paid libraries. UI icons are inline SVGs taken from the design files.
@@ -95,6 +96,8 @@ npm run dev                       # http://localhost:3000
 | `KOMERCE_PAYMENT_API_KEY` | Komerce Payment API key | **Yes** |
 | `KOMERCE_CALLBACK_KEY` | Self-generated secret used to sign payment callbacks (HMAC) | **Yes** |
 | `KOMERCE_IS_PRODUCTION` | `false` for sandbox | No |
+| `RAJAONGKIR_API_KEY` | RajaOngkir (Shipping Cost) API key | **Yes** |
+| `RAJAONGKIR_ORIGIN_ID` | RajaOngkir location ID of the shipping origin | No |
 
 Secrets live only in `.env.local` (git-ignored) and in the hosting provider's settings. They are never committed.
 
@@ -115,7 +118,7 @@ Secrets live only in `.env.local` (git-ignored) and in the hosting provider's se
 - [x] **Phase 4:** Cart (guest + logged in), 3-step checkout, server-side order creation with atomic stock
 - [x] **Phase 4B:** Static content pages, first deployment
 - [x] **Phase 5:** Online payments (virtual account + QRIS), verified callbacks, order status timeline
-- [ ] **Phase 6:** Real shipping-rate provider with fallback
+- [x] **Phase 6:** Real shipping rates (RajaOngkir) with caching and flat-rate fallback
 - [ ] **Phase 7:** Admin dashboard (products, orders, categories, banners)
 - [ ] **Phase 8:** Security audit, SEO, performance (Lighthouse mobile > 85), accessibility
 
@@ -188,7 +191,7 @@ npx supabase db push --include-seed
 npm run dev                       # http://localhost:3000
 ```
 
-Daftar environment variable ada di tabel versi Inggris di atas. Kunci rahasia (`SUPABASE_SECRET_KEY`, `KOMERCE_PAYMENT_API_KEY`, `KOMERCE_CALLBACK_KEY`) hanya disimpan di `.env.local` (diabaikan git) dan di pengaturan hosting. Kunci tersebut tidak pernah di-commit.
+Daftar environment variable ada di tabel versi Inggris di atas. Kunci rahasia (`SUPABASE_SECRET_KEY`, `KOMERCE_PAYMENT_API_KEY`, `KOMERCE_CALLBACK_KEY`, `RAJAONGKIR_API_KEY`) hanya disimpan di `.env.local` (diabaikan git) dan di pengaturan hosting. Kunci tersebut tidak pernah di-commit.
 
 ### Roadmap
 
@@ -198,7 +201,7 @@ Daftar environment variable ada di tabel versi Inggris di atas. Kunci rahasia (`
 - [x] **Fase 4:** Keranjang (tamu + login), checkout 3 langkah, pembuatan pesanan di server dengan stok atomik
 - [x] **Fase 4B:** Halaman konten statis, deploy pertama
 - [x] **Fase 5:** Pembayaran online (VA + QRIS), callback terverifikasi, timeline status pesanan
-- [ ] **Fase 6:** Ongkir dari penyedia sungguhan + cadangan tarif flat
+- [x] **Fase 6:** Ongkir RajaOngkir dengan cache dan cadangan tarif flat
 - [ ] **Fase 7:** Dashboard admin (produk, pesanan, kategori, banner)
 - [ ] **Fase 8:** Audit keamanan, SEO, performa (Lighthouse mobile > 85), aksesibilitas
 

@@ -8,13 +8,11 @@ export type ShippingDestination = {
   city: string;
   district: string;
   postalCode: string;
-  // ID tujuan RajaOngkir (diisi Fase 6). Provider tiruan tidak memakainya.
-  rajaongkirDestinationId?: string | null;
 };
 
 export type RateRequest = {
   destination: ShippingDestination;
-  weightGram: number; // berat total paket
+  weightGram: number; // berat total paket (isi + kemasan)
 };
 
 export type ShippingRate = {
@@ -32,12 +30,16 @@ export interface ShippingProvider {
   getRates(request: RateRequest): Promise<ShippingRate[]>;
 }
 
+// Hasil getRates. isFallback = RajaOngkir gagal/kuota habis, yang tampil tarif flat cadangan.
+export type RateQuote = { rates: ShippingRate[]; isFallback: boolean };
+
 // Error yang pesannya aman ditampilkan ke pembeli (mis. API ongkir sedang gangguan).
 export class ShippingError extends Error {}
 
 // "Estimasi 2–3 hari" / "Estimasi 1 hari"
-export function etdText(rate: Pick<ShippingRate, "etd">): string {
-  if (!rate.etd) return "Tidak tersedia untuk alamat ini";
+export function etdText(rate: Pick<ShippingRate, "etd" | "available">): string {
+  if (!rate.available) return "Tidak tersedia untuk alamat ini";
+  if (!rate.etd) return "Estimasi tiba mengikuti kurir"; // kurir tidak memberi estimasi (mis. J&T)
   const { min, max } = rate.etd;
   return `Estimasi ${min === max ? min : `${min}–${max}`} hari`;
 }

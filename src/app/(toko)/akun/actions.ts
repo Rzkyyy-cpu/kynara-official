@@ -122,8 +122,6 @@ export async function saveAddress(_prev: FormState, formData: FormData): Promise
     postal_code: a.postalCode,
     street: a.street,
     landmark: a.landmark,
-    // Wilayah berubah -> ID tujuan RajaOngkir lama tidak berlaku, dicari ulang di Fase 6
-    rajaongkir_destination_id: null,
     ...(makeDefault ? { is_default: true } : {}),
   };
 

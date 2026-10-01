@@ -26,7 +26,6 @@ export type Database = {
           phone: string
           postal_code: string
           province: string
-          rajaongkir_destination_id: string | null
           recipient_name: string
           street: string
           updated_at: string
@@ -43,7 +42,6 @@ export type Database = {
           phone: string
           postal_code: string
           province: string
-          rajaongkir_destination_id?: string | null
           recipient_name: string
           street: string
           updated_at?: string
@@ -60,7 +58,6 @@ export type Database = {
           phone?: string
           postal_code?: string
           province?: string
-          rajaongkir_destination_id?: string | null
           recipient_name?: string
           street?: string
           updated_at?: string
@@ -676,6 +673,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      shipping_destinations: {
+        Row: {
+          created_at: string
+          destination_id: string
+          label: string
+          lookup_key: string
+        }
+        Insert: {
+          created_at?: string
+          destination_id: string
+          label: string
+          lookup_key: string
+        }
+        Update: {
+          created_at?: string
+          destination_id?: string
+          label?: string
+          lookup_key?: string
+        }
+        Relationships: []
+      }
+      shipping_rate_cache: {
+        Row: {
+          couriers: string
+          destination_id: string
+          fetched_at: string
+          origin_id: string
+          rates: Json
+          weight_kg: number
+        }
+        Insert: {
+          couriers: string
+          destination_id: string
+          fetched_at?: string
+          origin_id: string
+          rates: Json
+          weight_kg: number
+        }
+        Update: {
+          couriers?: string
+          destination_id?: string
+          fetched_at?: string
+          origin_id?: string
+          rates?: Json
+          weight_kg?: number
+        }
+        Relationships: []
       }
       wishlists: {
         Row: {
