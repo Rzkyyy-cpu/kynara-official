@@ -39,7 +39,7 @@ export async function saveCategory(input: CategoryInput): Promise<Result> {
 
 export async function setCategoryOnHome(id: string, show: boolean): Promise<Result> {
   if (!(await getAdmin())) return NOT_ADMIN;
-  if (!uuid.safeParse(id).success) return { ok: false, error: "Kategori tidak valid." };
+  if (!uuid.safeParse(id).success || !z.boolean().safeParse(show).success) return { ok: false, error: "Kategori tidak valid." };
   const supabase = await createClient();
   const { error } = await supabase.from("categories").update({ show_on_home: show }).eq("id", id);
   if (error) return { ok: false, error: catalogError(error.message) };

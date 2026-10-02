@@ -223,4 +223,25 @@ describe.skipIf(!url || !secret || !publishable)("admin katalog (database sunggu
     await buyer.storage.from("katalog").remove([path]);
     expect((await fetch(publicUrl)).status).toBe(200);
   });
+
+  // Fase 8A: policy "for all" dipecah jadi insert/update/delete. Hak akses harus tetap sama.
+  it("policy katalog per operasi: admin bisa ubah, pembeli tidak bisa tambah/ubah/hapus", async () => {
+    const slug = `${tag}-policy`;
+    expect((await admin.from("categories").insert({ name: "zz policy", slug })).error).toBeNull();
+    const renamed = await admin.from("categories").update({ name: "zz policy 2" }).eq("slug", slug).select("id");
+    expect(renamed.data).toHaveLength(1);
+
+    // Pembeli: insert ditolak, update & delete tidak mengenai baris apa pun (RLS menyaring diam-diam)
+    expect((await buyer.from("categories").insert({ name: "zz", slug: `${tag}-pembeli` })).error).not.toBeNull();
+    expect((await buyer.from("categories").update({ name: "dibobol" }).eq("slug", slug).select("id")).data ?? []).toHaveLength(0);
+    expect((await buyer.from("categories").delete().eq("slug", slug).select("id")).data ?? []).toHaveLength(0);
+    // Hanya menyasar produk tes (project utama dipakai bersama data asli)
+    expect(productIds.length).toBeGreaterThan(0);
+    expect((await buyer.from("products").update({ name: "dibobol" }).in("id", productIds).select("id")).data ?? []).toHaveLength(0);
+    expect((await buyer.from("product_variants").update({ price: 1 }).in("product_id", productIds).select("id")).data ?? []).toHaveLength(0);
+    expect((await buyer.from("product_images").delete().in("product_id", productIds).select("id")).data ?? []).toHaveLength(0);
+
+    const { data: still } = await db.from("categories").select("name").eq("slug", slug).single();
+    expect(still!.name).toBe("zz policy 2");
+  });
 });

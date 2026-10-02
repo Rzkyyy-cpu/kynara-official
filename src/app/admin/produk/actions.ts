@@ -52,7 +52,7 @@ export async function saveProduct(input: ProductInput): Promise<SaveResult> {
 
 export async function setProductActive(id: string, active: boolean): Promise<Result> {
   if (!(await getAdmin())) return NOT_ADMIN;
-  if (!z.uuid().safeParse(id).success) return { ok: false, error: "Produk tidak valid." };
+  if (!z.uuid().safeParse(id).success || !z.boolean().safeParse(active).success) return { ok: false, error: "Produk tidak valid." };
   const supabase = await createClient();
   const { error } = await supabase.from("products").update({ is_active: active }).eq("id", id);
   if (error) return { ok: false, error: catalogError(error.message) };

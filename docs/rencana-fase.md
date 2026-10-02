@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 ✅ · Fase 8 berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 ✅ · Fase 8A ✅ · Fase 8B berikutnya
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -186,7 +186,7 @@ Catatan 7B:
 - **Gambar tidak tampil di `next start` lokal laptop ini**: jaringan memakai NAT64 (`64:ff9b::`), dan optimizer gambar Next menolak alamat itu sebagai "IP lokal" (perlindungan SSRF). Di Vercel normal. `images.dangerouslyAllowLocalIP` sengaja **tidak** dipasang.
 - Tes: `admin-catalog.db.test.ts` (6 tes: batas beranda & banner, simpan atomik, stok selisih, varian dipesan, Storage) dan `admin/catalog.test.ts`.
 
-## Fase 8 — Audit, SEO, performa
+## Fase 8 — Audit, SEO, performa *(8A ✅)*
 
 1. Audit keamanan seluruh proyek: cek RLS di semua tabel, cek tidak ada kunci rahasia di kode, cek semua endpoint punya validasi Zod dan pengecekan hak akses, tambahkan rate limit di login dan checkout. Buat laporan temuan dan perbaiki yang kritis.
 2. SEO: title dan meta description unik per halaman, Open Graph, sitemap.xml, robots.txt, alt text di semua gambar.
@@ -199,3 +199,10 @@ Catatan 7B:
 - Pakai **Security Advisor & Performance Advisor** Supabase (dashboard) sebagai bagian audit RLS.
 - README sudah dibuat lebih awal (portofolio), jadi di sini **diperbarui** (screenshot, link demo, hasil Lighthouse).
 - Cek batas paket gratis yang memengaruhi demo: project Supabase Free bisa di-pause kalau tidak aktif, dan Vercel Hobby hanya untuk non-komersial. Catat rencana saat toko mulai jualan sungguhan.
+
+Catatan pelaksanaan — dibagi dua: **8A** (tugas 1: audit keamanan) ✅ dan **8B** (tugas 2–5: SEO, performa, aksesibilitas, README).
+- Laporan lengkap: `docs/audit-keamanan.md`. Tidak ada temuan kritis; 1 sedang (open redirect `?next=` lewat karakter tab, diperbaiki) dan 4 rendah (policy RLS ganda, `rls_auto_enable()` publik, header keamanan, input tanpa Zod), semuanya diperbaiki.
+- Migration `audit_keamanan_advisor`: policy admin `for all` di 5 tabel katalog dipecah jadi insert/update/delete (hak akses sama), EXECUTE `rls_auto_enable()` dicabut dari publik.
+- Header keamanan di `next.config.ts`. CSP hanya `frame-ancestors`/`object-src`/`base-uri`; CSP script penuh ditunda karena butuh nonce per request (katalog jadi tidak bisa di-cache).
+- Temuan Advisor yang diterima: `is_admin()` publik (dipakai RLS), RPC admin bisa dipanggil user login (menolak dari dalam), *leaked password protection* (paket Pro).
+- Lighthouse diukur lewat PageSpeed Insights ke URL Vercel (pengujian lokal tidak akurat karena masalah NAT64 gambar).

@@ -79,4 +79,11 @@ describe("safeNextPath (mencegah open redirect)", () => {
     expect(safeNextPath(undefined)).toBe("/akun");
     expect(safeNextPath(["/akun"])).toBe("/akun");
   });
+
+  it("menolak trik karakter tersembunyi (Fase 8A)", () => {
+    expect(safeNextPath("/\t/penipu.com")).toBe("/akun");
+    expect(safeNextPath("/\n/penipu.com")).toBe("/akun");
+    expect(safeNextPath("/\\/penipu.com")).toBe("/akun");
+    expect(safeNextPath("/%2F%2Fpenipu.com")).toBe("/%2F%2Fpenipu.com"); // tetap path biasa di situs sendiri
+  });
 });
