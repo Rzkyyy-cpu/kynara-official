@@ -3,7 +3,7 @@
 Setiap fase dikerjakan dengan urutan yang sama: tampilkan rencana, tunggu persetujuan, kerjakan, lalu berhenti untuk konfirmasi.
 Aturan lengkap ada di `CLAUDE.md`.
 
-**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 ✅ · Fase 8A ✅ · Fase 8B berikutnya
+**Status:** Fase 1 ✅ · Fase 2 ✅ · Fase 3 ✅ · Fase 4 ✅ · Fase 4B ✅ · Fase 5 ✅ · Fase 6 ✅ · Fase 7 ✅ · Fase 8A ✅ · Fase 8B ✅
 
 Tugas di tiap fase adalah script asli. Bagian **"Penyesuaian (revisi 2026-09-30)"** tidak mengubah ketentuan.
 Isinya catatan teknis dan urutan kerja supaya tidak ada pekerjaan yang harus dibongkar ulang di fase berikutnya.
@@ -186,7 +186,7 @@ Catatan 7B:
 - **Gambar tidak tampil di `next start` lokal laptop ini**: jaringan memakai NAT64 (`64:ff9b::`), dan optimizer gambar Next menolak alamat itu sebagai "IP lokal" (perlindungan SSRF). Di Vercel normal. `images.dangerouslyAllowLocalIP` sengaja **tidak** dipasang.
 - Tes: `admin-catalog.db.test.ts` (6 tes: batas beranda & banner, simpan atomik, stok selisih, varian dipesan, Storage) dan `admin/catalog.test.ts`.
 
-## Fase 8 — Audit, SEO, performa *(8A ✅)*
+## Fase 8 — Audit, SEO, performa ✅
 
 1. Audit keamanan seluruh proyek: cek RLS di semua tabel, cek tidak ada kunci rahasia di kode, cek semua endpoint punya validasi Zod dan pengecekan hak akses, tambahkan rate limit di login dan checkout. Buat laporan temuan dan perbaiki yang kritis.
 2. SEO: title dan meta description unik per halaman, Open Graph, sitemap.xml, robots.txt, alt text di semua gambar.
@@ -206,3 +206,17 @@ Catatan pelaksanaan — dibagi dua: **8A** (tugas 1: audit keamanan) ✅ dan **8
 - Header keamanan di `next.config.ts`. CSP hanya `frame-ancestors`/`object-src`/`base-uri`; CSP script penuh ditunda karena butuh nonce per request (katalog jadi tidak bisa di-cache).
 - Temuan Advisor yang diterima: `is_admin()` publik (dipakai RLS), RPC admin bisa dipanggil user login (menolak dari dalam), *leaked password protection* (paket Pro).
 - Lighthouse diukur lewat PageSpeed Insights ke URL Vercel (pengujian lokal tidak akurat karena masalah NAT64 gambar).
+
+Catatan pelaksanaan **8B** (SEO, performa, aksesibilitas, README):
+- **SEO:** `metadataBase` + Open Graph bawaan di layout root, gambar pratinjau `app/opengraph-image.tsx` (next/og, dibuat saat build), `app/sitemap.ts` (beranda, koleksi, kategori, produk aktif, halaman konten; revalidate 1 jam), `app/robots.ts`. Produk: `og:image` = foto pertama, dengan gambar bawaan sebagai cadangan. URL kanonik di beranda, koleksi (filter/urut/halaman diarahkan ke kategori), dan produk. Masuk/daftar/lupa/reset password dan keranjang diberi `noindex`. Alamat situs dari `SITE_URL` di `lib/site.ts` (`NEXT_PUBLIC_SITE_URL` → `VERCEL_PROJECT_PRODUCTION_URL` → localhost).
+- **Produk yang tidak ada mengembalikan HTTP 200**, bukan 404: karena ada `loading.tsx`, halaman sudah mulai dikirim (streaming) sebelum `notFound()`. Next otomatis menambah `<meta name="robots" content="noindex">`, jadi aman untuk SEO. Dibiarkan.
+- **Performa, temuan & perbaikan:**
+  - Fungsi Vercel berjalan di `iad1` (AS) padahal database di Singapura → `vercel.json` `regions: ["sin1"]`.
+  - Halaman produk dirender ulang tiap kunjungan (ƒ, `no-store`, TTFB ±1,2 dtk) → `generateStaticParams` mengembalikan `[]` sehingga jadi ISR (●), di-cache setelah kunjungan pertama.
+  - Zod lengkap (±90 KB gzip) ikut ke browser di semua halaman toko lewat `CartProvider → cart/storage.ts` → keranjang tamu divalidasi dengan `zod/mini` (paket yang sama, ±23 KB). Kesamaan aturan dengan skema server dijaga `cart/storage.test.ts`.
+  - supabase-js (±68 KB gzip) ada di bundel awal lewat `AuthProvider` → dimuat dengan dynamic import setelah halaman tampil.
+  - Hasil: JavaScript awal beranda ±344 KB → ±210 KB (gzip). Sisanya terutama React DOM dan runtime Next.
+- **Lighthouse mobile sebelum 8B** (Lighthouse 12 CLI dari laptop ke URL Vercel): Beranda performa 79 · aksesibilitas 100 · best practices 100 · SEO 100; Koleksi 64 · 98 · 100 · 100 (TBT 1.830 ms, heading loncat h1→h3). Laptop ini lebih lambat dari server PageSpeed (benchmarkIndex ±700–1.100), jadi TBT cenderung lebih buruk dari angka resmi. PageSpeed Insights API anonim sempat kena kuota harian. Angka sesudah deploy dicatat di README.
+- **Aksesibilitas:** semua token warna teks dicek kontrasnya dengan skrip (WCAG AA). Yang gagal hanya inisial avatar admin (putih di `slate`, 3,5:1) → `slate-600` (6:1). Teks putih di panel login `slate` lolos sebagai teks besar (≥ 24px). Cincin `:focus-visible` global (`slate-700`; di area `data-latar="gelap"` memakai warna teks). Skip link "Langsung ke konten" di layout toko. `h2` khusus pembaca layar di Koleksi & Wishlist (urutan heading). Semua input sudah berlabel, alt text sudah sesuai (gambar dekoratif `alt=""`). Lighthouse lokal sesudah perubahan: aksesibilitas 100 di beranda, koleksi, produk, tentang, masuk, daftar, keranjang.
+- **README** diperbarui: demo, screenshot (`docs/screenshots/`, diambil dari demo Vercel), fitur lengkap, env `TEST_SUPABASE_*`, batas paket gratis.
+- **Rencana saat mulai jualan sungguhan:** pindah dari Vercel Hobby (non-komersial) ke Vercel Pro atau hosting lain + domain sendiri (`NEXT_PUBLIC_SITE_URL`, Supabase Auth, Google OAuth, dan callback Komerce ikut diganti); Supabase Pro supaya tidak di-pause dan mendapat *leaked password protection* + backup harian; Komerce `KOMERCE_IS_PRODUCTION=true`; project Supabase terpisah untuk `test:db`; isi kontak toko dan teks kebijakan final.

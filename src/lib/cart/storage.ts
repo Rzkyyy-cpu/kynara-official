@@ -1,5 +1,5 @@
-import type { CartLine } from "@/lib/cart/totals";
-import { cartLinesSchema } from "@/lib/validation/cart";
+import * as z from "zod/mini";
+import { type CartLine, MAX_CART_LINES, MAX_QTY } from "@/lib/cart/totals";
 
 // Keranjang tamu di localStorage = "catatan belanja di saku pembeli".
 // Hanya berisi id varian + jumlah. Isinya bisa diubah siapa pun lewat DevTools,
@@ -7,11 +7,21 @@ import { cartLinesSchema } from "@/lib/validation/cart";
 
 const KEY = "kynara-cart";
 
+// File ini dimuat di SETIAP halaman toko (lewat CartProvider), jadi memakai "zod/mini": versi ringan
+// dari paket zod yang sama. Zod lengkap (validation/cart.ts) menambah ±90 KB JavaScript ke browser.
+// Aturannya harus sama dengan cartLinesSchema di validation/cart.ts (dijaga oleh storage.test.ts).
+export const guestCartSchema = z.array(
+  z.object({
+    variantId: z.uuid(),
+    quantity: z.int().check(z.minimum(0), z.maximum(MAX_QTY)),
+  }),
+).check(z.maxLength(MAX_CART_LINES));
+
 export function readGuestCart(): CartLine[] {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return [];
-    const parsed = cartLinesSchema.safeParse(JSON.parse(raw));
+    const parsed = guestCartSchema.safeParse(JSON.parse(raw));
     return parsed.success ? parsed.data.filter((l) => l.quantity > 0) : [];
   } catch {
     return []; // mode privat / data rusak: anggap keranjang kosong

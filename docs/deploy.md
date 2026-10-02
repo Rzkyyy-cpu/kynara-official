@@ -23,6 +23,8 @@ Kunci rahasia (environment variable) **tidak ikut ke GitHub**. Kunci itu dititip
    Env pembayaran ada di langkah 4. `TEST_SUPABASE_*` **tidak perlu** diisi di Vercel.
 5. Klik **Deploy**. Tunggu ±2–3 menit, lalu catat domainnya, misalnya `https://kynara-official.vercel.app`.
 
+> **Region server = Singapura (`sin1`)**, diatur di `vercel.json`. Database Supabase ada di Singapura, jadi fungsi server sengaja ditaruh di kota yang sama. Bawaan Vercel (`iad1`, Amerika) membuat setiap query bolak-balik menyeberangi Pasifik (Fase 8B: halaman produk ±1,2 dtk sebelum ada cache). Kalau project Supabase pindah region, ubah juga nilai ini.
+
 > Mengubah environment variable **tidak** otomatis memperbarui website. Setelah mengubahnya, buka tab **Deployments → ⋯ → Redeploy**.
 
 ## 2. Supabase Auth: daftarkan domain Vercel
@@ -82,6 +84,8 @@ dan dipotong dari dana yang masuk.
 - [ ] Tambah ke keranjang → checkout (pilih BCA VA) → pesanan tercipta dan nomor VA tampil.
 - [ ] "Lihat cara bayar" → Simulate Payment → dalam ±20 detik status berubah jadi Diproses tanpa menekan apa pun (callback sampai).
 - [ ] Coba juga QRIS: QR tampil dan berlaku 5 menit, lalu tombol "Buat QR baru" muncul.
+- [ ] `/robots.txt` dan `/sitemap.xml` memakai domain yang benar. Alamatnya diambil dari `NEXT_PUBLIC_SITE_URL` (cadangan: domain produksi bawaan Vercel).
+- [ ] Header respons memuat `x-vercel-id: ...::sin1::...` (fungsi berjalan di Singapura).
 
 ## Kalau ada masalah
 

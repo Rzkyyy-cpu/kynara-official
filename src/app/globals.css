@@ -104,3 +104,19 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
 }
+
+/*
+  Cincin fokus keyboard yang seragam. :focus-visible hanya muncul saat pengguna bernavigasi
+  dengan Tab (bukan saat diklik mouse/disentuh), jadi tidak mengganggu tampilan desain.
+  Ditaruh di @layer base supaya utility seperti outline-none (input dengan border fokus) tetap menang.
+*/
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-slate-700);
+    outline-offset: 2px;
+  }
+  /* Di latar gelap (footer, sidebar admin) cincin memakai warna teks yang terang */
+  [data-latar="gelap"] :focus-visible {
+    outline-color: currentColor;
+  }
+}

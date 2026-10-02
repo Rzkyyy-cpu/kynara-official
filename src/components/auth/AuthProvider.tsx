@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { toggleWishlist as toggleWishlistAction } from "@/app/(toko)/akun/actions";
-import { createClient } from "@/lib/supabase/client";
 
 // "Context" = papan pengumuman bersama untuk semua komponen di bawahnya.
 // Isinya: siapa yang sedang login dan produk apa saja di wishlist-nya.
@@ -27,32 +26,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [wishlist, setWishlist] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const supabase = createClient();
-    // Dipanggil sekali saat halaman dibuka (INITIAL_SESSION), lalu setiap login/logout.
-    // Data sesi di sini hanya untuk TAMPILAN; semua keputusan hak akses tetap di server & RLS.
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      const u = session?.user;
-      setUser(
-        u
-          ? {
-              id: u.id,
-              email: u.email ?? "",
-              name: (u.user_metadata?.full_name ?? u.user_metadata?.name ?? "") as string,
-            }
-          : null,
-      );
-      setReady(true);
-      if (!u) {
-        setWishlist(new Set());
-        return;
-      }
-      // setTimeout: jangan memanggil Supabase langsung di dalam callback ini (bisa macet, sesuai dokumentasi Supabase)
-      setTimeout(async () => {
-        const { data } = await supabase.from("wishlists").select("product_id");
-        setWishlist(new Set((data ?? []).map((w) => w.product_id)));
-      }, 0);
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+    // Library Supabase (±70 KB) dimuat SETELAH halaman tampil (dynamic import), bukan ikut di
+    // JavaScript awal: status login hanya dipakai navbar & tombol hati, katalog tidak menunggunya.
+    import("@/lib/supabase/client").then(({ createClient }) => {
+      if (cancelled) return; // komponen sudah dilepas sebelum library selesai dimuat
+      const supabase = createClient();
+      // Dipanggil sekali saat halaman dibuka (INITIAL_SESSION), lalu setiap login/logout.
+      // Data sesi di sini hanya untuk TAMPILAN; semua keputusan hak akses tetap di server & RLS.
+      const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+        const u = session?.user;
+        setUser(
+          u
+            ? {
+                id: u.id,
+                email: u.email ?? "",
+                name: (u.user_metadata?.full_name ?? u.user_metadata?.name ?? "") as string,
+              }
+            : null,
+        );
+        setReady(true);
+        if (!u) {
+          setWishlist(new Set());
+          return;
+        }
+        // setTimeout: jangan memanggil Supabase langsung di dalam callback ini (bisa macet, sesuai dokumentasi Supabase)
+        setTimeout(async () => {
+          const { data } = await supabase.from("wishlists").select("product_id");
+          setWishlist(new Set((data ?? []).map((w) => w.product_id)));
+        }, 0);
+      });
+      unsubscribe = () => sub.subscription.unsubscribe();
     });
-    return () => sub.subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, []);
 
   const toggleWishlist = useCallback(

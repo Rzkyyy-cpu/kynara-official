@@ -14,6 +14,7 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { getCategories, getFilterOptions, getProducts } from "@/lib/catalog";
 import { parseFilters } from "@/lib/catalog-filters";
 import { buildCatalogUrl, countActiveFilters, PAGE_SIZE } from "@/lib/catalog-url";
+import { categoryHref } from "@/lib/navigation";
 
 export async function generateMetadata({ searchParams }: PageProps<"/koleksi">): Promise<Metadata> {
   const filters = parseFilters(await searchParams);
@@ -21,6 +22,9 @@ export async function generateMetadata({ searchParams }: PageProps<"/koleksi">):
   return {
     title: `${category?.name ?? "Semua Koleksi"} — kynara`,
     description: category?.description ?? "Kerudung dan busana muslimah kynara: pashmina, segi empat, bergo, outer, dan lainnya.",
+    // Kanonik = "versi asli" halaman. Hasil urut/filter/halaman 2 dianggap halaman kategori yang
+    // sama, supaya Google tidak menghitungnya sebagai ratusan halaman duplikat.
+    alternates: { canonical: category ? categoryHref(category.slug) : "/koleksi" },
   };
 }
 
@@ -96,7 +100,11 @@ export default async function KoleksiPage({ searchParams }: PageProps<"/koleksi"
       <div className="flex gap-10 lg:mt-4">
         <FilterSidebar filters={filters} materials={options.materials} colors={options.colors} />
 
-        <section aria-label="Daftar produk" className="flex min-w-0 flex-1 flex-col gap-5">
+        <section aria-labelledby="daftar-produk" className="flex min-w-0 flex-1 flex-col gap-5">
+          {/* Judul khusus pembaca layar: menjaga urutan h1 -> h2 -> h3 (judul kartu) saat sidebar filter tersembunyi di HP */}
+          <h2 id="daftar-produk" className="sr-only">
+            Daftar produk
+          </h2>
           <div className="hidden items-center justify-between lg:flex">
             <p className="text-sm font-semibold">
               {total} produk{filters.q && <span className="font-normal text-muted"> untuk “{filters.q}”</span>}

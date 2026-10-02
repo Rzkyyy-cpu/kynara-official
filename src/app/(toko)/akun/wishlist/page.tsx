@@ -30,6 +30,8 @@ export default async function WishlistPage() {
         </div>
       ) : (
         <>
+          {/* Judul pembaca layar supaya urutan heading tidak loncat dari h1 ke h3 (judul kartu) */}
+          <h2 className="sr-only">Produk tersimpan</h2>
           <p className="-mt-2 text-sm text-muted">{products.length} produk tersimpan</p>
           <div className="grid grid-cols-2 gap-x-3 gap-y-6 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
             {products.map((p) => (

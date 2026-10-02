@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { SITE_URL, site } from "@/lib/site";
 import "./globals.css";
 
 // Layout paling luar: hanya <html>, <body>, dan font.
@@ -21,10 +22,15 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
+// metadataBase = alamat dasar, supaya URL relatif (gambar Open Graph, canonical) jadi URL utuh.
+// Open Graph = "kartu nama" halaman saat link dibagikan ke WhatsApp/Facebook. Halaman lain
+// mewarisi nilai ini, dan halaman produk menggantinya dengan foto & nama produk.
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "kynara — Kerudung & Busana Muslimah",
-  description:
-    "Kerudung dan busana muslimah dengan bahan pilihan dan jahitan rapi, untuk dipakai setiap hari.",
+  description: site.tagline,
+  openGraph: { type: "website", siteName: site.name, locale: "id_ID" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -225,3 +225,17 @@ export async function getRelatedProducts(productId: string, categoryId: string, 
   }
   return rows.map(toCardData);
 }
+
+// ---------- Sitemap ----------
+
+// Slug produk yang tayang + kapan terakhir diubah, untuk sitemap.xml.
+// RLS sudah menyembunyikan produk nonaktif dari pengunjung; filter is_active ditulis lagi supaya jelas.
+export async function getSitemapProducts() {
+  const { data, error } = await createPublicClient()
+    .from("products")
+    .select("slug, updated_at")
+    .eq("is_active", true)
+    .order("updated_at", { ascending: false });
+  if (error) fail("daftar produk sitemap", error);
+  return data;
+}

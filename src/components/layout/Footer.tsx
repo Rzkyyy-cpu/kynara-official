@@ -20,7 +20,7 @@ export function Footer({ categories }: { categories: NavCategory[] }) {
   ];
 
   return (
-    <footer className="bg-slate-900 text-footer-ink">
+    <footer data-latar="gelap" className="bg-slate-900 text-footer-ink">
       <Container className="grid gap-8 pt-10 pb-5 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr] lg:gap-14 lg:pt-[72px] lg:pb-0">
         {/* Brand */}
         <div className="order-1 flex flex-col gap-3.5 lg:gap-5">

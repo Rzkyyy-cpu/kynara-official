@@ -20,3 +20,12 @@ export const whatsappDisplay = site.whatsapp
 export const whatsappUrl =site.whatsapp ? `https://wa.me/${site.whatsapp}` : "https://wa.me/";
 export const instagramUrl = `https://instagram.com/${site.instagram ?? ""}`;
 export const tiktokUrl = `https://tiktok.com/${site.tiktok ? `@${site.tiktok}` : ""}`;
+
+// Alamat lengkap situs untuk sitemap, robots.txt, Open Graph, dan URL kanonik.
+// Mesin pencari & WhatsApp butuh URL utuh (https://...), bukan "/produk/x".
+// Urutan: NEXT_PUBLIC_SITE_URL -> domain produksi bawaan Vercel -> localhost.
+// Sengaja tidak membaca header request, supaya halaman katalog tetap bisa di-cache.
+const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : undefined;
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || vercelUrl || "http://localhost:3000").replace(/\/+$/, "");

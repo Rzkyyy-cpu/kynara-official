@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AboutSection } from "@/components/home/AboutSection";
@@ -13,6 +14,9 @@ import { categoryHref } from "@/lib/navigation";
 
 // Warna pengganti foto kategori (dari desain beranda) selama foto asli belum diunggah lewat admin
 const CATEGORY_TONES = ["#D9C7B0", "#B9C4B2", "#8E735E", "#D9A48C", "#6B6660", "#9AA9B5"];
+
+// Title & description beranda diwarisi dari layout root; di sini cukup URL kanoniknya.
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
   const [categories, latest, testimonials, banner] = await Promise.all([

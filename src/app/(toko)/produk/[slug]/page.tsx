@@ -8,12 +8,31 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { getProductBySlug, getRelatedProducts, getReviewSummary } from "@/lib/catalog";
 import { site } from "@/lib/site";
 
+// Array kosong = tidak ada halaman produk yang dibuat saat build, tapi setiap halaman produk
+// DISIMPAN (di-cache) setelah dikunjungi pertama kali, lalu diperbarui tiap 60 detik (revalidate di layout).
+// Tanpa ini, Next merender ulang halaman produk di setiap kunjungan (lebih lambat).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }: PageProps<"/produk/[slug]">): Promise<Metadata> {
-  const product = await getProductBySlug((await params).slug);
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
   if (!product) return { title: "Produk tidak ditemukan — kynara" };
+  const description = product.description.slice(0, 155);
+  const cover = product.images[0];
   return {
     title: `${product.name} — kynara`,
-    description: product.description.slice(0, 155),
+    description,
+    alternates: { canonical: `/produk/${slug}` },
+    // Pratinjau saat link produk dibagikan: foto pertama produk. Gambar bawaan (app/opengraph-image)
+    // tidak otomatis diwarisi kalau openGraph ditulis di sini, jadi dipasang manual sebagai cadangan.
+    openGraph: {
+      title: product.name,
+      description,
+      url: `/produk/${slug}`,
+      images: cover ? [{ url: cover.url, alt: cover.alt || product.name }] : ["/opengraph-image"],
+    },
   };
 }
 

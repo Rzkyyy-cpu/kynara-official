@@ -19,7 +19,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
 
   return (
     <div className="grid min-h-dvh grid-cols-1 grid-rows-[auto_1fr] bg-admin-bg lg:grid-cols-[248px_minmax(0,1fr)] lg:grid-rows-1">
-      <aside className="flex flex-col gap-4 bg-admin-side px-4 pt-4 pb-3 text-admin-side-ink lg:sticky lg:top-0 lg:h-dvh lg:gap-7 lg:py-6">
+      <aside data-latar="gelap" className="flex flex-col gap-4 bg-admin-side px-4 pt-4 pb-3 text-admin-side-ink lg:sticky lg:top-0 lg:h-dvh lg:gap-7 lg:py-6">
         <div className="flex items-center justify-between gap-3 lg:px-2">
           <Link href="/admin" className="flex items-baseline gap-2">
             <span className="font-serif text-[28px] font-medium text-bg">kynara</span>
@@ -47,7 +47,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
             <ExternalIcon size={18} /> Lihat toko
           </Link>
           <div className="flex items-center gap-2.5 p-2">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-slate text-[13px] font-bold text-white">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-slate-600 text-[13px] font-bold text-white">
               {initials(profile?.full_name, user.email ?? "")}
             </span>
             <div className="flex min-w-0 grow flex-col">

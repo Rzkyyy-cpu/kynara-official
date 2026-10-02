@@ -6,7 +6,12 @@ import { LoginForm } from "@/components/auth/LoginForm";
 import { Alert } from "@/components/form/Alert";
 import { safeNextPath } from "@/lib/validation/auth";
 
-export const metadata: Metadata = { title: "Masuk — kynara" };
+// Halaman akun tidak perlu muncul di Google (noindex), tapi description tetap dipakai saat link dibagikan.
+export const metadata: Metadata = {
+  title: "Masuk — kynara",
+  description: "Masuk ke akun kynara untuk melihat pesanan, alamat, dan wishlist kamu.",
+  robots: { index: false },
+};
 
 // Pesan untuk ?error=... (dikirim /auth/callback atau aksi Google)
 const ERRORS: Record<string, string> = {

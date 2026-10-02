@@ -5,7 +5,12 @@ import { GoogleButton } from "@/components/auth/GoogleButton";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { CheckIcon } from "@/components/icons";
 
-export const metadata: Metadata = { title: "Daftar — kynara" };
+// Halaman akun tidak perlu muncul di Google (noindex), tapi description tetap dipakai saat link dibagikan.
+export const metadata: Metadata = {
+  title: "Daftar — kynara",
+  description: "Buat akun kynara gratis supaya belanja berikutnya lebih cepat dan pesanan mudah dilacak.",
+  robots: { index: false },
+};
 
 const BENEFITS = [
   "Checkout lebih cepat, alamat tersimpan",

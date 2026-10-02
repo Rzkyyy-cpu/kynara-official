@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { CartView } from "@/components/cart/CartView";
 
-export const metadata: Metadata = { title: "Keranjang — kynara" };
+// Isi keranjang berbeda untuk tiap pengunjung, jadi tidak perlu diindeks mesin pencari.
+export const metadata: Metadata = { title: "Keranjang — kynara", robots: { index: false } };
 
 // Isi keranjang disimpan di browser (tamu) atau di database (user login),
 // jadi halaman ini dirender di browser oleh CartView.
