@@ -69,6 +69,16 @@ These rules were part of the project from day one, and were checked again in a f
 - All images go through `next/image` (resized, modern formats, lazy-loaded below the fold).
 - Lighthouse accessibility score of 100 on the store pages: labeled forms, color contrast checked against WCAG AA, visible keyboard focus, and a "skip to content" link.
 
+**Lighthouse (mobile)**, measured against the live demo after Phase 8. The performance score is the median of 5 runs:
+
+| Page | Performance | Accessibility | Best practices | SEO |
+|---|---|---|---|---|
+| Home | 80 | 100 | 100 | 100 |
+| Collection | 87 | 100 | 100 | 100 |
+| Product | 85 | 100 | 100 | 100 |
+
+Before Phase 8, the collection page scored 64. The main fixes were moving server functions next to the database (time to first byte dropped from about 1.1 s to 0.2 s), caching product pages, and cutting the JavaScript sent on first load from about 344 KB to 210 KB (gzip).
+
 ## Project structure
 
 ```
@@ -221,6 +231,16 @@ Aturan ini dipasang sejak awal, lalu diperiksa ulang dalam audit menyeluruh di a
 - Halaman katalog dan produk di-cache dan diperbarui tiap 60 detik (ISR). Fungsi server berjalan di region yang sama dengan database.
 - Semua gambar lewat `next/image` (diperkecil, format modern, lazy-load di bawah layar).
 - Skor aksesibilitas Lighthouse 100 di halaman toko: form berlabel, kontras warna dicek terhadap WCAG AA, fokus keyboard terlihat, dan link "Langsung ke konten".
+
+**Lighthouse (mobile)**, diukur ke demo setelah Fase 8. Skor performa adalah median dari 5 kali pengukuran:
+
+| Halaman | Performa | Aksesibilitas | Best practices | SEO |
+|---|---|---|---|---|
+| Beranda | 80 | 100 | 100 | 100 |
+| Koleksi | 87 | 100 | 100 | 100 |
+| Produk | 85 | 100 | 100 | 100 |
+
+Sebelum Fase 8, skor halaman Koleksi 64. Perbaikan utamanya: fungsi server dipindah ke region yang sama dengan database (waktu respons pertama turun dari ±1,1 dtk ke 0,2 dtk), halaman produk di-cache, dan JavaScript awal dipangkas dari ±344 KB ke 210 KB (gzip).
 
 ### Menjalankan di komputer sendiri
 
